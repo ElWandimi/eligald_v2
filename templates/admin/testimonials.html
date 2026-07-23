@@ -1,0 +1,41 @@
+{% extends "admin/base.html" %}
+{% block title %}Testimonials{% endblock %}
+{% block page_title %}Testimonials{% endblock %}
+{% block content %}
+<div class="admin-toolbar mb-4">
+  <a href="{{ url_for('admin_bp.testimonial_new') }}" class="btn btn-primary-green ms-auto">
+    <i class="fas fa-plus me-1"></i>Add Testimonial
+  </a>
+</div>
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead><tr><th>Customer</th><th>Company</th><th>Quote</th><th>Rating</th><th>Active</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for t in testimonials %}
+          <tr>
+            <td class="fw-600">{{ t.customer_name }}</td>
+            <td class="small text-muted">{{ t.company }}</td>
+            <td class="small">{{ t.quote|truncate(60) }}</td>
+            <td>{% for i in range(t.rating if t.rating else 5) %}⭐{% endfor %}</td>
+            <td><span class="status-badge {{ 'status-paid' if t.is_active else 'status-cancelled' }}">{{ 'Active' if t.is_active else 'Hidden' }}</span></td>
+            <td>
+              <div class="d-flex gap-2">
+                <a href="{{ url_for('admin_bp.testimonial_edit', tid=t.id) }}" class="btn btn-sm btn-outline-green"><i class="fas fa-pencil"></i></a>
+                <form method="POST" action="{{ url_for('admin_bp.testimonial_delete', tid=t.id) }}" class="d-inline" onsubmit="return confirm('Delete this testimonial?')">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-center text-muted py-4">No testimonials yet. <a href="{{ url_for('admin_bp.testimonial_new') }}">Add one?</a></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

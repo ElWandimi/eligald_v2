@@ -1,0 +1,7 @@
+# Core
+flask>=3.0.0
+werkzeug>=3.0.0
+reportlab>=4.0.0
+
+# Testing
+pytest>=8.0.0

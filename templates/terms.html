@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Terms of Service – {{ company }}{% endblock %}
+{% block content %}
+
+<section class="page-hero page-hero--short">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1614854262318-831574f15f1f?w=1400&q=80')"></div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light">Legal</span>
+    <h1>Terms of Service</h1>
+    <p>Last updated: January 2025</p>
+  </div>
+</section>
+
+<section class="section-pad bg-white">
+  <div class="container" style="max-width:820px">
+    <div class="legal-body">
+
+      <p class="lead-text">By accessing or using the website of <strong>{{ company }}</strong>, you agree to be bound by these Terms of Service. Please read them carefully.</p>
+
+      <h4>1. Acceptance of Terms</h4>
+      <p>These Terms of Service govern your use of our website at <strong>{{ request.url_root }}</strong>. By using our site, you confirm that you are at least 18 years old and legally capable of entering into contracts.</p>
+
+      <h4>2. Use of Website</h4>
+      <p>You agree to use this website only for lawful purposes and in a manner that does not infringe the rights of others. You must not:</p>
+      <ul>
+        <li>Use the site in any way that violates applicable laws or regulations.</li>
+        <li>Transmit unsolicited commercial communications (spam).</li>
+        <li>Attempt to gain unauthorised access to any part of the website or its systems.</li>
+        <li>Use automated tools to scrape or extract data without prior written consent.</li>
+      </ul>
+
+      <h4>3. Products and Ordering</h4>
+      <p>All product enquiries submitted via our website or WhatsApp constitute an expression of interest, not a binding order. A binding contract is formed only when we issue a formal quotation and you confirm your order in writing.</p>
+      <p>Pricing is subject to change without notice. Final prices are confirmed in writing prior to order fulfilment.</p>
+
+      <h4>4. Hazardous Materials Compliance</h4>
+      <p>All chemicals supplied by {{ company }} are classified hazardous substances. By purchasing from us, you confirm that:</p>
+      <ul>
+        <li>You are a registered business or qualified professional with appropriate licences.</li>
+        <li>You have read and understood the relevant Safety Data Sheets (SDS).</li>
+        <li>You will handle, store, and dispose of all chemicals in compliance with applicable laws.</li>
+        <li>You will not resell chemicals to unlicensed or unqualified third parties.</li>
+      </ul>
+
+      <h4>5. Intellectual Property</h4>
+      <p>All content on this website — including text, images, logos, and design — is the property of {{ company }} or licensed to us. You may not reproduce, distribute, or create derivative works without our prior written consent.</p>
+
+      <h4>6. Disclaimer of Warranties</h4>
+      <p>This website is provided "as is" without warranties of any kind. We do not guarantee that the site will be uninterrupted, error-free, or free of viruses or other harmful components.</p>
+
+      <h4>7. Limitation of Liability</h4>
+      <p>To the fullest extent permitted by law, {{ company }} shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of this website or our products, except where such liability cannot be excluded by law.</p>
+
+      <h4>8. Governing Law</h4>
+      <p>These Terms are governed by the laws of Kenya. Any disputes shall be subject to the exclusive jurisdiction of the courts of Nairobi, Kenya.</p>
+
+      <h4>9. Changes to Terms</h4>
+      <p>We reserve the right to modify these Terms at any time. Changes take effect immediately upon posting. Your continued use of the site constitutes acceptance of the updated Terms.</p>
+
+      <h4>10. Contact</h4>
+      <p>For legal enquiries: <a href="mailto:{{ email }}">{{ email }}</a></p>
+    </div>
+
+    <div class="mt-5 pt-3 border-top d-flex gap-3">
+      <a href="{{ url_for('privacy') }}" class="btn btn-outline-green">Privacy Policy</a>
+      <a href="{{ url_for('index') }}" class="btn btn-primary-green">Back to Home</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

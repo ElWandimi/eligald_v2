@@ -1,0 +1,63 @@
+{% extends "admin/base.html" %}
+{% block title %}Leads{% endblock %}
+{% block page_title %}Leads / WhatsApp CRM{% endblock %}
+
+{% block content %}
+<div class="admin-toolbar mb-4">
+  <form class="d-flex gap-2 flex-wrap" method="GET">
+    <div class="search-wrap" style="min-width:200px">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" name="q" value="{{ q }}" class="form-control search-input" placeholder="Search name or phone…"/>
+    </div>
+    <select name="status" class="form-select" style="max-width:160px">
+      {% for s in ['All','new','contacted','converted'] %}
+      <option value="{{ s }}" {{ 'selected' if active_status==s }}>{{ s|title }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-outline-green"><i class="fas fa-filter me-1"></i>Filter</button>
+    <a href="{{ url_for('admin_bp.leads') }}" class="btn btn-outline-secondary">Clear</a>
+  </form>
+  <a href="{{ url_for('admin_bp.lead_new') }}" class="btn btn-primary-green ms-auto">
+    <i class="fas fa-user-plus me-1"></i>Log Lead
+  </a>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead>
+          <tr>
+            <th>Customer</th><th>Phone</th><th>Product Interest</th>
+            <th>Status</th><th>Date</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for l in leads %}
+          <tr>
+            <td class="fw-600">{{ l.customer_name }}</td>
+            <td>
+              <a href="tel:{{ l.phone_number }}" class="link-green">{{ l.phone_number }}</a>
+            </td>
+            <td class="small">{{ l.product_name or '—' }}</td>
+            <td><span class="status-badge status-{{ l.status }}">{{ l.status }}</span></td>
+            <td class="small text-muted">{{ l.created_at[:10] }}</td>
+            <td>
+              <div class="d-flex gap-2">
+                <a href="{{ url_for('admin_bp.lead_detail', lid=l.id) }}" class="btn btn-sm btn-outline-green">View</a>
+                <a href="https://wa.me/{{ l.phone_number|replace('+','') }}?text=Hello+{{ l.customer_name|urlencode }}%2C+this+is+Eligald+Industrial+Chemicals."
+                   target="_blank" class="btn btn-sm btn-wa" title="Open WhatsApp">
+                  <i class="fab fa-whatsapp"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-center text-muted py-5">No leads found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

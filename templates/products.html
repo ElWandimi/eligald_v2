@@ -1,0 +1,396 @@
+{% extends "base.html" %}
+{% block title %}Products – Eligald Industrial Chemicals Limited{% endblock %}
+
+{% block content %}
+
+<!-- Page Hero -->
+<section class="page-hero page-hero--short">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1559757175-5700dde675bc?w=1400&q=80')"></div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light" data-aos="fade-down">Our Catalogue</span>
+    <h1 data-aos="fade-up" data-aos-delay="100">Products</h1>
+    <p data-aos="fade-up" data-aos-delay="200">ACS- and ISO-grade chemicals, sourced and certified for demanding applications.</p>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<nav class="breadcrumb-bar" aria-label="breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+      <li class="breadcrumb-item active">Products</li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ═══ PRODUCT LISTING ═══════════════════════════════════════════════════ -->
+<section class="section-pad bg-white">
+  <div class="container">
+
+    <!-- Search + Filter Row -->
+    <div class="row align-items-center g-3 mb-5" data-aos="fade-up">
+      <div class="col-md-6">
+        <div class="search-wrap">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="product-search" class="form-control search-input"
+                 placeholder="Search by name or description…" />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="category-filters d-flex flex-wrap gap-2">
+          {% for cat in categories %}
+          <a href="{{ url_for('products') }}{% if cat != 'All' %}?category={{ cat|urlencode }}{% endif %}"
+             class="filter-pill {% if active_cat == cat %}active{% endif %}">
+            {{ cat }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Product grid -->
+    <div class="row g-4" id="product-grid">
+      {% for p in products %}
+      <div class="col-sm-6 col-lg-4 product-card-wrap"
+           data-name="{{ p.name|lower }}"
+           data-category="{{ p.category|lower }}">
+        <div class="product-card" data-aos="fade-up" data-aos-delay="{{ (loop.index0 % 3) * 60 }}">
+          <div class="product-img-wrap">
+            <img src="{{ p.image_url if p.image_url else '' }}" alt="{{ p.name }}" loading="lazy"
+                 onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/product-fallback.svg') }}'" />
+            <span class="product-badge">{{ p.category }}</span>
+          </div>
+          <div class="product-body">
+            <h5 class="product-name">{{ p.name }}</h5>
+            <p class="product-desc">{{ p.short_desc }}</p>
+          </div>
+          <div class="product-footer">
+            <a href="{{ url_for('product_detail', product_id=p.id) }}" class="btn btn-outline-green btn-sm">
+              View Details
+            </a>
+            <button type="button" class="btn btn-wa btn-sm wa-enquiry-btn"
+                    data-name="{{ p.name }}"
+                    data-id="{{ p.id }}"
+                    data-wa="{{ wa_number }}">
+              <i class="fab fa-whatsapp me-1"></i>Enquire
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Empty state -->
+    <div id="no-results" class="text-center py-5 d-none">
+      <i class="fas fa-flask fa-3x mb-3" style="color:var(--green-300)"></i>
+      <h5>No products found</h5>
+      <p class="text-muted">Try a different search term or <a href="{{ url_for('products') }}">clear filters</a>.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA Band -->
+<section class="cta-band" data-aos="fade-up">
+  <div class="container text-center">
+    <h2 class="cta-headline">Can't find what you need?</h2>
+    <p class="cta-sub">We source specialty chemicals on request. Message us with your specification.</p>
+    <a href="{{ wa_default }}" target="_blank" rel="noopener" class="btn btn-wa btn-lg">
+      <i class="fab fa-whatsapp me-2"></i>Request a Product
+    </a>
+  </div>
+</section>
+
+
+<!-- ═══ WhatsApp Enquiry Modal ═══════════════════════════════════════ -->
+<div class="modal fade" id="waEnquiryModal" tabindex="-1" aria-labelledby="waModalLabel" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:440px">
+    <div class="modal-content wa-modal-content">
+
+      <!-- Header -->
+      <div class="wa-modal-header">
+        <div class="wa-modal-icon">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <div>
+          <h5 class="wa-modal-title" id="waModalLabel">Quick Enquiry</h5>
+          <p class="wa-modal-sub">We'll respond within minutes</p>
+        </div>
+        <button type="button" class="wa-modal-close" data-bs-dismiss="modal" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Product badge -->
+      <div class="wa-modal-product">
+        <i class="fas fa-flask me-2"></i>
+        <span id="waProductName">Product</span>
+      </div>
+
+      <!-- Body -->
+      <div class="wa-modal-body">
+        <div class="wa-field-group">
+          <label class="wa-label">Your Name <span class="wa-required">*</span></label>
+          <input type="text" id="waName" class="wa-input" placeholder="e.g. John Kamau" autocomplete="name"/>
+        </div>
+        <div class="wa-field-group">
+          <label class="wa-label">Company / Organisation</label>
+          <input type="text" id="waCompany" class="wa-input" placeholder="e.g. ABC Manufacturing Ltd"/>
+        </div>
+        <div class="wa-field-group">
+          <label class="wa-label">Quantity Required <span class="wa-required">*</span></label>
+          <div class="wa-qty-row">
+            <input type="number" id="waQty" class="wa-input" placeholder="e.g. 200" min="1" style="flex:1"/>
+            <select id="waUnit" class="wa-select">
+              <option>kg</option>
+              <option>L</option>
+              <option>drums</option>
+              <option>IBC</option>
+              <option>bags</option>
+              <option>units</option>
+            </select>
+          </div>
+        </div>
+        <div class="wa-field-group">
+          <label class="wa-label">Application / Use <span class="wa-required">*</span></label>
+          <input type="text" id="waApp" class="wa-input"
+                 placeholder="e.g. Water treatment, industrial cleaning, synthesis…"/>
+        </div>
+        <div class="wa-field-group">
+          <label class="wa-label">Delivery Location</label>
+          <input type="text" id="waLocation" class="wa-input"
+                 placeholder="e.g. Nairobi Industrial Area, Mombasa Port…"/>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="wa-modal-footer">
+        <button type="button" class="wa-cancel-btn" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="wa-send-btn" id="waSendBtn">
+          <i class="fab fa-whatsapp me-2"></i>Open WhatsApp
+        </button>
+      </div>
+
+      <!-- Privacy note -->
+      <p class="wa-privacy">
+        <i class="fas fa-lock me-1"></i>
+        Your message opens in WhatsApp — nothing is stored on this server.
+      </p>
+
+    </div>
+  </div>
+</div>
+
+<style>
+/* ── WA Modal Styles ──────────────────────────────────────────────── */
+.wa-modal-content {
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+}
+.wa-modal-header {
+  background: linear-gradient(135deg, #1B5E20, #388E3C);
+  padding: 22px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.wa-modal-icon {
+  width: 48px; height: 48px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+.wa-modal-title { font-family:'Poppins',sans-serif; font-weight:700; color:#fff; margin:0; font-size:1.05rem; }
+.wa-modal-sub   { color:rgba(255,255,255,0.7); font-size:0.78rem; margin:0; }
+.wa-modal-close {
+  margin-left: auto;
+  background: rgba(255,255,255,0.15);
+  border: none; color:#fff;
+  width:32px; height:32px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:0.85rem;
+  transition: background .2s;
+  flex-shrink: 0;
+}
+.wa-modal-close:hover { background:rgba(255,255,255,0.25); }
+
+.wa-modal-product {
+  background: #F1F8E9;
+  border-bottom: 1px solid #C8E6C9;
+  padding: 10px 24px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1B5E20;
+  display: flex;
+  align-items: center;
+}
+.wa-modal-body  { padding: 20px 24px 8px; }
+.wa-field-group { margin-bottom: 16px; }
+.wa-label       { display:block; font-size:0.78rem; font-weight:600; color:#4A4A4A; margin-bottom:6px; letter-spacing:.03em; }
+.wa-required    { color:#E53935; }
+.wa-input {
+  width:100%;
+  border: 1.5px solid #E8F5E9;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  font-family: 'Inter',sans-serif;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  color: #2D2D2D;
+  background: #FAFAFA;
+}
+.wa-input:focus {
+  border-color: #81C784;
+  box-shadow: 0 0 0 3px rgba(129,199,132,0.18);
+  background: #fff;
+}
+.wa-textarea { resize: vertical; min-height: 64px; }
+.wa-qty-row  { display:flex; gap:10px; }
+.wa-select {
+  border: 1.5px solid #E8F5E9;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.88rem;
+  color: #2D2D2D;
+  background: #FAFAFA;
+  outline: none;
+  cursor: pointer;
+  transition: border-color .2s;
+  min-width: 90px;
+}
+.wa-select:focus { border-color: #81C784; }
+.wa-modal-footer {
+  padding: 16px 24px 20px;
+  display: flex;
+  gap: 10px;
+}
+.wa-cancel-btn {
+  flex: 1;
+  padding: 11px;
+  background: #F5F5F5;
+  border: 1.5px solid #E0E0E0;
+  border-radius: 10px;
+  font-family: 'Poppins',sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #757575;
+  cursor: pointer;
+  transition: all .2s;
+}
+.wa-cancel-btn:hover { background:#EEEEEE; }
+.wa-send-btn {
+  flex: 2;
+  padding: 11px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border: none;
+  border-radius: 10px;
+  font-family: 'Poppins',sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+  display: flex; align-items: center; justify-content: center;
+}
+.wa-send-btn:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(37,211,102,0.45); }
+.wa-send-btn:active { transform:translateY(0); }
+.wa-privacy {
+  text-align:center;
+  font-size:0.72rem;
+  color:#9E9E9E;
+  padding: 0 24px 16px;
+  margin: 0;
+}
+
+/* Error shake */
+.wa-input.error { border-color:#E53935; animation: inputShake .3s ease; }
+@keyframes inputShake {
+  0%,100%{ transform:translateX(0); }
+  25%    { transform:translateX(-6px); }
+  75%    { transform:translateX(6px); }
+}
+</style>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+/* ── WhatsApp Enquiry Modal ──────────────────────────────────────── */
+let currentProductName = '';
+let currentWaNumber    = '';
+
+document.querySelectorAll('.wa-enquiry-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    currentProductName = this.dataset.name;
+    currentWaNumber    = this.dataset.wa;
+    document.getElementById('waProductName').textContent = currentProductName;
+    // Reset fields
+    ['waName','waCompany','waQty','waNote'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.value=''; el.classList.remove('error'); }
+    });
+    document.getElementById('waUnit').selectedIndex = 0;
+    new bootstrap.Modal(document.getElementById('waEnquiryModal')).show();
+  });
+});
+
+document.getElementById('waSendBtn').addEventListener('click', function() {
+  const name = document.getElementById('waName').value.trim();
+  const qty  = document.getElementById('waQty').value.trim();
+  let valid  = true;
+
+  // Validate required fields
+  [document.getElementById('waName'), document.getElementById('waQty')].forEach(el => {
+    el.classList.remove('error');
+    if (!el.value.trim()) {
+      el.classList.add('error');
+      valid = false;
+    }
+  });
+  if (!valid) return;
+
+  const company = document.getElementById('waCompany').value.trim();
+  const unit    = document.getElementById('waUnit').value;
+  const note    = document.getElementById('waNote').value.trim();
+
+  // Build rich WhatsApp message
+  let msg = `Hello Eligald,
+
+`;
+  msg    += `I am interested in: *${currentProductName}*
+
+`;
+  msg    += `*Name:* ${name}
+`;
+  if (company) msg += `*Company:* ${company}
+`;
+  msg    += `*Quantity Required:* ${qty} ${unit}
+`;
+  if (note) msg += `
+*Additional Info:*
+${note}`;
+  msg    += `
+
+Kindly provide pricing and availability. Thank you.`;
+
+  const url = `https://wa.me/${currentWaNumber}?text=${encodeURIComponent(msg)}`;
+
+  bootstrap.Modal.getInstance(document.getElementById('waEnquiryModal')).hide();
+  window.open(url, '_blank', 'noopener,noreferrer');
+});
+
+// Remove error class on input
+document.querySelectorAll('.wa-input').forEach(el => {
+  el.addEventListener('input', () => el.classList.remove('error'));
+});
+</script>
+{% endblock %}

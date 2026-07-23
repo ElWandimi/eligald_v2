@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Eligald Industrial Chemicals Limited – your trusted supplier of solvents, acids, bases, and specialty chemicals. Quality assured, globally delivered." />
+  <meta name="keywords" content="industrial chemicals, solvents, acids, bases, specialty chemicals, laboratory reagents, hydrochloric acid, acetone, NaOH" />
+  <meta property="og:title" content="{% block og_title %}Eligald Industrial Chemicals Limited{% endblock %}" />
+  <meta property="og:description" content="Premium industrial chemicals, delivered with precision." />
+  <title>{% block title %}Eligald Industrial Chemicals Limited{% endblock %}</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚗️</text></svg>" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome 6 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+  <!-- AOS – Animate on Scroll -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{{ company }}",
+    "url": "{{ request.url_root }}",
+    "logo": "{{ settings.logo_url if settings.logo_url else '' }}",
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "telephone": "{{ phone }}",
+      "contactType": "sales",
+      "email": "{{ email }}"
+    }],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ address }}"
+    },
+    "sameAs": [
+      "{{ settings.facebook_url if settings.facebook_url else '' }}",
+      "{{ settings.linkedin_url if settings.linkedin_url else '' }}"
+    ]
+  }
+  </script>
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ request.url }}"/>
+
+  <!-- Open Graph enhanced -->
+  <meta property="og:type"        content="website"/>
+  <meta property="og:url"         content="{{ request.url }}"/>
+  <meta property="og:image"       content="https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=1200&q=80"/>
+  <meta name="twitter:card"       content="summary_large_image"/>
+  <meta name="twitter:title"      content="{% block tw_title %}{{ company }}{% endblock %}"/>
+  <meta name="twitter:description" content="Premium industrial chemicals, delivered with precision."/>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     STICKY HEADER / NAV
+═══════════════════════════════════════════════════════════════════ -->
+<header id="main-header">
+  <nav class="navbar navbar-expand-lg" id="main-nav">
+    <div class="container">
+
+      <!-- Brand -->
+      <a class="navbar-brand" href="{{ url_for('index') }}">
+        <img src="{{ settings.logo_url if settings.logo_url else url_for('static', filename='images/logo.png') }}"
+             alt="{{ company }}" class="nav-logo"
+             onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/logo.png') }}'"/>
+      </a>
+
+      <!-- Hamburger -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarMain" aria-controls="navbarMain"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="toggler-bar"></span>
+        <span class="toggler-bar"></span>
+        <span class="toggler-bar"></span>
+      </button>
+
+      <!-- Nav links -->
+      <div class="collapse navbar-collapse" id="navbarMain">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}"
+               href="{{ url_for('index') }}">Home</a>
+          </li>
+
+          <!-- About dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle {% if request.endpoint == 'about' %}active{% endif %}"
+               href="{{ url_for('about') }}" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">About Us</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('about') }}#profile">Company Profile</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('about') }}#mission">Mission &amp; Vision</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('about') }}#team">Our Team</a></li>
+            </ul>
+          </li>
+
+          <!-- Products dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle {% if request.endpoint in ('products','product_detail') %}active{% endif %}"
+               href="{{ url_for('products') }}" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">Products</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('products') }}?category=Industrial+Solvents">Industrial Solvents</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('products') }}?category=Acids+%26+Bases">Acids &amp; Bases</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('products') }}?category=Specialty+Chemicals">Specialty Chemicals</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('products') }}?category=Laboratory+Reagents">Laboratory Reagents</a></li>
+            </ul>
+          </li>
+
+          <!-- Services dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle {% if request.endpoint == 'services' %}active{% endif %}"
+               href="{{ url_for('services') }}" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">Services</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('services') }}#custom-blending">Custom Blending</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('services') }}#logistics-supply">Logistics &amp; Supply</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('services') }}#technical-consultation">Technical Consultation</a></li>
+            </ul>
+          </li>
+
+          <!-- Contact dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle {% if request.endpoint == 'contact' %}active{% endif %}"
+               href="{{ url_for('contact') }}" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">Contact</a>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="{{ wa_default }}" target="_blank" rel="noopener">
+                  <i class="fab fa-whatsapp text-success me-2"></i>WhatsApp
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="mailto:{{ email }}">
+                  <i class="fas fa-envelope me-2"></i>Email
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="tel:{{ phone }}">
+                  <i class="fas fa-phone me-2"></i>Phone
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('contact') }}#address">
+                  <i class="fas fa-map-marker-alt me-2"></i>Office Address
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item ms-lg-3">
+            <a class="btn btn-wa btn-sm" href="{{ wa_default }}" target="_blank" rel="noopener">
+              <i class="fab fa-whatsapp me-1"></i> Order Now
+            </a>
+          </li>
+
+        </ul>
+      </div><!-- /collapse -->
+    </div><!-- /container -->
+  </nav>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     PAGE CONTENT
+═══════════════════════════════════════════════════════════════════ -->
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════════════ -->
+<footer id="main-footer">
+  <div class="container">
+    <div class="row gy-5">
+
+      <!-- Brand column -->
+      <div class="col-lg-4">
+        <div class="footer-brand mb-3">
+          <img src="{{ settings.logo_url if settings.logo_url else url_for('static', filename='images/logo.png') }}"
+               alt="{{ company }}" class="footer-logo"
+               onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/logo.png') }}'"/>
+        </div>
+        <p class="footer-tagline">Premium industrial chemicals, delivered with precision. Trusted by manufacturers, laboratories, and processors worldwide.</p>
+        <div class="social-icons mt-4">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" aria-label="Twitter / X"><i class="fab fa-x-twitter"></i></a>
+          <a href="{{ wa_default }}" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick links -->
+      <div class="col-sm-6 col-lg-2">
+        <h6 class="footer-heading">Company</h6>
+        <ul class="footer-links">
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('about') }}">About Us</a></li>
+          <li><a href="{{ url_for('products') }}">Products</a></li>
+          <li><a href="{{ url_for('services') }}">Services</a></li>
+          <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Products links -->
+      <div class="col-sm-6 col-lg-3">
+        <h6 class="footer-heading">Product Lines</h6>
+        <ul class="footer-links">
+          <li><a href="{{ url_for('products') }}?category=Industrial+Solvents">Industrial Solvents</a></li>
+          <li><a href="{{ url_for('products') }}?category=Acids+%26+Bases">Acids &amp; Bases</a></li>
+          <li><a href="{{ url_for('products') }}?category=Specialty+Chemicals">Specialty Chemicals</a></li>
+          <li><a href="{{ url_for('products') }}?category=Laboratory+Reagents">Laboratory Reagents</a></li>
+        </ul>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="col-lg-3">
+        <h6 class="footer-heading">Industry Updates</h6>
+        <p class="small text-muted-light">Stay informed on new products, pricing and regulatory news.</p>
+        <form id="newsletter-form" class="mt-2" novalidate>
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          <div class="input-group footer-newsletter">
+            <input type="email" class="form-control" placeholder="your@email.com" required aria-label="Email address" />
+            <button class="btn btn-newsletter" type="submit" aria-label="Subscribe">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </form>
+        <div id="newsletter-toast" class="footer-toast d-none">
+          <i class="fas fa-check-circle me-1"></i> Subscribed – thank you!
+        </div>
+      </div>
+
+    </div><!-- /row -->
+
+    <hr class="footer-divider" />
+
+    <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <p class="mb-2 mb-md-0">&copy; 2025 {{ company }}. All rights reserved. &nbsp;·&nbsp; <a href="{{ url_for('privacy') }}" style="color:rgba(255,255,255,0.55)">Privacy</a> &nbsp;·&nbsp; <a href="{{ url_for('terms') }}" style="color:rgba(255,255,255,0.55)">Terms</a></p>
+      <p class="mb-0 small">
+        <a href="mailto:{{ email }}"><i class="fas fa-envelope me-1"></i>{{ email }}</a>
+        &nbsp;·&nbsp;
+        <a href="tel:{{ phone }}"><i class="fas fa-phone me-1"></i>{{ phone }}</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     FLOATING WHATSAPP WIDGET
+═══════════════════════════════════════════════════════════════════ -->
+<a href="{{ wa_default }}" target="_blank" rel="noopener"
+   class="wa-float" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+  <span class="wa-tooltip">Order via WhatsApp</span>
+</a>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     BACK TO TOP
+═══════════════════════════════════════════════════════════════════ -->
+<button id="back-to-top" aria-label="Back to top">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- ─── Scripts ────────────────────────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+{% block extra_scripts %}{% endblock %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<style>
+/* Cookie Banner */
+.cookie-banner {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--green-900); color: #fff;
+  padding: 14px 24px; z-index: 9998;
+  border-top: 2px solid var(--green-600);
+  animation: slideUp .4s ease;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.cookie-content {
+  max-width: 1140px; margin: 0 auto;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+}
+.cookie-text { flex: 1; font-size: .875rem; color: rgba(255,255,255,.85); }
+.cookie-link { color: var(--green-300); text-decoration: underline; }
+.cookie-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.btn-cookie-accept {
+  background: var(--green-500); color: #fff;
+  border: none; border-radius: 8px;
+  padding: 8px 20px; font-weight: 600; font-size: .85rem; cursor: pointer;
+  transition: all .2s;
+}
+.btn-cookie-accept:hover { background: var(--green-400); }
+.btn-cookie-decline {
+  background: transparent; color: rgba(255,255,255,.6);
+  border: 1px solid rgba(255,255,255,.3); border-radius: 8px;
+  padding: 8px 16px; font-size: .85rem; cursor: pointer;
+  transition: all .2s;
+}
+.btn-cookie-decline:hover { border-color: rgba(255,255,255,.6); color: #fff; }
+
+/* Legal body styling */
+.legal-body h4 { color: var(--green-700); margin: 1.5rem 0 .5rem; font-size: 1.05rem; }
+.legal-body p, .legal-body li { color: var(--body-grey); font-size: .92rem; line-height: 1.75; }
+.legal-body ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+.legal-body .lead-text { font-size: 1.05rem; color: var(--charcoal); margin-bottom: 1.5rem; }
+
+/* Print styles */
+@media print {
+  .navbar, .wa-float, #back-to-top, .cookie-banner,
+  .hero-scroll-hint, .stats-strip, .cta-band, #main-footer,
+  .btn-wa, .btn-primary-green, .btn-outline-green,
+  .product-footer, .card-controls { display: none !important; }
+  body { font-size: 12pt; color: #000; background: #fff; }
+  .product-card, .why-card, .team-card { break-inside: avoid; border: 1px solid #ccc; }
+  a[href]:after { content: " (" attr(href) ")"; font-size: 10pt; color: #555; }
+  .page-hero { min-height: 80px !important; }
+  .page-hero-content h1 { color: #1B5E20 !important; font-size: 18pt; }
+}
+</style>
+
+<!-- ═══ COOKIE CONSENT BANNER ══════════════════════════════════════ -->
+<div id="cookie-banner" class="cookie-banner" style="display:none" role="dialog" aria-label="Cookie consent">
+  <div class="cookie-content">
+    <div class="cookie-text">
+      <i class="fas fa-cookie-bite me-2" style="color:var(--green-400)"></i>
+      <strong>We use essential cookies</strong> to keep the site secure and functional.
+      No tracking or advertising cookies are used.
+      <a href="{{ url_for('privacy') }}" class="cookie-link">Privacy Policy</a>
+    </div>
+    <div class="cookie-actions">
+      <button class="btn-cookie-accept" onclick="acceptCookies()">Accept</button>
+      <button class="btn-cookie-decline" onclick="declineCookies()">Decline</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Cookie consent
+(function() {
+  if (!localStorage.getItem('cookie_consent')) {
+    document.getElementById('cookie-banner').style.display = 'block';
+  }
+})();
+function acceptCookies() {
+  localStorage.setItem('cookie_consent', 'accepted');
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+function declineCookies() {
+  localStorage.setItem('cookie_consent', 'declined');
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

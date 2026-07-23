@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Our Founders – {{ company }}{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero--short">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg"
+       style="background-image:url('https://images.unsplash.com/photo-1559757175-5700dde675bc?w=1400&q=80')">
+  </div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light" data-aos="fade-down">Leadership</span>
+    <h1 data-aos="fade-up" data-aos-delay="100">Our Founders</h1>
+    <p data-aos="fade-up" data-aos-delay="200">
+      The visionaries who built Eligald from the ground up.
+    </p>
+  </div>
+</section>
+
+<nav class="breadcrumb-bar" aria-label="breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+      <li class="breadcrumb-item active">Our Founders</li>
+    </ol>
+  </div>
+</nav>
+
+<section class="section-pad bg-white">
+  <div class="container">
+    <div class="row g-5 justify-content-center">
+      {% for f in founders %}
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+        <div class="founder-card">
+          <div class="founder-photo-wrap">
+            <img src="{{ f.photo_url or 'https://ui-avatars.com/api/?name=' + f.name|urlencode + '&background=C8E6C9&color=1B5E20&size=200' }}"
+                 alt="{{ f.name }}"
+                 onerror="this.src='https://ui-avatars.com/api/?name={{ f.name|urlencode }}&background=C8E6C9&color=1B5E20&size=200'"/>
+          </div>
+          <div class="founder-info">
+            <h3 class="founder-name">{{ f.name }}</h3>
+            <span class="founder-title">{{ f.title }}</span>
+            <p class="founder-bio">{{ f.bio }}</p>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="col-12 text-center py-5">
+        <p class="text-muted">Founder profiles coming soon.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+.founder-card {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  height: 100%;
+  transition: var(--transition);
+}
+.founder-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: var(--green-300);
+}
+.founder-photo-wrap {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--green-200);
+  flex-shrink: 0;
+}
+.founder-photo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.founder-info { flex: 1; }
+.founder-name {
+  font-family: var(--font-head);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--charcoal);
+  margin-bottom: 4px;
+}
+.founder-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--green-600);
+  display: block;
+  margin-bottom: 12px;
+}
+.founder-bio {
+  font-size: 0.9rem;
+  color: var(--body-grey);
+  line-height: 1.7;
+  margin: 0;
+}
+@media (max-width: 575px) {
+  .founder-card { flex-direction: column; align-items: center; text-align: center; }
+}
+</style>
+{% endblock %}

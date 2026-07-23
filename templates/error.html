@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ code }} {{ title }} – Eligald Industrial Chemicals{% endblock %}
+{% block content %}
+<section class="section-pad bg-white text-center">
+  <div class="container py-5">
+    <div style="font-size:4rem;line-height:1;margin-bottom:1rem">
+      {% if code == 400 %}⚠️{% elif code == 403 %}🔒{% elif code == 429 %}⏳{% else %}⚗️{% endif %}
+    </div>
+    <h1 class="display-4 fw-bold mt-3" style="color:var(--green-700)">{{ code }}</h1>
+    <h3 class="mb-3">{{ title }}</h3>
+    <p class="text-muted mb-4" style="max-width:480px;margin:0 auto">{{ message }}</p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+      <a href="{{ url_for('index') }}" class="btn btn-primary-green btn-lg">
+        <i class="fas fa-home me-2"></i>Back to Home
+      </a>
+      <a href="{{ url_for('contact') }}" class="btn btn-outline-green btn-lg">
+        <i class="fas fa-envelope me-2"></i>Contact Us
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit' if t else 'New' }} Testimonial{% endblock %}
+{% block page_title %}{{ 'Edit' if t else 'New' }} Testimonial{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+<div class="col-lg-7">
+<div class="admin-card">
+  <div class="admin-card-header"><h6><i class="fas fa-star me-2"></i>{{ 'Edit' if t else 'Add' }} Testimonial</h6></div>
+  <div class="admin-card-body">
+    <form method="POST" action="{{ url_for('admin_bp.testimonial_edit', tid=t.id) if t else url_for('admin_bp.testimonial_new') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <div class="row g-3">
+        <div class="col-sm-6">
+          <label class="form-label">Customer Name <span class="text-danger">*</span></label>
+          <input type="text" name="customer_name" class="form-control" required value="{{ t.customer_name if t else '' }}"/>
+        </div>
+        <div class="col-sm-6">
+          <label class="form-label">Company</label>
+          <input type="text" name="company" class="form-control" value="{{ t.company if t else '' }}"/>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Quote <span class="text-danger">*</span></label>
+          <textarea name="quote" class="form-control" rows="4" required>{{ t.quote if t else '' }}</textarea>
+        </div>
+        <div class="col-sm-4">
+          <label class="form-label">Star Rating</label>
+          <select name="rating" class="form-select">
+            {% for i in [5,4,3,2,1] %}
+            <option value="{{ i }}" {{ 'selected' if t and t.rating == i }}>{{ i }} stars</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-sm-4">
+          <label class="form-label">Sort Order</label>
+          <input type="number" name="sort_order" class="form-control" value="{{ t.sort_order if t else 0 }}"/>
+        </div>
+        <div class="col-sm-4 d-flex align-items-end pb-1">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="is_active" id="taActive"
+                   {{ 'checked' if not t or t.is_active }}>
+            <label class="form-check-label" for="taActive">Active (visible on site)</label>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex gap-3 mt-4">
+        <button type="submit" class="btn btn-primary-green"><i class="fas fa-save me-1"></i>Save</button>
+        <a href="{{ url_for('admin_bp.testimonials') }}" class="btn btn-outline-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends "admin/base.html" %}
+{% block title %}Site Settings{% endblock %}
+{% block page_title %}Site Settings{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+<div class="col-lg-9">
+<form method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+<div class="admin-card">
+  <div class="admin-card-header"><h6><i class="fas fa-cog me-2"></i>Site Settings — Super Admin Only</h6></div>
+  <div class="admin-card-body">
+
+    <!-- Company -->
+    <div class="settings-section">
+      <h6>Company Information</h6>
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label class="form-label">Company Name</label>
+          <input type="text" name="company_name" class="form-control" value="{{ s.company_name or '' }}"/>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Phone</label>
+          <input type="text" name="phone" class="form-control" value="{{ s.phone or '' }}"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" value="{{ s.email or '' }}"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">WhatsApp Number <small class="text-muted">(digits only, e.g. 254719655694)</small></label>
+          <input type="text" name="whatsapp_number" class="form-control" value="{{ s.whatsapp_number or '' }}"/>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Office Address</label>
+          <textarea name="address" class="form-control" rows="2">{{ s.address or '' }}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo -->
+    <div class="settings-section">
+      <h6>Logo</h6>
+      <div class="row g-3 align-items-center">
+        <div class="col-md-6">
+          <label class="form-label">Upload Logo</label>
+          <input type="file" name="logo_file" class="form-control" accept="image/*"/>
+        </div>
+        <div class="col-md-6">
+          {% if s.logo_url %}
+          <img src="{{ s.logo_url }}" alt="Logo" style="height:60px;border-radius:8px;border:1px solid var(--border)"/>
+          {% else %}
+          <span class="text-muted small">No logo uploaded yet.</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="settings-section">
+      <h6>Homepage Hero</h6>
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label">Tagline</label>
+          <input type="text" name="hero_tagline" class="form-control" value="{{ s.hero_tagline or '' }}"/>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Subheading</label>
+          <input type="text" name="hero_subheading" class="form-control" value="{{ s.hero_subheading or '' }}"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="settings-section">
+      <h6>About / Mission / Vision</h6>
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label">About Us Text</label>
+          <textarea name="about_us_text" class="form-control" rows="4">{{ s.about_us_text or '' }}</textarea>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Mission</label>
+          <textarea name="mission_text" class="form-control" rows="3">{{ s.mission_text or '' }}</textarea>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Vision</label>
+          <textarea name="vision_text" class="form-control" rows="3">{{ s.vision_text or '' }}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Social -->
+    <div class="settings-section">
+      <h6>Social Media URLs</h6>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label"><i class="fab fa-facebook me-1"></i>Facebook</label>
+          <input type="url" name="facebook_url" class="form-control" value="{{ s.facebook_url or '' }}" placeholder="https://facebook.com/…"/>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label"><i class="fab fa-linkedin me-1"></i>LinkedIn</label>
+          <input type="url" name="linkedin_url" class="form-control" value="{{ s.linkedin_url or '' }}" placeholder="https://linkedin.com/…"/>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label"><i class="fab fa-twitter me-1"></i>Twitter / X</label>
+          <input type="url" name="twitter_url" class="form-control" value="{{ s.twitter_url or '' }}" placeholder="https://x.com/…"/>
+        </div>
+      </div>
+    </div>
+
+  </div>
+    <!-- Founders Toggle -->
+    <div class="settings-section">
+      <h6>Founders Page</h6>
+      <div class="row g-3 align-items-center">
+        <div class="col-md-8">
+          <p class="mb-1 small text-muted">Control whether the Founders page is visible to the public at <strong>/founders</strong>.</p>
+          <div class="form-check form-switch mt-2">
+            <input class="form-check-input" type="checkbox" name="founders_enabled"
+                   id="foundersEnabled"
+                   {{ 'checked' if s.get('founders_enabled') }}>
+            <label class="form-check-label fw-600" for="foundersEnabled">
+              Enable Founders Page (visible to public)
+            </label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <a href="{{ url_for('admin_bp.founders') }}" class="btn btn-outline-green btn-sm">
+            <i class="fas fa-users me-1"></i>Manage Founders
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /admin-card-body -->
+  <div class="admin-card-header border-top border-0" style="background:#fff">
+    <button type="submit" class="btn btn-primary-green btn-lg">
+      <i class="fas fa-save me-2"></i>Save All Settings
+    </button>
+  </div>
+</div>
+</form>
+
+<!-- Team Management Card (Super Admin only) -->
+<div class="admin-card mt-4">
+  <div class="admin-card-header d-flex justify-content-between align-items-center">
+    <h6 class="mb-0"><i class="fas fa-users me-2"></i>Our Team (About Page)</h6>
+    <span class="small text-muted">Managed in code — update app.py TEAM list to change</span>
+  </div>
+  <div class="admin-card-body">
+    <p class="text-muted small mb-3">
+      The team members shown on the About Us page are currently defined in <code>app.py</code>.
+      To manage them dynamically, use the <strong>Founders</strong> feature above —
+      it supports the same fields (name, photo, bio, title) and is fully DB-driven.
+    </p>
+    <div class="d-flex gap-3 flex-wrap">
+      <a href="{{ url_for('admin_bp.founders') }}" class="btn btn-primary-green btn-sm">
+        <i class="fas fa-user-tie me-1"></i>Manage Founders Page
+      </a>
+      <a href="{{ url_for('about') }}" target="_blank" class="btn btn-outline-green btn-sm">
+        <i class="fas fa-external-link-alt me-1"></i>View About Page
+      </a>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+{% block title %}Eligald Industrial Chemicals – Premium Solvents, Acids & Specialty Chemicals{% endblock %}
+
+{% block extra_head %}
+<!-- particles.js -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════════════════ -->
+<section class="hero-section" id="hero">
+  <div id="particles-js"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-img"
+       style="background-image: url('https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=1600&q=80')">
+  </div>
+
+  <div class="container hero-content">
+    <div class="row justify-content-center">
+      <div class="col-lg-9 text-center">
+        <span class="hero-eyebrow" data-aos="fade-down" data-aos-delay="100">Trusted. Certified. Delivered.</span>
+        <h1 class="hero-headline" data-aos="fade-up" data-aos-delay="250">
+          Premium Industrial Chemicals,<br>
+          <span class="hero-accent" id="typed-headline">Delivered with Precision</span>
+        </h1>
+        <p class="hero-sub" data-aos="fade-up" data-aos-delay="450">
+          Your trusted partner for solvents, acids, and specialty chemicals — from laboratory bench to industrial scale.
+        </p>
+        <div class="hero-cta" data-aos="fade-up" data-aos-delay="600">
+          <a href="{{ url_for('products') }}" class="btn btn-primary-green btn-lg me-3">
+            <i class="fas fa-flask me-2"></i>Explore Products
+          </a>
+          <a href="{{ wa_default }}" target="_blank" rel="noopener" class="btn btn-wa btn-lg">
+            <i class="fab fa-whatsapp me-2"></i>Contact via WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <span>Scroll to explore</span>
+    <div class="scroll-dot"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     STATS STRIP
+═══════════════════════════════════════════════════════════════════ -->
+<section class="stats-strip">
+  <div class="container">
+    <div class="row g-0 text-center">
+      <div class="col-6 col-md-3 stat-item" data-aos="fade-up" data-aos-delay="0">
+        <span class="stat-num">500<sup>+</sup></span>
+        <span class="stat-label">Products</span>
+      </div>
+      <div class="col-6 col-md-3 stat-item" data-aos="fade-up" data-aos-delay="80">
+        <span class="stat-num">30<sup>+</sup></span>
+        <span class="stat-label">Countries Served</span>
+      </div>
+      <div class="col-6 col-md-3 stat-item" data-aos="fade-up" data-aos-delay="160">
+        <span class="stat-num">ISO</span>
+        <span class="stat-label">9001 Certified</span>
+      </div>
+      <div class="col-6 col-md-3 stat-item" data-aos="fade-up" data-aos-delay="240">
+        <span class="stat-num">24/7</span>
+        <span class="stat-label">Technical Support</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     WHY CHOOSE US
+═══════════════════════════════════════════════════════════════════ -->
+<section class="section-pad bg-white">
+  <div class="container">
+    <div class="section-header text-center mb-5" data-aos="fade-up">
+      <span class="section-eyebrow">Our Commitment</span>
+      <h2 class="section-title">Why Industry Leaders Choose Eligald</h2>
+      <p class="section-sub">Three pillars that set us apart in a demanding market.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="why-card">
+          <div class="why-icon-wrap">
+            <i class="fas fa-certificate"></i>
+          </div>
+          <h4>Quality Assurance</h4>
+          <p>Every batch is tested to ACS, ISO, or customer-specified standards. Certificate of Analysis issued with every shipment. Zero compromises on purity.</p>
+          <ul class="why-list">
+            <li><i class="fas fa-check"></i> In-house QC laboratory</li>
+            <li><i class="fas fa-check"></i> Third-party independent testing</li>
+            <li><i class="fas fa-check"></i> GMP-compatible documentation</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="120">
+        <div class="why-card why-card--featured">
+          <div class="why-icon-wrap">
+            <i class="fas fa-globe-africa"></i>
+          </div>
+          <h4>Global Logistics</h4>
+          <p>ADR-certified transport, IMDG-compliant sea freight, and IATA-approved air cargo for hazardous goods — we move chemicals safely across borders.</p>
+          <ul class="why-list">
+            <li><i class="fas fa-check"></i> Temperature-controlled options</li>
+            <li><i class="fas fa-check"></i> Real-time shipment tracking</li>
+            <li><i class="fas fa-check"></i> Import/export documentation</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="240">
+        <div class="why-card">
+          <div class="why-icon-wrap">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h4>Expert Support</h4>
+          <p>Our registered chemists and process engineers are available 24/7 for technical consultation — from chemical selection to regulatory compliance.</p>
+          <ul class="why-list">
+            <li><i class="fas fa-check"></i> Registered industrial chemists</li>
+            <li><i class="fas fa-check"></i> REACH &amp; EPA guidance</li>
+            <li><i class="fas fa-check"></i> On-site and remote options</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     FEATURED PRODUCTS
+═══════════════════════════════════════════════════════════════════ -->
+<section class="section-pad section-alt">
+  <div class="container">
+    <div class="section-header text-center mb-5" data-aos="fade-up">
+      <span class="section-eyebrow">Our Catalogue</span>
+      <h2 class="section-title">Featured Products</h2>
+      <p class="section-sub">A sample of our extensive portfolio — all available for immediate quotation.</p>
+    </div>
+
+    <!-- Search -->
+    <div class="row justify-content-center mb-4" data-aos="fade-up">
+      <div class="col-md-6">
+        <div class="search-wrap">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="product-search" class="form-control search-input"
+                 placeholder="Search products by name or category…" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4" id="product-grid">
+      {% for p in featured %}
+      <div class="col-sm-6 col-lg-4 product-card-wrap" data-name="{{ p.name|lower }}" data-category="{{ p.category|lower }}">
+        <div class="product-card" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 60 }}">
+          <div class="product-img-wrap">
+            <img src="{{ p.image_url if p.image_url is defined else p.image }}" alt="{{ p.name }}" loading="lazy" onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/product-fallback.svg') }}'" />
+            <span class="product-badge">{{ p.category }}</span>
+          </div>
+          <div class="product-body">
+            <h5 class="product-name">{{ p.name }}</h5>
+            <p class="product-desc">{{ p.short_desc }}</p>
+          </div>
+          <div class="product-footer">
+            <a href="{{ url_for('product_detail', product_id=p.id) }}" class="btn btn-outline-green btn-sm">
+              View Details
+            </a>
+            <button type="button" class="btn btn-wa btn-sm wa-enquiry-btn"
+                    data-name="{{ p.name }}"
+                    data-wa="{{ wa_number }}">
+              <i class="fab fa-whatsapp me-1"></i>Enquire
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-5" data-aos="fade-up">
+      <a href="{{ url_for('products') }}" class="btn btn-primary-green btn-lg">
+        View Full Catalogue <i class="fas fa-arrow-right ms-2"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SERVICES TEASER
+═══════════════════════════════════════════════════════════════════ -->
+<section class="section-pad bg-white">
+  <div class="container">
+    <div class="section-header text-center mb-5" data-aos="fade-up">
+      <span class="section-eyebrow">What We Do</span>
+      <h2 class="section-title">Beyond Supply – We Partner with You</h2>
+    </div>
+    <div class="row g-4">
+      {% for s in services %}
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+        <div class="service-teaser">
+          <i class="fas {{ s.icon }} service-teaser-icon"></i>
+          <h5>{{ s.title }}</h5>
+          <p>{{ s.tagline }}</p>
+          <a href="{{ url_for('services') }}#{{ s.id }}" class="link-green">Learn more <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CTA BAND
+═══════════════════════════════════════════════════════════════════ -->
+<section class="cta-band" data-aos="fade-up">
+  <div class="container text-center">
+    <h2 class="cta-headline">Ready to place an order or request a quote?</h2>
+    <p class="cta-sub">Reach our sales team instantly — no forms, no wait.</p>
+    <a href="{{ wa_default }}" target="_blank" rel="noopener" class="btn btn-wa btn-lg me-3">
+      <i class="fab fa-whatsapp me-2"></i>Chat on WhatsApp
+    </a>
+    <a href="mailto:{{ email }}" class="btn btn-outline-light btn-lg">
+      <i class="fas fa-envelope me-2"></i>Send an Email
+    </a>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+<!-- WA Enquiry Modal (shared) -->
+<div class="modal fade" id="waEnquiryModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:440px">
+    <div class="modal-content" style="border:none;border-radius:20px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.18)">
+      <div style="background:linear-gradient(135deg,#1B5E20,#388E3C);padding:22px 24px;display:flex;align-items:center;gap:14px">
+        <div style="width:48px;height:48px;background:rgba(255,255,255,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;flex-shrink:0"><i class="fab fa-whatsapp"></i></div>
+        <div>
+          <h5 style="font-family:Poppins,sans-serif;font-weight:700;color:#fff;margin:0;font-size:1.05rem">Quick Enquiry</h5>
+          <p style="color:rgba(255,255,255,0.7);font-size:0.78rem;margin:0">We respond within minutes via WhatsApp</p>
+        </div>
+        <button type="button" data-bs-dismiss="modal" style="margin-left:auto;background:rgba(255,255,255,0.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem"><i class="fas fa-times"></i></button>
+      </div>
+      <div style="background:#F1F8E9;border-bottom:1px solid #C8E6C9;padding:10px 24px;font-size:.85rem;font-weight:600;color:#1B5E20">
+        <i class="fas fa-flask me-2"></i><span id="waProductName2">Product</span>
+      </div>
+      <div style="padding:20px 24px 8px">
+        <div style="margin-bottom:14px">
+          <label style="display:block;font-size:.78rem;font-weight:600;color:#4A4A4A;margin-bottom:6px">Your Name <span style="color:#E53935">*</span></label>
+          <input type="text" id="waName2" placeholder="e.g. John Kamau" style="width:100%;border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 14px;font-size:.88rem;outline:none;font-family:Inter,sans-serif;transition:border-color .2s"/>
+        </div>
+        <div style="margin-bottom:14px">
+          <label style="display:block;font-size:.78rem;font-weight:600;color:#4A4A4A;margin-bottom:6px">Quantity Required <span style="color:#E53935">*</span></label>
+          <div style="display:flex;gap:10px">
+            <input type="number" id="waQty2" placeholder="e.g. 200" min="1" style="flex:1;border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 14px;font-size:.88rem;outline:none;font-family:Inter,sans-serif"/>
+            <select id="waUnit2" style="border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 12px;font-size:.88rem;background:#FAFAFA;outline:none;min-width:90px">
+              <option>kg</option><option>L</option><option>drums</option><option>IBC</option><option>bags</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:8px">
+          <label style="display:block;font-size:.78rem;font-weight:600;color:#4A4A4A;margin-bottom:6px">Application / Use <span style="color:#E53935">*</span></label>
+          <input type="text" id="waApp2" placeholder="e.g. Water treatment, cleaning, synthesis…" style="width:100%;border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 14px;font-size:.88rem;outline:none;font-family:Inter,sans-serif;margin-bottom:8px"/>
+        </div>
+        <div style="margin-bottom:8px">
+          <label style="display:block;font-size:.78rem;font-weight:600;color:#4A4A4A;margin-bottom:6px">Delivery Location</label>
+          <input type="text" id="waLocation2" placeholder="e.g. Nairobi Industrial Area, Mombasa…" style="width:100%;border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 14px;font-size:.88rem;outline:none;font-family:Inter,sans-serif"/>
+        </div>
+      </div>
+      <div style="padding:16px 24px 12px;display:flex;gap:10px">
+        <button type="button" data-bs-dismiss="modal" style="flex:1;padding:11px;background:#F5F5F5;border:1.5px solid #E0E0E0;border-radius:10px;font-family:Poppins,sans-serif;font-size:.88rem;font-weight:600;color:#757575;cursor:pointer">Cancel</button>
+        <button type="button" id="waSendBtn2" style="flex:2;padding:11px;background:linear-gradient(135deg,#25D366,#128C7E);border:none;border-radius:10px;font-family:Poppins,sans-serif;font-size:.9rem;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 16px rgba(37,211,102,.35)">
+          <i class="fab fa-whatsapp"></i> Open WhatsApp
+        </button>
+      </div>
+      <p style="text-align:center;font-size:.72rem;color:#9E9E9E;padding:0 24px 16px;margin:0"><i class="fas fa-lock me-1"></i>Your message opens in WhatsApp — nothing is stored here.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// Particles.js config
+window.addEventListener('load', function () {
+  if (typeof particlesJS !== 'undefined') {
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 55, density: { enable: true, value_area: 900 } },
+        color: { value: '#81C784' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.35, random: true },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 130, color: '#A5D6A7', opacity: 0.2, width: 1 },
+        move: { enable: true, speed: 1.2, direction: 'none', random: true, out_mode: 'out' }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: false } },
+        modes: { grab: { distance: 140, line_linked: { opacity: 0.5 } } }
+      },
+      retina_detect: true
+    });
+  }
+});
+</script>
+
+<script>
+let _waProduct = '', _waNum = '';
+document.querySelectorAll('.wa-enquiry-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    _waProduct = this.dataset.name; _waNum = this.dataset.wa;
+    document.getElementById('waProductName2').textContent = _waProduct;
+    ['waName2','waQty2','waNote2'].forEach(id => { const e=document.getElementById(id); if(e) e.value=''; });
+    new bootstrap.Modal(document.getElementById('waEnquiryModal')).show();
+  });
+});
+document.getElementById('waSendBtn2')?.addEventListener('click', function() {
+  const name = document.getElementById('waName2').value.trim();
+  const qty  = document.getElementById('waQty2').value.trim();
+  if (!name || !qty) {
+    if (!name) document.getElementById('waName2').style.borderColor='#E53935';
+    if (!qty)  document.getElementById('waQty2').style.borderColor='#E53935';
+    return;
+  }
+  const unit = document.getElementById('waUnit2').value;
+  const note = document.getElementById('waNote2').value.trim();
+  let msg = `Hello Eligald,
+
+I am interested in: *${_waProduct}*
+
+*Name:* ${name}
+*Quantity:* ${qty} ${unit}`;
+  if (note) msg += `
+
+*Message:* ${note}`;
+  msg += `
+
+Please provide pricing and availability. Thank you.`;
+  bootstrap.Modal.getInstance(document.getElementById('waEnquiryModal')).hide();
+  window.open(`https://wa.me/${_waNum}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ order.invoice_number }}{% endblock %}
+{% block page_title %}{{ order.invoice_number }}{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="admin-card mb-4">
+      <div class="admin-card-header"><h6><i class="fas fa-info-circle me-2"></i>Order Info</h6></div>
+      <div class="admin-card-body">
+        <dl class="info-dl">
+          <dt>Invoice #</dt><dd class="fw-600 text-green">{{ order.invoice_number }}</dd>
+          <dt>Status</dt><dd><span class="status-badge status-{{ order.status }}">{{ order.status }}</span></dd>
+          <dt>Customer</dt><dd>{{ order.customer_name }}</dd>
+          <dt>Email</dt><dd>{{ order.customer_email or '—' }}</dd>
+          <dt>Phone</dt><dd>{{ order.customer_phone or '—' }}</dd>
+          <dt>Billing</dt><dd>{{ order.billing_address or '—' }}</dd>
+          <dt>Issued</dt><dd>{{ order.issued_date }}</dd>
+          <dt>Due</dt><dd>{{ order.due_date }}</dd>
+          <dt>Notes</dt><dd>{{ order.notes or '—' }}</dd>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Status actions -->
+    <div class="admin-card">
+      <div class="admin-card-header"><h6><i class="fas fa-cog me-2"></i>Actions</h6></div>
+      <div class="admin-card-body d-flex flex-column gap-2">
+        <a href="{{ url_for('admin_bp.order_pdf', oid=order.id) }}" class="btn btn-primary-green">
+          <i class="fas fa-file-pdf me-2"></i>Download PDF Invoice
+        </a>
+        {% if order.status != 'paid' %}
+        <form method="POST" action="{{ url_for('admin_bp.order_status', oid=order.id) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          <input type="hidden" name="status" value="paid"/>
+          <button type="submit" class="btn btn-success w-100">
+            <i class="fas fa-check-circle me-2"></i>Mark as Paid
+          </button>
+        </form>
+        {% endif %}
+        {% if order.status not in ('cancelled','paid') %}
+        <form method="POST" action="{{ url_for('admin_bp.order_status', oid=order.id) }}">
+          <input type="hidden" name="status" value="cancelled"/>
+          <button type="submit" class="btn btn-outline-danger w-100">
+            <i class="fas fa-times me-2"></i>Cancel Order
+          </button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="admin-card">
+      <div class="admin-card-header d-flex justify-content-between">
+        <h6 class="mb-0"><i class="fas fa-list me-2"></i>Line Items</h6>
+        <span class="fw-600">Total: KES {{ '{:,.2f}'.format(total) }}</span>
+      </div>
+      <div class="admin-card-body p-0">
+        <div class="table-responsive">
+          <table class="table admin-table mb-0 order-items-table">
+            <thead>
+              <tr><th>#</th><th>Description</th><th>Qty</th><th>Unit</th><th>Unit Price</th><th>Total</th></tr>
+            </thead>
+            <tbody>
+              {% for item in items %}
+              <tr>
+                <td class="text-muted">{{ loop.index }}</td>
+                <td class="fw-600">{{ item.description }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.unit }}</td>
+                <td>KES {{ '{:,.2f}'.format(item.unit_price) }}</td>
+                <td class="fw-600">KES {{ '{:,.2f}'.format(item.total_price) }}</td>
+              </tr>
+              {% else %}
+              <tr><td colspan="6" class="text-center text-muted py-3">No items.</td></tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr class="order-total-row">
+                <td colspan="4"></td>
+                <td class="fw-600">Subtotal</td>
+                <td>KES {{ '{:,.2f}'.format(total) }}</td>
+              </tr>
+              <tr class="order-total-row">
+                <td colspan="4"></td>
+                <td class="fw-600">VAT (16%)</td>
+                <td>KES {{ '{:,.2f}'.format(total * 0.16) }}</td>
+              </tr>
+              <tr class="order-total-row" style="background:var(--green-100)">
+                <td colspan="4"></td>
+                <td class="fw-700 text-green">TOTAL DUE</td>
+                <td class="fw-700 text-green fs-6">KES {{ '{:,.2f}'.format(total * 1.16) }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-3">
+  <a href="{{ url_for('admin_bp.orders') }}" class="btn btn-outline-secondary btn-sm">
+    <i class="fas fa-arrow-left me-1"></i>Back to Orders
+  </a>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Jinja doesn't have enumerate; patch items indexing via JS
+document.querySelectorAll('.order-items-table tbody tr').forEach((row, i) => {
+  const first = row.querySelector('td');
+  if (first) first.textContent = i + 1;
+});
+</script>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "admin/base.html" %}
+{% block title %}Ticket #{{ ticket.id }}{% endblock %}
+{% block page_title %}Ticket #{{ ticket.id }}{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-4">
+    <div class="admin-card mb-4">
+      <div class="admin-card-header"><h6><i class="fas fa-info-circle me-2"></i>Ticket Info</h6></div>
+      <div class="admin-card-body">
+        <dl class="info-dl">
+          <dt>From</dt><dd class="fw-600">{{ ticket.name }}</dd>
+          <dt>Email</dt><dd><a href="mailto:{{ ticket.email }}" class="link-green">{{ ticket.email }}</a></dd>
+          <dt>Subject</dt><dd>{{ ticket.subject }}</dd>
+          <dt>Status</dt><dd><span class="status-badge status-{{ ticket.status }}">{{ ticket.status|replace('_',' ') }}</span></dd>
+          <dt>Created</dt><dd>{{ ticket.created_at[:16]|replace('T',' ') }}</dd>
+          <dt>Updated</dt><dd>{{ ticket.updated_at[:16]|replace('T',' ') }}</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="admin-card-header"><h6><i class="fas fa-cog me-2"></i>Change Status</h6></div>
+      <div class="admin-card-body">
+        <form method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          <input type="hidden" name="action" value="status"/>
+          <select name="status" class="form-select form-select-sm mb-3">
+            {% for s in ['open','in_progress','closed'] %}
+            <option value="{{ s }}" {{ 'selected' if ticket.status==s }}>{{ s|replace('_',' ')|title }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn btn-outline-green btn-sm w-100">Update Status</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <!-- Original message -->
+    <div class="ticket-message mb-4">
+      <div class="reply-meta"><i class="fas fa-user me-1"></i><strong>{{ ticket.name }}</strong> (customer) · {{ ticket.created_at[:16]|replace('T',' ') }}</div>
+      <p class="mb-0">{{ ticket.message }}</p>
+    </div>
+
+    <!-- Replies -->
+    {% for r in replies %}
+    <div class="ticket-reply {% if r.user_id %}admin-reply{% endif %}">
+      <div class="reply-meta">
+        {% if r.user_id %}
+        <i class="fas fa-user-shield me-1 text-green"></i><strong>{{ r.username or 'Admin' }}</strong>
+        {% else %}
+        <i class="fas fa-user me-1"></i><strong>{{ ticket.name }}</strong>
+        {% endif %}
+        · {{ r.created_at[:16]|replace('T',' ') }}
+      </div>
+      <p class="mb-0">{{ r.message }}</p>
+    </div>
+    {% endfor %}
+
+    <!-- Reply form -->
+    {% if ticket.status != 'closed' %}
+    <div class="admin-card mt-4">
+      <div class="admin-card-header"><h6><i class="fas fa-reply me-2"></i>Add Reply</h6></div>
+      <div class="admin-card-body">
+        <form method="POST">
+          <input type="hidden" name="action" value="reply"/>
+          <textarea name="message" class="form-control mb-3" rows="4"
+                    placeholder="Type your reply…" required></textarea>
+          <button type="submit" class="btn btn-primary-green">
+            <i class="fas fa-paper-plane me-1"></i>Send Reply
+          </button>
+        </form>
+      </div>
+    </div>
+    {% else %}
+    <div class="alert alert-secondary mt-4">
+      <i class="fas fa-lock me-2"></i>This ticket is closed. Change the status to reply.
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="mt-3">
+  <a href="{{ url_for('admin_bp.tickets') }}" class="btn btn-outline-secondary btn-sm">
+    <i class="fas fa-arrow-left me-1"></i>Back to Tickets
+  </a>
+</div>
+{% endblock %}

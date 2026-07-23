@@ -1,0 +1,271 @@
+{% extends "admin/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- Stat cards -->
+<div class="row g-4 mb-4">
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card stat-card--green">
+      <div class="stat-card-icon"><i class="fas fa-flask"></i></div>
+      <div class="stat-card-body">
+        <div class="stat-card-num">{{ total_products }}</div>
+        <div class="stat-card-label">Active Products</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card stat-card--blue">
+      <div class="stat-card-icon"><i class="fas fa-file-invoice"></i></div>
+      <div class="stat-card-body">
+        <div class="stat-card-num">{{ pending_orders }}</div>
+        <div class="stat-card-label">Pending Orders</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card stat-card--orange">
+      <div class="stat-card-icon"><i class="fas fa-headset"></i></div>
+      <div class="stat-card-body">
+        <div class="stat-card-num">{{ open_tickets }}</div>
+        <div class="stat-card-label">Open Tickets</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card stat-card--red">
+      <div class="stat-card-icon"><i class="fas fa-bell"></i></div>
+      <div class="stat-card-body">
+        <div class="stat-card-num">{{ unread_notifs }}</div>
+        <div class="stat-card-label">Unread Notifications</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Revenue + Overdue row -->
+<div class="row g-4 mb-4">
+  <div class="col-lg-6">
+    <div class="stat-card" style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border-color:#A5D6A7">
+      <div class="stat-card-icon" style="background:rgba(255,255,255,0.6);color:#1B5E20">
+        <i class="fas fa-coins"></i>
+      </div>
+      <div class="stat-card-body">
+        <div class="stat-card-num" style="font-size:1.4rem">KES {{ '{:,.0f}'.format(total_revenue) }}</div>
+        <div class="stat-card-label">Total Revenue (Paid Invoices)</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="stat-card {% if overdue > 0 %}stat-card--red{% else %}stat-card--green{% endif %}">
+      <div class="stat-card-icon">
+        <i class="fas fa-{% if overdue > 0 %}exclamation-triangle{% else %}check-circle{% endif %}"></i>
+      </div>
+      <div class="stat-card-body">
+        <div class="stat-card-num">{{ overdue }}</div>
+        <div class="stat-card-label">
+          Overdue Invoice{% if overdue != 1 %}s{% endif %}
+          {% if overdue > 0 %}<span class="badge bg-danger ms-2" style="font-size:.65rem">Action Needed</span>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Charts row -->
+<div class="row g-4 mb-4">
+  <div class="col-lg-6">
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <h6><i class="fas fa-chart-bar me-2"></i>Leads Per Month</h6>
+      </div>
+      <div class="admin-card-body">
+        <canvas id="leadsChart" height="220"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <h6><i class="fas fa-chart-doughnut me-2"></i>Orders by Status</h6>
+      </div>
+      <div class="admin-card-body">
+        <canvas id="ordersChart" height="220"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick actions -->
+<div class="row g-3 mb-4">
+  <div class="col-12">
+    <div class="admin-card">
+      <div class="admin-card-header"><h6><i class="fas fa-bolt me-2"></i>Quick Actions</h6></div>
+      <div class="admin-card-body d-flex flex-wrap gap-3">
+        <a href="{{ url_for('admin_bp.order_new') }}" class="btn btn-primary-green">
+          <i class="fas fa-plus me-1"></i>New Order
+        </a>
+        <a href="{{ url_for('admin_bp.lead_new') }}" class="btn btn-outline-green">
+          <i class="fas fa-user-plus me-1"></i>Log Lead
+        </a>
+        <a href="{{ url_for('admin_bp.tickets') }}" class="btn btn-outline-green">
+          <i class="fas fa-headset me-1"></i>View Tickets
+        </a>
+        <a href="{{ url_for('admin_bp.product_new') }}" class="btn btn-outline-green">
+          <i class="fas fa-flask me-1"></i>Add Product
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent leads + tickets -->
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="admin-card">
+      <div class="admin-card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0"><i class="fas fa-user-plus me-2"></i>Recent Leads</h6>
+        <a href="{{ url_for('admin_bp.leads') }}" class="btn-link-green small">View all</a>
+      </div>
+      <div class="admin-card-body p-0">
+        <div class="table-responsive">
+          <table class="table admin-table mb-0">
+            <thead><tr><th>Customer</th><th>Product</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              {% for l in recent_leads %}
+              <tr>
+                <td>
+                  <div class="fw-600">{{ l.customer_name }}</div>
+                  <div class="text-muted small">{{ l.phone_number }}</div>
+                </td>
+                <td class="small">{{ l.product_name or '—' }}</td>
+                <td><span class="status-badge status-{{ l.status }}">{{ l.status }}</span></td>
+                <td><a href="{{ url_for('admin_bp.lead_detail', lid=l.id) }}" class="btn-link-green small">View</a></td>
+              </tr>
+              {% else %}
+              <tr><td colspan="4" class="text-center text-muted py-3">No leads yet.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="admin-card">
+      <div class="admin-card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0"><i class="fas fa-headset me-2"></i>Recent Tickets</h6>
+        <a href="{{ url_for('admin_bp.tickets') }}" class="btn-link-green small">View all</a>
+      </div>
+      <div class="admin-card-body p-0">
+        <div class="table-responsive">
+          <table class="table admin-table mb-0">
+            <thead><tr><th>Subject</th><th>From</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              {% for t in recent_tickets %}
+              <tr>
+                <td class="fw-600 small">{{ t.subject|truncate(40) }}</td>
+                <td class="small">{{ t.name }}</td>
+                <td><span class="status-badge status-{{ t.status }}">{{ t.status|replace('_',' ') }}</span></td>
+                <td><a href="{{ url_for('admin_bp.ticket_detail', tid=t.id) }}" class="btn-link-green small">Open</a></td>
+              </tr>
+              {% else %}
+              <tr><td colspan="4" class="text-center text-muted py-3">No tickets yet.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+const GREEN_PALETTE = ['#1B5E20','#388E3C','#4CAF50','#81C784','#A5D6A7','#C8E6C9'];
+
+// Revenue monthly line chart
+if (document.getElementById('revenueChart')) {
+  new Chart(document.getElementById('revenueChart'), {
+    type: 'line',
+    data: {
+      labels: {{ rev_months | safe }},
+      datasets: [{
+        label: 'Revenue (KES)',
+        data: {{ rev_vals | safe }},
+        borderColor: '#388E3C',
+        backgroundColor: 'rgba(129,199,132,0.12)',
+        borderWidth: 2.5,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#388E3C',
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, grid: { color: '#E8F5E9' },
+             ticks: { callback: v => 'KES ' + v.toLocaleString() } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
+
+// Leads per month bar chart
+new Chart(document.getElementById('leadsChart'), {
+  type: 'bar',
+  data: {
+    labels: {{ lead_months | safe }},
+    datasets: [{
+      label: 'Leads',
+      data: {{ lead_counts | safe }},
+      backgroundColor: '#81C784',
+      borderColor: '#388E3C',
+      borderWidth: 1.5,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: '#E8F5E9' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Orders by status doughnut
+const orderLabels = {{ chart_labels | safe }};
+const orderData   = {{ chart_data   | safe }};
+if (orderData.length > 0) {
+  new Chart(document.getElementById('ordersChart'), {
+    type: 'doughnut',
+    data: {
+      labels: orderLabels,
+      datasets: [{ data: orderData, backgroundColor: GREEN_PALETTE, borderWidth: 2 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 16, font: { family: 'Inter' } } }
+      },
+      cutout: '65%'
+    }
+  });
+} else {
+  document.getElementById('ordersChart').closest('.admin-card-body').innerHTML =
+    '<p class="text-center text-muted py-4">No order data yet.</p>';
+}
+</script>
+{% endblock %}

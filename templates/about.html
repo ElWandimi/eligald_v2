@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% block title %}About Us – Eligald Industrial Chemicals Limited{% endblock %}
+
+{% block content %}
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1628863353691-0071c8c1874c?w=1400&q=80')"></div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light" data-aos="fade-down">Who We Are</span>
+    <h1 data-aos="fade-up" data-aos-delay="100">About Eligald</h1>
+    <p data-aos="fade-up" data-aos-delay="200">Three decades of chemical expertise, built on trust.</p>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<nav class="breadcrumb-bar" aria-label="breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+      <li class="breadcrumb-item active">About Us</li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ═══ COMPANY PROFILE ═══════════════════════════════════════════════════ -->
+<section class="section-pad bg-white" id="profile">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6" data-aos="fade-right">
+        <span class="section-eyebrow">Company Profile</span>
+        <h2 class="section-title">Built on a Foundation of Scientific Integrity</h2>
+        <p>Founded in 1994, Eligald Industrial Chemicals Limited has grown from a regional distributor into a globally connected chemical supply partner. Headquartered in Industrial City, we operate blending facilities, a certified QC laboratory, and a network of logistics partners spanning over 30 countries.</p>
+        <p>We supply manufacturers, pharmaceutical companies, research institutions, water-treatment authorities, and agri-processors. Every product we handle — from commodity acids to rare specialty reagents — is sourced from audited manufacturers and re-verified in our own laboratory before dispatch.</p>
+        <p>Our team of 85 professionals includes registered chemists, supply-chain specialists, and certified hazardous-goods transport managers. That combination of scientific rigour and operational excellence is what makes Eligald a trusted name in the industry.</p>
+        <div class="row g-3 mt-2">
+          <div class="col-6">
+            <div class="profile-stat">
+              <span class="profile-stat-num">30+</span>
+              <span class="profile-stat-label">Years in Operation</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="profile-stat">
+              <span class="profile-stat-num">85</span>
+              <span class="profile-stat-label">Industry Professionals</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="profile-stat">
+              <span class="profile-stat-num">500+</span>
+              <span class="profile-stat-label">Active Products</span>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="profile-stat">
+              <span class="profile-stat-num">ISO</span>
+              <span class="profile-stat-label">9001:2015 Certified</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-left">
+        <div class="about-img-frame">
+          <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80"
+               alt="Eligald QC Laboratory" class="img-fluid rounded-3 shadow-lg" loading="lazy" />
+          <div class="about-img-accent"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CERTIFICATIONS ════════════════════════════════════════════════════ -->
+<section class="section-pad section-alt">
+  <div class="container">
+    <div class="section-header text-center mb-5" data-aos="fade-up">
+      <span class="section-eyebrow">Accreditations</span>
+      <h2 class="section-title">Certified at Every Level</h2>
+    </div>
+    <div class="row g-4 justify-content-center">
+      {% set certs = [
+        ("fas fa-certificate","ISO 9001:2015","Quality Management System – certified for chemical blending and distribution."),
+        ("fas fa-shield-halved","ISO 14001:2015","Environmental Management – minimising ecological impact across operations."),
+        ("fas fa-truck-fast","ADR Certified","European Agreement for carriage of dangerous goods by road."),
+        ("fas fa-ship","IMDG Compliant","International Maritime Dangerous Goods – safe sea freight of hazardous chemicals."),
+      ] %}
+      {% for icon, title, desc in certs %}
+      <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 80 }}">
+        <div class="cert-card">
+          <i class="{{ icon }} cert-icon"></i>
+          <h6>{{ title }}</h6>
+          <p>{{ desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MISSION & VISION ══════════════════════════════════════════════════ -->
+<section class="section-pad bg-white" id="mission">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 order-lg-2" data-aos="fade-left">
+        <span class="section-eyebrow">Mission &amp; Vision</span>
+        <h2 class="section-title">Guided by Purpose, Driven by Science</h2>
+
+        <div class="mv-block mb-4">
+          <div class="mv-icon"><i class="fas fa-bullseye"></i></div>
+          <div>
+            <h5>Our Mission</h5>
+            <p>To supply industry with the purest, most reliably documented chemicals in the market — on time, in compliance, and with the technical support needed to use them safely and effectively.</p>
+          </div>
+        </div>
+
+        <div class="mv-block mb-4">
+          <div class="mv-icon"><i class="fas fa-binoculars"></i></div>
+          <div>
+            <h5>Our Vision</h5>
+            <p>To be the most trusted chemical supply partner in the emerging-market industrial corridor — recognised for scientific integrity, logistical excellence, and a genuine commitment to our customers' success.</p>
+          </div>
+        </div>
+
+        <div class="mv-block">
+          <div class="mv-icon"><i class="fas fa-leaf"></i></div>
+          <div>
+            <h5>Our Values</h5>
+            <ul class="mv-values">
+              <li><i class="fas fa-check-circle"></i> Safety first — for people, communities, and the environment</li>
+              <li><i class="fas fa-check-circle"></i> Uncompromising quality at every step</li>
+              <li><i class="fas fa-check-circle"></i> Transparent, honest partnerships</li>
+              <li><i class="fas fa-check-circle"></i> Continuous improvement in processes and people</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 order-lg-1" data-aos="fade-right">
+        <div class="about-img-frame">
+          <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=800&q=80"
+               alt="Laboratory research" class="img-fluid rounded-3 shadow-lg" loading="lazy" />
+          <div class="about-img-accent accent-right"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TEAM ══════════════════════════════════════════════════════════════ -->
+<section class="section-pad section-alt" id="team">
+  <div class="container">
+    <div class="section-header text-center mb-5" data-aos="fade-up">
+      <span class="section-eyebrow">Leadership</span>
+      <h2 class="section-title">Our Team</h2>
+      <p class="section-sub">The professionals who make Eligald run.</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+      {% for member in team %}
+      <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 80 }}">
+        <div class="team-card">
+          <div class="team-avatar-wrap">
+            <img src="{{ member.avatar }}" alt="{{ member.name }}" loading="lazy"
+                 onerror="this.src='https://ui-avatars.com/api/?name={{ member.name|urlencode }}&background=C8E6C9&color=1B5E20'"/>
+          </div>
+          <h5 class="team-name">{{ member.name }}</h5>
+          <span class="team-role">{{ member.role }}</span>
+          <p class="team-bio">{{ member.bio }}</p>
+          <div class="team-socials">
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% if settings.founders_enabled %}
+    <div class="text-center mt-5" data-aos="fade-up">
+      <a href="{{ url_for('founders') }}" class="btn btn-outline-green">
+        <i class="fas fa-user-tie me-2"></i>Meet Our Founders
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- CTA Band -->
+<section class="cta-band" data-aos="fade-up">
+  <div class="container text-center">
+    <h2 class="cta-headline">Want to work with us?</h2>
+    <p class="cta-sub">Drop us a line — our team responds within one business day.</p>
+    <a href="{{ url_for('contact') }}" class="btn btn-primary-green btn-lg me-3">
+      <i class="fas fa-envelope me-2"></i>Contact Us
+    </a>
+    <a href="{{ wa_default }}" target="_blank" rel="noopener" class="btn btn-wa btn-lg">
+      <i class="fab fa-whatsapp me-2"></i>WhatsApp Us
+    </a>
+  </div>
+</section>
+
+{% endblock %}

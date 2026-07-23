@@ -1,0 +1,136 @@
+{% extends "admin/base.html" %}
+{% block title %}New Order{% endblock %}
+{% block page_title %}Create New Order{% endblock %}
+
+{% block content %}
+<form method="POST" action="{{ url_for('admin_bp.order_new') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+{% if lead_id %}<input type="hidden" name="lead_id" value="{{ lead_id }}"/>{% endif %}
+
+<div class="row g-4">
+  <!-- Customer info -->
+  <div class="col-lg-6">
+    <div class="admin-card">
+      <div class="admin-card-header"><h6><i class="fas fa-user me-2"></i>Customer Details</h6></div>
+      <div class="admin-card-body">
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Customer Name <span class="text-danger">*</span></label>
+            <input type="text" name="customer_name" class="form-control" required
+                   value="{{ prefill.customer_name if prefill else '' }}"/>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Email</label>
+            <input type="email" name="customer_email" class="form-control"
+                   value="{{ prefill.email if prefill else '' }}"/>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Phone</label>
+            <input type="tel" name="customer_phone" class="form-control"
+                   value="{{ prefill.phone_number if prefill else '' }}"/>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Billing Address</label>
+            <textarea name="billing_address" class="form-control" rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order meta -->
+  <div class="col-lg-6">
+    <div class="admin-card">
+      <div class="admin-card-header"><h6><i class="fas fa-file-invoice me-2"></i>Order Details</h6></div>
+      <div class="admin-card-body">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="form-label">Due Date</label>
+            <input type="date" name="due_date" class="form-control"
+                   value="{{ default_due if default_due is defined else '' }}"/>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Notes</label>
+            <textarea name="notes" class="form-control" rows="3"
+                      placeholder="Payment terms, special instructions…"></textarea>
+          </div>
+          <div class="col-12">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" name="include_tax"
+                     id="includeTax" checked>
+              <label class="form-check-label fw-600" for="includeTax">
+                <i class="fas fa-percent me-1 text-green"></i>
+                Include Tax (16% VAT)
+              </label>
+            </div>
+            <div class="form-text">When checked, 16% VAT will be applied on the invoice.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Line items -->
+  <div class="col-12">
+    <div class="admin-card">
+      <div class="admin-card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0"><i class="fas fa-list me-2"></i>Line Items</h6>
+        <button type="button" id="add-line-item" class="btn btn-sm btn-outline-green">
+          <i class="fas fa-plus me-1"></i>Add Row
+        </button>
+      </div>
+      <div class="admin-card-body p-0">
+        <div class="table-responsive">
+          <table class="table admin-table mb-0">
+            <thead>
+              <tr>
+                <th style="width:22%">Product</th>
+                <th>Description</th>
+                <th style="width:8%">Qty</th>
+                <th style="width:8%">Unit</th>
+                <th style="width:12%">Unit Price</th>
+                <th style="width:12%">Total</th>
+                <th style="width:4%"></th>
+              </tr>
+            </thead>
+            <tbody id="line-items-body">
+              <tr class="line-item-row">
+                <td>
+                  <select name="item_product_id[]" class="form-select form-select-sm">
+                    <option value="">— Custom —</option>
+                    {% for p in products %}
+                    <option value="{{ p.id }}">{{ p.name }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td><input type="text" name="item_description[]" class="form-control form-control-sm" placeholder="Description" required/></td>
+                <td><input type="number" name="item_quantity[]" class="form-control form-control-sm" value="1" min="0" step="0.01"/></td>
+                <td><input type="text" name="item_unit[]" class="form-control form-control-sm" value="kg"/></td>
+                <td><input type="number" name="item_unit_price[]" class="form-control form-control-sm" value="0" min="0" step="0.01"/></td>
+                <td class="fw-600 row-total">KES 0.00</td>
+                <td><button type="button" class="remove-row-btn"><i class="fas fa-times"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="d-flex justify-content-end p-3 border-top">
+          <div class="text-end">
+            <div class="text-muted small">Grand Total</div>
+            <div class="fw-700 fs-5" id="grand-total">KES 0.00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="d-flex gap-3">
+      <button type="submit" class="btn btn-primary-green btn-lg">
+        <i class="fas fa-save me-2"></i>Create Order
+      </button>
+      <a href="{{ url_for('admin_bp.orders') }}" class="btn btn-outline-secondary btn-lg">Cancel</a>
+    </div>
+  </div>
+</div>
+</form>
+{% endblock %}

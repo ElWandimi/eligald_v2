@@ -1,0 +1,79 @@
+{% extends "admin/base.html" %}
+{% block title %}Orders{% endblock %}
+{% block page_title %}Orders & Invoices{% endblock %}
+
+{% block content %}
+<div class="admin-toolbar mb-4">
+  <form class="d-flex gap-2 flex-wrap" method="GET">
+    <div class="search-wrap" style="min-width:200px">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" name="q" value="{{ q }}" class="form-control search-input" placeholder="Search customer or invoice…"/>
+    </div>
+    <select name="status" class="form-select" style="max-width:160px">
+      {% for s in ['All','draft','sent','paid','cancelled'] %}
+      <option value="{{ s }}" {{ 'selected' if active_status==s }}>{{ s|title }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-outline-green"><i class="fas fa-filter me-1"></i>Filter</button>
+    <a href="{{ url_for('admin_bp.orders') }}" class="btn btn-outline-secondary">Clear</a>
+  </form>
+  <div class="ms-auto d-flex gap-2">
+    <a href="{{ url_for('admin_bp.orders_csv') }}" class="btn btn-outline-green">
+      <i class="fas fa-file-csv me-1"></i>Export CSV
+    </a>
+    <a href="{{ url_for('admin_bp.order_new') }}" class="btn btn-primary-green">
+      <i class="fas fa-plus me-1"></i>New Order
+    </a>
+  </div>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead>
+          <tr>
+            <th>Invoice #</th><th>Customer</th><th>Status</th>
+            <th>Total (KES)</th><th>Issued</th><th>Due</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for o in orders %}
+          <tr>
+            <td class="fw-600 text-green">{{ o.invoice_number }}</td>
+            <td>
+              <div class="fw-600">{{ o.customer_name }}</div>
+              <div class="small text-muted">{{ o.customer_email }}</div>
+            </td>
+            <td><span class="status-badge status-{{ o.status }}">{{ o.status }}</span></td>
+            <td>
+              {% if o.include_tax %}
+              <span class="meta-tag"><i class="fas fa-check me-1"></i>VAT</span>
+              {% else %}
+              <span class="meta-tag random">No Tax</span>
+              {% endif %}
+            </td>
+            <td class="fw-600">{{ '{:,.2f}'.format(totals.get(o.id, 0)) }}</td>
+            <td class="small text-muted">{{ o.issued_date }}</td>
+            <td class="small text-muted">{{ o.due_date }}</td>
+            <td>
+              <div class="d-flex gap-1">
+                <a href="{{ url_for('admin_bp.order_detail', oid=o.id) }}" class="btn btn-sm btn-outline-green">View</a>
+                <a href="{{ url_for('admin_bp.order_pdf', oid=o.id) }}" class="btn btn-sm btn-outline-green" title="Download PDF">
+                  <i class="fas fa-file-pdf"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="7" class="text-center text-muted py-5">
+            <i class="fas fa-file-invoice fa-2x mb-2 d-block" style="color:var(--green-300)"></i>
+            No orders yet. <a href="{{ url_for('admin_bp.order_new') }}">Create one?</a>
+          </td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

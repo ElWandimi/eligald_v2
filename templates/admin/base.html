@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Admin{% endblock %} – Eligald Admin</title>
+  <meta name="robots" content="noindex,nofollow"/>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚗️</text></svg>"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet"/>
+  <link href="{{ url_for('static', filename='css/admin.css') }}" rel="stylesheet"/>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="admin-body">
+
+<!-- ═══ SIDEBAR ══════════════════════════════════════════════════ -->
+<aside class="admin-sidebar" id="adminSidebar">
+  <div class="sidebar-brand">
+    <span class="brand-icon">⚗</span>
+    <div>
+      <div class="sidebar-brand-name">Eligald Admin</div>
+      <div class="sidebar-brand-sub">{{ current_user.role|replace('_',' ')|title if current_user }}</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a href="{{ url_for('admin_bp.dashboard') }}"
+       class="sidebar-link {% if request.endpoint == 'admin_bp.dashboard' %}active{% endif %}">
+      <i class="fas fa-chart-pie"></i> Dashboard
+    </a>
+
+    <div class="nav-section-label mt-2">Catalogue</div>
+    <a href="{{ url_for('admin_bp.products') }}"
+       class="sidebar-link {% if 'product' in (request.endpoint or '') %}active{% endif %}">
+      <i class="fas fa-flask"></i> Products
+    </a>
+
+    <div class="nav-section-label mt-2">CRM</div>
+    <a href="{{ url_for('admin_bp.leads') }}"
+       class="sidebar-link {% if 'lead' in (request.endpoint or '') %}active{% endif %}">
+      <i class="fas fa-user-plus"></i> Leads
+    </a>
+    <a href="{{ url_for('admin_bp.orders') }}"
+       class="sidebar-link {% if 'order' in (request.endpoint or '') %}active{% endif %}">
+      <i class="fas fa-file-invoice"></i> Orders & Invoices
+    </a>
+
+    <div class="nav-section-label mt-2">Support</div>
+    <a href="{{ url_for('admin_bp.tickets') }}"
+       class="sidebar-link {% if 'ticket' in (request.endpoint or '') %}active{% endif %}">
+      <i class="fas fa-headset"></i> Tickets
+    </a>
+    <a href="{{ url_for('admin_bp.notifications') }}"
+       class="sidebar-link {% if 'notif' in (request.endpoint or '') %}active{% endif %}">
+      <i class="fas fa-bell"></i> Notifications
+      <span class="notif-badge" id="sidebar-notif-count" style="display:none"></span>
+    </a>
+
+    {% if current_user and current_user.role == 'super_admin' %}
+    <div class="nav-section-label mt-2">Super Admin</div>
+    <a href="{{ url_for('admin_bp.settings') }}"
+       class="sidebar-link {% if request.endpoint == 'admin_bp.settings' %}active{% endif %}">
+      <i class="fas fa-cog"></i> Site Settings
+    </a>
+    <a href="{{ url_for('admin_bp.users') }}"
+       class="sidebar-link {% if 'user' in (request.endpoint or '') %}active{% endif %}">
+      <i class="fas fa-users-cog"></i> Admin Users
+    </a>
+    <a href="{{ url_for('admin_bp.activity_log') }}"
+       class="sidebar-link {% if request.endpoint == 'admin_bp.activity_log' %}active{% endif %}">
+      <i class="fas fa-list-check"></i> Activity Log
+    </a>
+    <a href="{{ url_for('admin_bp.founders') }}"
+       class="sidebar-link {% if 'founder' in (request.endpoint or '') %}active{% endif %}">
+      <i class="fas fa-users"></i> Founders Page
+    </a>
+    <a href="{{ url_for('admin_bp.backup') }}" class="sidebar-link">
+      <i class="fas fa-database"></i> DB Backup
+    </a>
+    {% endif %}
+
+    <div class="nav-section-label mt-2">Site</div>
+    <a href="{{ url_for('index') }}" class="sidebar-link" target="_blank">
+      <i class="fas fa-external-link-alt"></i> View Site
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">{{ current_user.username[0]|upper if current_user }}</div>
+      <div>
+        <div class="sidebar-username">{{ current_user.username if current_user }}</div>
+        <a href="{{ url_for('admin_bp.logout') }}" class="sidebar-logout">
+          <i class="fas fa-sign-out-alt me-1"></i>Logout
+        </a>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN AREA ═════════════════════════════════════════════════ -->
+<div class="admin-main" id="adminMain">
+
+  <!-- Top bar -->
+  <header class="admin-topbar">
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="topbar-title">{% block page_title %}Dashboard{% endblock %}</div>
+
+    <div class="topbar-right">
+      <!-- Bell -->
+      <div class="dropdown notif-dropdown">
+        <button class="topbar-icon-btn" data-bs-toggle="dropdown" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+          <span class="notif-dot" id="notif-dot" style="display:none"></span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end notif-panel" id="notif-panel">
+          <div class="notif-panel-header">
+            <span>Notifications</span>
+            <form method="POST" action="{{ url_for('admin_bp.notif_mark_all_read') }}" class="d-inline">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <button type="submit" class="btn-link-green">Mark all read</button>
+            </form>
+          </div>
+          <div id="notif-list">
+            <div class="notif-empty">Loading…</div>
+          </div>
+          <a href="{{ url_for('admin_bp.notifications') }}" class="notif-panel-footer">View all</a>
+        </div>
+      </div>
+
+      <!-- User menu -->
+      <div class="dropdown">
+        <button class="topbar-user-btn" data-bs-toggle="dropdown">
+          <div class="topbar-avatar">{{ current_user.username[0]|upper if current_user }}</div>
+          <span class="d-none d-md-inline">{{ current_user.username if current_user }}</span>
+          <i class="fas fa-chevron-down ms-1 small"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="{{ url_for('admin_bp.change_password') }}">
+            <i class="fas fa-key me-2"></i>Change Password
+          </a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="{{ url_for('admin_bp.logout') }}">
+            <i class="fas fa-sign-out-alt me-2"></i>Logout
+          </a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Flash messages -->
+  <div class="admin-flash-zone">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in messages %}
+    <div class="alert alert-{{ 'success' if cat == 'success' else 'danger' if cat == 'danger' else 'warning' if cat == 'warning' else 'info' }} alert-dismissible fade show admin-alert" role="alert">
+      <i class="fas {{ 'fa-check-circle' if cat == 'success' else 'fa-exclamation-circle' if cat == 'danger' else 'fa-triangle-exclamation' if cat == 'warning' else 'fa-info-circle' }} me-2"></i>
+      {{ msg }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+    {% endwith %}
+  </div>
+
+  <!-- Page content -->
+  <div class="admin-content">
+    {% block content %}{% endblock %}
+  </div>
+
+</div><!-- /admin-main -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_scripts %}{% endblock %}
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

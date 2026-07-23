@@ -1,0 +1,113 @@
+{% extends "admin/base.html" %}
+{% block title %}Founders Page{% endblock %}
+{% block page_title %}Founders Page Management{% endblock %}
+
+{% block content %}
+<!-- Visibility toggle card -->
+<div class="admin-card mb-4">
+  <div class="admin-card-header d-flex justify-content-between align-items-center">
+    <h6 class="mb-0"><i class="fas fa-eye me-2"></i>Page Visibility</h6>
+    <span class="status-badge {{ 'status-paid' if founders_enabled else 'status-cancelled' }}">
+      {{ 'PUBLIC — Visible on site' if founders_enabled else 'HIDDEN — Not visible to public' }}
+    </span>
+  </div>
+  <div class="admin-card-body d-flex align-items-center gap-4">
+    <div>
+      <p class="mb-1 fw-600">Founders page is currently
+        <span class="{{ 'text-green' if founders_enabled else 'text-danger' }}">
+          {{ 'ENABLED' if founders_enabled else 'DISABLED' }}
+        </span>
+      </p>
+      <p class="text-muted small mb-0">
+        When enabled, the page is accessible at <strong>/founders</strong> on the public site.
+        When disabled, it returns a 404 to all visitors.
+      </p>
+    </div>
+    <form method="POST" action="{{ url_for('admin_bp.founders_toggle') }}" class="ms-auto">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <button type="submit" class="btn {{ 'btn-outline-danger' if founders_enabled else 'btn-primary-green' }} btn-sm">
+        <i class="fas fa-{{ 'eye-slash' if founders_enabled else 'eye' }} me-1"></i>
+        {{ 'Disable Page' if founders_enabled else 'Enable Page' }}
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Founders list -->
+<div class="admin-toolbar mb-4">
+  <h6 class="mb-0 text-muted">{{ founders|length }} founder{{ 's' if founders|length != 1 }} added</h6>
+  <a href="{{ url_for('admin_bp.founder_new') }}" class="btn btn-primary-green ms-auto">
+    <i class="fas fa-plus me-1"></i>Add Founder
+  </a>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead>
+          <tr>
+            <th style="width:60px">Photo</th>
+            <th>Name</th>
+            <th>Title / Role</th>
+            <th>Order</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for f in founders %}
+          <tr>
+            <td>
+              <img src="{{ f.photo_url or 'https://ui-avatars.com/api/?name=' + f.name|urlencode + '&background=C8E6C9&color=1B5E20' }}"
+                   alt="{{ f.name }}" class="product-thumb" style="border-radius:50%"
+                   onerror="this.src='https://ui-avatars.com/api/?name={{ f.name|urlencode }}&background=C8E6C9&color=1B5E20'"/>
+            </td>
+            <td class="fw-600">{{ f.name }}</td>
+            <td class="small text-muted">{{ f.title }}</td>
+            <td class="small text-muted">{{ f.sort_order }}</td>
+            <td>
+              <span class="status-badge {{ 'status-paid' if f.is_active else 'status-cancelled' }}">
+                {{ 'Active' if f.is_active else 'Hidden' }}
+              </span>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <a href="{{ url_for('admin_bp.founder_edit', fid=f.id) }}"
+                   class="btn btn-sm btn-outline-green">
+                  <i class="fas fa-pencil"></i>
+                </a>
+                <form method="POST" action="{{ url_for('admin_bp.founder_delete', fid=f.id) }}"
+                      class="d-inline"
+                      onsubmit="return confirm('Delete {{ f.name }}?')">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <button type="submit" class="btn btn-sm btn-outline-danger">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="6" class="text-center text-muted py-5">
+              <i class="fas fa-users fa-2x mb-2 d-block" style="color:var(--green-300)"></i>
+              No founders added yet.
+              <a href="{{ url_for('admin_bp.founder_new') }}">Add the first one?</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% if founders_enabled %}
+<div class="mt-3">
+  <a href="{{ url_for('founders') }}" target="_blank" class="btn btn-outline-green btn-sm">
+    <i class="fas fa-external-link-alt me-1"></i>View Live Founders Page
+  </a>
+</div>
+{% endif %}
+{% endblock %}

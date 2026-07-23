@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} – Eligald Industrial Chemicals{% endblock %}
+{% block og_title %}{{ product.name }} – Eligald Industrial Chemicals{% endblock %}
+
+{% block content %}
+
+<!-- Page Hero (compact) -->
+<section class="page-hero page-hero--short">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg" style="background-image: url('{{ product.image }}')"></div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light">{{ product.category }}</span>
+    <h1 data-aos="fade-up">{{ product.name }}</h1>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<nav class="breadcrumb-bar" aria-label="breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('products') }}">Products</a></li>
+      <li class="breadcrumb-item active">{{ product.name }}</li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ═══ PRODUCT DETAIL ════════════════════════════════════════════════════ -->
+<section class="section-pad bg-white">
+  <div class="container">
+    <div class="row g-5 align-items-start">
+
+      <!-- Product image -->
+      <div class="col-lg-5" data-aos="fade-right">
+        <div class="detail-img-wrap">
+          <img src="{{ product.image_url or '' }}" alt="{{ product.name }}" class="img-fluid rounded-3 shadow" id="detailProductImg" />
+          <span class="product-badge detail-badge">{{ product.category }}</span>
+        </div>
+      </div>
+
+      <!-- Product info -->
+      <div class="col-lg-7" data-aos="fade-left">
+        <h2 class="detail-title">{{ product.name }}</h2>
+        <p class="detail-desc">{{ product.full_desc }}</p>
+
+        <!-- Specs table -->
+        <h5 class="specs-heading mt-4 mb-3">Technical Specifications</h5>
+        <div class="specs-table">
+          {% for key, val in product.specs.items() %}
+          <div class="spec-row">
+            <span class="spec-key">{{ key }}</span>
+            <span class="spec-val">{{ val }}</span>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- CTA buttons -->
+        <div class="detail-cta mt-4 d-flex flex-wrap gap-3">
+          <button type="button" class="btn btn-wa btn-lg wa-detail-enquire"
+                  data-name="{{ product.name }}"
+                  data-wa="{{ wa_number }}">
+            <i class="fab fa-whatsapp me-2"></i>Order via WhatsApp
+          </button>
+          <a href="mailto:{{ email }}?subject=Enquiry: {{ product.name }}&body=Hello, I would like to enquire about {{ product.name }}. Please provide pricing and availability."
+             class="btn btn-outline-green btn-lg">
+            <i class="fas fa-envelope me-2"></i>Email Enquiry
+          </a>
+        </div>
+
+        <!-- Safety note -->
+        <div class="safety-note mt-4">
+          <i class="fas fa-triangle-exclamation me-2"></i>
+          <strong>Safety First:</strong> All hazardous chemicals must be handled by trained personnel. 
+          A Safety Data Sheet (SDS) is provided with every order. Contact us for the latest SDS.
+        </div>
+      </div>
+    </div>
+
+    <!-- Back to products -->
+    <div class="mt-5 pt-3 border-top">
+      <a href="{{ url_for('products') }}" class="btn btn-outline-green">
+        <i class="fas fa-arrow-left me-2"></i>Back to Products
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- WA Modal -->
+<div class="modal fade" id="waDetailModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:440px">
+    <div class="modal-content" style="border:none;border-radius:20px;overflow:hidden">
+      <div style="background:linear-gradient(135deg,#1B5E20,#388E3C);padding:22px 24px;display:flex;align-items:center;gap:14px">
+        <div style="width:48px;height:48px;background:rgba(255,255,255,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff"><i class="fab fa-whatsapp"></i></div>
+        <div>
+          <h5 style="font-family:Poppins,sans-serif;font-weight:700;color:#fff;margin:0">Place an Enquiry</h5>
+          <p style="color:rgba(255,255,255,0.7);font-size:.78rem;margin:0">Fast response via WhatsApp</p>
+        </div>
+        <button type="button" data-bs-dismiss="modal" style="margin-left:auto;background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center"><i class="fas fa-times"></i></button>
+      </div>
+      <div style="background:#F1F8E9;border-bottom:1px solid #C8E6C9;padding:10px 24px;font-size:.85rem;font-weight:600;color:#1B5E20">
+        <i class="fas fa-flask me-2"></i><span id="waDetailProductName">{{ product.name }}</span>
+      </div>
+      <div style="padding:20px 24px 8px">
+        <div style="margin-bottom:14px">
+          <label style="display:block;font-size:.78rem;font-weight:600;color:#4A4A4A;margin-bottom:6px">Your Name <span style="color:#E53935">*</span></label>
+          <input type="text" id="waDetailName" placeholder="e.g. Jane Wanjiku" style="width:100%;border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 14px;font-size:.88rem;outline:none;font-family:Inter,sans-serif;transition:border-color .2s"/>
+        </div>
+        <div style="margin-bottom:14px">
+          <label style="display:block;font-size:.78rem;font-weight:600;color:#4A4A4A;margin-bottom:6px">Company / Organisation</label>
+          <input type="text" id="waDetailCompany" placeholder="Optional" style="width:100%;border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 14px;font-size:.88rem;outline:none;font-family:Inter,sans-serif"/>
+        </div>
+        <div style="margin-bottom:14px">
+          <label style="display:block;font-size:.78rem;font-weight:600;color:#4A4A4A;margin-bottom:6px">Quantity Required <span style="color:#E53935">*</span></label>
+          <div style="display:flex;gap:10px">
+            <input type="number" id="waDetailQty" placeholder="e.g. 500" min="1" style="flex:1;border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 14px;font-size:.88rem;outline:none;font-family:Inter,sans-serif"/>
+            <select id="waDetailUnit" style="border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 12px;font-size:.88rem;background:#FAFAFA;outline:none;min-width:90px">
+              <option>kg</option><option>L</option><option>drums</option><option>IBC</option><option>bags</option><option>units</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:8px">
+          <label style="display:block;font-size:.78rem;font-weight:600;color:#4A4A4A;margin-bottom:6px">Application / Use <span style="color:#E53935">*</span></label>
+          <input type="text" id="waDetailApp" placeholder="e.g. Water treatment, industrial cleaning, synthesis…" style="width:100%;border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 14px;font-size:.88rem;outline:none;font-family:Inter,sans-serif"/>
+        </div>
+        <div style="margin-bottom:8px">
+          <label style="display:block;font-size:.78rem;font-weight:600;color:#4A4A4A;margin-bottom:6px">Delivery Location</label>
+          <input type="text" id="waDetailLocation" placeholder="e.g. Nairobi Industrial Area, Mombasa Port…" style="width:100%;border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 14px;font-size:.88rem;outline:none;font-family:Inter,sans-serif"/>
+        </div>
+      </div>
+      <div style="padding:16px 24px 12px;display:flex;gap:10px">
+        <button type="button" data-bs-dismiss="modal" style="flex:1;padding:11px;background:#F5F5F5;border:1.5px solid #E0E0E0;border-radius:10px;font-family:Poppins,sans-serif;font-size:.88rem;font-weight:600;color:#757575;cursor:pointer">Cancel</button>
+        <button type="button" id="waDetailSendBtn" style="flex:2;padding:11px;background:linear-gradient(135deg,#25D366,#128C7E);border:none;border-radius:10px;font-family:Poppins,sans-serif;font-size:.9rem;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 16px rgba(37,211,102,.35)">
+          <i class="fab fa-whatsapp"></i> Send via WhatsApp
+        </button>
+      </div>
+      <p style="text-align:center;font-size:.72rem;color:#9E9E9E;padding:0 24px 16px;margin:0"><i class="fas fa-lock me-1"></i>Opens in WhatsApp — no data stored on this site.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelector('.wa-detail-enquire')?.addEventListener('click', function() {
+  document.getElementById('waDetailProductName').textContent = this.dataset.name;
+  this._waNum = this.dataset.wa;
+  new bootstrap.Modal(document.getElementById('waDetailModal')).show();
+});
+document.getElementById('waDetailSendBtn')?.addEventListener('click', function() {
+  const name = document.getElementById('waDetailName').value.trim();
+  const qty  = document.getElementById('waDetailQty').value.trim();
+  const waNum = document.querySelector('.wa-detail-enquire')?.dataset.wa || '';
+  if (!name || !qty) {
+    if (!name) document.getElementById('waDetailName').style.borderColor='#E53935';
+    if (!qty)  document.getElementById('waDetailQty').style.borderColor='#E53935';
+    return;
+  }
+  const pname   = document.getElementById('waDetailProductName').textContent;
+  const company = document.getElementById('waDetailCompany').value.trim();
+  const unit    = document.getElementById('waDetailUnit').value;
+  const note    = document.getElementById('waDetailNote').value.trim();
+  let msg = `Hello Eligald,
+
+I would like to order: *${pname}*
+
+*Name:* ${name}`;
+  if (company) msg += `
+*Company:* ${company}`;
+  msg += `
+*Quantity:* ${qty} ${unit}`;
+  if (note) msg += `
+
+*Notes:* ${note}`;
+  msg += `
+
+Please confirm pricing and availability. Thank you.`;
+  bootstrap.Modal.getInstance(document.getElementById('waDetailModal')).hide();
+  window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+});
+</script>
+
+<script>
+// Image fallback
+(function() {
+  var img = document.getElementById('detailProductImg');
+  if (img) {
+    img.onerror = function() {
+      this.onerror = null;
+      this.src = '/static/images/product-fallback.svg';
+    };
+    if (!img.src || img.src === window.location.href) {
+      img.src = '/static/images/product-fallback.svg';
+    }
+  }
+})();
+</script>
+
+{% endblock %}

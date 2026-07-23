@@ -1,0 +1,107 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit' if founder else 'New' }} Founder{% endblock %}
+{% block page_title %}{{ 'Edit' if founder else 'Add New' }} Founder{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+<div class="col-lg-7">
+<div class="admin-card">
+  <div class="admin-card-header">
+    <h6><i class="fas fa-user-tie me-2"></i>{{ 'Edit' if founder else 'Add' }} Founder</h6>
+  </div>
+  <div class="admin-card-body">
+    <form method="POST"
+          enctype="multipart/form-data"
+          action="{{ url_for('admin_bp.founder_edit', fid=founder.id) if founder else url_for('admin_bp.founder_new') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+      <div class="row g-3">
+        <div class="col-sm-8">
+          <label class="form-label">Full Name <span class="text-danger">*</span></label>
+          <input type="text" name="name" class="form-control" required
+                 value="{{ founder.name if founder else '' }}"
+                 placeholder="e.g. Dr. John Kamau"/>
+        </div>
+        <div class="col-sm-4">
+          <label class="form-label">Sort Order</label>
+          <input type="number" name="sort_order" class="form-control"
+                 value="{{ founder.sort_order if founder else 0 }}"/>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Title / Role</label>
+          <input type="text" name="title" class="form-control"
+                 value="{{ founder.title if founder else '' }}"
+                 placeholder="e.g. Co-Founder & Chief Executive Officer"/>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Biography</label>
+          <textarea name="bio" class="form-control" rows="5"
+                    placeholder="Background, experience, vision…">{{ founder.bio if founder else '' }}</textarea>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Photo URL</label>
+          <input type="url" name="photo_url" class="form-control" id="photoUrl"
+                 value="{{ founder.photo_url if founder else '' }}"
+                 placeholder="https://…"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Upload Photo</label>
+          <input type="file" name="photo_file" class="form-control"
+                 accept="image/*" onchange="previewPhoto(this)"/>
+          <div class="form-text">Overwrites URL if provided.</div>
+        </div>
+
+        <div class="col-12">
+          <div id="photo-preview-wrap" class="{{ '' if founder and founder.photo_url else 'd-none' }}">
+            <img id="photo-preview"
+                 src="{{ founder.photo_url if founder and founder.photo_url else '' }}"
+                 alt="Preview"
+                 style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--border)"/>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="is_active" id="fActive"
+                   {{ 'checked' if not founder or founder.is_active }}>
+            <label class="form-check-label" for="fActive">Active (show on founders page)</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-3 mt-4">
+        <button type="submit" class="btn btn-primary-green">
+          <i class="fas fa-save me-1"></i>{{ 'Save Changes' if founder else 'Add Founder' }}
+        </button>
+        <a href="{{ url_for('admin_bp.founders') }}" class="btn btn-outline-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function previewPhoto(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('photo-preview').src = e.target.result;
+      document.getElementById('photo-preview-wrap').classList.remove('d-none');
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+document.getElementById('photoUrl')?.addEventListener('input', function() {
+  if (this.value) {
+    document.getElementById('photo-preview').src = this.value;
+    document.getElementById('photo-preview-wrap').classList.remove('d-none');
+  }
+});
+</script>
+{% endblock %}

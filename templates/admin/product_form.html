@@ -1,0 +1,115 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit' if product else 'New' }} Product{% endblock %}
+{% block page_title %}{{ 'Edit' if product else 'New' }} Product{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+<div class="col-lg-9">
+<div class="admin-card">
+  <div class="admin-card-header">
+    <h6><i class="fas fa-flask me-2"></i>{{ 'Edit' if product else 'Add New' }} Product</h6>
+  </div>
+  <div class="admin-card-body">
+    <form method="POST" enctype="multipart/form-data"
+          action="{{ url_for('admin_bp.product_edit', pid=product.id) if product else url_for('admin_bp.product_new') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label class="form-label">Product Name <span class="text-danger">*</span></label>
+          <input type="text" name="name" class="form-control" required
+                 value="{{ product.name if product else '' }}" placeholder="e.g. Hydrochloric Acid 37%"/>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Category</label>
+          <select name="category" class="form-select">
+            {% for c in categories %}
+            <option value="{{ c }}" {{ 'selected' if product and product.category == c }}>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Short Description</label>
+          <textarea name="description" class="form-control" rows="2"
+                    placeholder="One or two sentences for product cards…">{{ product.description if product else '' }}</textarea>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Technical Specifications</label>
+          <textarea name="specifications" class="form-control" rows="5"
+                    placeholder="Assay: 37% min&#10;Density: 1.19 g/mL&#10;UN Number: UN 1789&#10;(one spec per line)">{{ product.specifications if product else '' }}</textarea>
+          <div class="form-text">One specification per line (key: value format).</div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Price per Unit (KES)</label>
+          <input type="number" name="price_per_unit" class="form-control" step="0.01" min="0"
+                 value="{{ product.price_per_unit if product and product.price_per_unit else '' }}"
+                 placeholder="Leave blank = On enquiry"/>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Image URL</label>
+          <input type="url" name="image_url" class="form-control" id="imageUrl"
+                 value="{{ product.image_url if product else '' }}"
+                 placeholder="https://…"/>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Upload Image File</label>
+          <input type="file" name="image_file" class="form-control" accept="image/*"
+                 onchange="previewImage(this)"/>
+          <div class="form-text">Overwrites URL if provided. Max 8 MB.</div>
+        </div>
+
+        <div class="col-12">
+          <div id="img-preview-wrap" class="{{ '' if (product and product.image_url) else 'd-none' }}">
+            <label class="form-label">Preview</label><br/>
+            <img id="img-preview"
+                 src="{{ product.image_url if product and product.image_url else '' }}" onerror="this.onerror=null;this.src='/static/images/product-fallback.svg'"
+                 alt="preview" style="height:120px;border-radius:8px;object-fit:cover;border:1px solid #E8F5E9"/>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="is_active" id="isActive"
+                   {{ 'checked' if not product or product.is_active }}>
+            <label class="form-check-label" for="isActive">Product is Active (visible on site)</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-3 mt-4">
+        <button type="submit" class="btn btn-primary-green">
+          <i class="fas fa-save me-1"></i>{{ 'Save Changes' if product else 'Create Product' }}
+        </button>
+        <a href="{{ url_for('admin_bp.products') }}" class="btn btn-outline-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function previewImage(input) {
+  const wrap = document.getElementById('img-preview-wrap');
+  const img  = document.getElementById('img-preview');
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; wrap.classList.remove('d-none'); };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+document.getElementById('imageUrl')?.addEventListener('input', function() {
+  const wrap = document.getElementById('img-preview-wrap');
+  const img  = document.getElementById('img-preview');
+  if (this.value) { img.src = this.value; wrap.classList.remove('d-none'); }
+  else { wrap.classList.add('d-none'); }
+});
+</script>
+{% endblock %}
