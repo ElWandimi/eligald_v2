@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Terms of Service – {{ company }}{% endblock %}
+{% block content %}
+<section class="page-hero page-hero--short">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1614854262318-831574f15f1f?w=1400&q=80')"></div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light">Legal</span>
+    <h1>Terms of Service</h1>
+    <p>Last updated: January 2025</p>
+  </div>
+</section>
+<nav class="breadcrumb-bar"><div class="container"><ol class="breadcrumb mb-0">
+  <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+  <li class="breadcrumb-item active">Terms of Service</li>
+</ol></div></nav>
+<section class="section-pad bg-white">
+  <div class="container" style="max-width:820px">
+    <div class="legal-body">
+      <p class="lead-text">By using the website of <strong>{{ company }}</strong>, you agree to these Terms of Service.</p>
+      <h4>1. Acceptance of Terms</h4>
+      <p>By accessing our website you confirm you are at least 18 years old and legally capable of entering into contracts.</p>
+      <h4>2. Use of Website</h4>
+      <p>You must not use this site for unlawful purposes, transmit spam, or attempt unauthorised access to our systems.</p>
+      <h4>3. Products and Ordering</h4>
+      <p>All enquiries constitute an expression of interest only. A binding contract is formed only when we issue a formal quotation and you confirm in writing.</p>
+      <h4>4. Hazardous Materials Compliance</h4>
+      <p>By purchasing from us, you confirm you are a registered business with appropriate licences, have read the relevant SDS, and will handle chemicals in compliance with applicable laws.</p>
+      <h4>5. Intellectual Property</h4>
+      <p>All content on this website is the property of {{ company }}. You may not reproduce it without prior written consent.</p>
+      <h4>6. Limitation of Liability</h4>
+      <p>{{ company }} shall not be liable for any indirect or consequential damages arising from use of this website or our products.</p>
+      <h4>7. Governing Law</h4>
+      <p>These Terms are governed by the laws of Kenya. Disputes are subject to the courts of Nairobi, Kenya.</p>
+      <h4>8. Enquiries and Order Requests</h4>
+      <p>By submitting an enquiry or order request form on this website, you confirm that:</p>
+      <ul>
+        <li>The information you provide (name, company, contact details) is accurate and you are authorised to submit it.</li>
+        <li>You understand that submitting an enquiry does not constitute a binding purchase order — a contract is only formed upon written confirmation from {{ company }}.</li>
+        <li>If you provide an email address, you consent to receive product updates and offers, which you may unsubscribe from at any time.</li>
+        <li>Your WhatsApp number and contact details may be used by our sales team to follow up on your enquiry.</li>
+      </ul>
+
+      <h4>9. Contact</h4>
+      <p>For legal enquiries: <a href="mailto:{{ email }}" class="link-green">{{ email }}</a></p>
+    </div>
+    <div class="mt-5 pt-3 border-top d-flex gap-3">
+      <a href="{{ url_for('privacy') }}" class="btn btn-outline-green">Privacy Policy</a>
+      <a href="{{ url_for('index') }}" class="btn btn-primary-green">Back to Home</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

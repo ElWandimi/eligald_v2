@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+{% block title %}Tickets{% endblock %}
+{% block page_title %}Support Tickets{% endblock %}
+
+{% block content %}
+<div class="admin-toolbar mb-4">
+  <form class="d-flex gap-2 flex-wrap" method="GET">
+    <div class="search-wrap" style="min-width:200px">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" name="q" value="{{ q }}" class="form-control search-input" placeholder="Search subject or name…"/>
+    </div>
+    <select name="status" class="form-select" style="max-width:180px">
+      {% for s in ['All','open','in_progress','closed'] %}
+      <option value="{{ s }}" {{ 'selected' if active_status==s }}>{{ s|replace('_',' ')|title }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-outline-green"><i class="fas fa-filter me-1"></i>Filter</button>
+    <a href="{{ url_for('admin_bp.tickets') }}" class="btn btn-outline-secondary">Clear</a>
+  </form>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead>
+          <tr><th>Subject</th><th>From</th><th>Email</th><th>Status</th><th>Created</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for t in tickets %}
+          <tr>
+            <td class="fw-600">{{ t.subject|truncate(50) }}</td>
+            <td>{{ t.name }}</td>
+            <td class="small"><a href="mailto:{{ t.email }}" class="link-green">{{ t.email }}</a></td>
+            <td><span class="status-badge status-{{ t.status }}">{{ t.status|replace('_',' ') }}</span></td>
+            <td class="small text-muted">{{ t.created_at[:16]|replace('T',' ') }}</td>
+            <td><a href="{{ url_for('admin_bp.ticket_detail', tid=t.id) }}" class="btn btn-sm btn-outline-green">Open</a></td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-center text-muted py-5">
+            <i class="fas fa-headset fa-2x mb-2 d-block" style="color:var(--green-300)"></i>
+            No tickets found.
+          </td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% block title %}Contact Us – Eligald Industrial Chemicals Limited{% endblock %}
+
+{% block content %}
+
+<!-- Page Hero -->
+<section class="page-hero page-hero--short">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1605101100278-5d1deb2b6498?w=1400&q=80')"></div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light" data-aos="fade-down">Get in Touch</span>
+    <h1 data-aos="fade-up" data-aos-delay="100">Contact Us</h1>
+    <p data-aos="fade-up" data-aos-delay="200">We respond to every enquiry within one business day.</p>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<nav class="breadcrumb-bar" aria-label="breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+      <li class="breadcrumb-item active">Contact</li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ═══ CONTACT MAIN ═══════════════════════════════════════════════════════ -->
+<section class="section-pad bg-white">
+  <div class="container">
+    <div class="row g-5">
+
+      <!-- Contact info column -->
+      <div class="col-lg-5" data-aos="fade-right">
+        <span class="section-eyebrow">Reach Us</span>
+        <h2 class="section-title">We're Here for You</h2>
+        <p>Our sales and technical teams are on hand to answer enquiries, provide quotations, and advise on chemical selection. Choose the channel that suits you best.</p>
+
+        <div class="contact-info-list mt-4">
+
+          <div class="contact-info-item" id="whatsapp">
+            <div class="contact-info-icon" style="background:#25D366">
+              <i class="fab fa-whatsapp"></i>
+            </div>
+            <div>
+              <h6>WhatsApp</h6>
+              <a href="{{ wa_default }}" target="_blank" rel="noopener" class="contact-link">
+                Message us instantly
+              </a>
+              <p class="contact-meta">Fastest response. Available Mon–Sat 8 am – 8 pm.</p>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon" style="background:#4CAF50">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div>
+              <h6>Email</h6>
+              <a href="mailto:{{ email }}" class="contact-link">{{ email }}</a>
+              <p class="contact-meta">For formal enquiries, quotations, and documentation.</p>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-info-icon" style="background:#388E3C">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div>
+              <h6>Phone</h6>
+              <a href="tel:{{ phone }}" class="contact-link">{{ phone }}</a>
+              <p class="contact-meta">Mon–Fri 8 am – 5 pm (local time).</p>
+            </div>
+          </div>
+
+          <div class="contact-info-item" id="address">
+            <div class="contact-info-icon" style="background:#1B5E20">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div>
+              <h6>Office Address</h6>
+              <p class="contact-link mb-0">{{ address }}</p>
+              <p class="contact-meta">Visitors by appointment only.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Contact form column -->
+      <div class="col-lg-7" data-aos="fade-left">
+        <div class="contact-form-card">
+          <h4 class="mb-1">Send Us a Message</h4>
+          <p class="text-muted small mb-4">
+            This form is for demonstration purposes. For immediate assistance, please use WhatsApp or email.
+          </p>
+
+          <!-- Success alert -->
+          <div id="form-success" class="alert alert-success d-none" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong>Message received!</strong> Our team will get back to you within one business day.
+          </div>
+
+          <form id="contact-form" novalidate>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label for="cf-name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="cf-name" placeholder="Jane Smith" required />
+                <div class="invalid-feedback">Please enter your name.</div>
+              </div>
+              <div class="col-sm-6">
+                <label for="cf-email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" id="cf-email" placeholder="jane@company.com" required />
+                <div class="invalid-feedback">Please enter a valid email.</div>
+              </div>
+              <div class="col-12">
+                <label for="cf-subject" class="form-label">Subject <span class="text-danger">*</span></label>
+                <select class="form-select" id="cf-subject" required>
+                  <option value="">— Select a subject —</option>
+                  <option>Product Enquiry</option>
+                  <option>Request a Quote</option>
+                  <option>Technical Consultation</option>
+                  <option>Logistics &amp; Delivery</option>
+                  <option>Other</option>
+                </select>
+                <div class="invalid-feedback">Please select a subject.</div>
+              </div>
+              <div class="col-12">
+                <label for="cf-message" class="form-label">Message <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="cf-message" rows="5"
+                          placeholder="Describe your requirements in detail…" required></textarea>
+                <div class="invalid-feedback">Please enter your message.</div>
+              </div>
+              <div class="col-12">
+                <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="marketing_consent" id="marketingConsent">
+                <label class="form-check-label small text-muted" for="marketingConsent">
+                  <i class="fas fa-envelope me-1 text-green"></i>
+                  Subscribe to product updates and offers from Eligald.
+                </label>
+              </div>
+              <div class="tos-check-row">
+                <input type="checkbox" id="tosAcceptContact" name="tos_accept" required/>
+                <label for="tosAcceptContact">
+                  I have read and accept the
+                  <a href="{{ url_for('terms') }}" target="_blank">Terms of Service</a>
+                  and <a href="{{ url_for('privacy') }}" target="_blank">Privacy Policy</a>.
+                </label>
+              </div>
+              <button type="submit" class="btn btn-primary-green btn-lg w-100" id="cf-submit">
+                  <i class="fas fa-paper-plane me-2"></i>Send Message
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WAREHOUSE LOCATION ════════════════════════════════════════════════ -->
+<section class="map-section" id="address" data-aos="fade-up">
+  <div class="container mb-5">
+    <h5 class="mb-3"><i class="fas fa-warehouse me-2 text-green"></i>Our Warehouse Location</h5>
+    <div class="map-placeholder">
+      <iframe
+        src="https://www.google.com/maps?q=-1.3185188,36.8653158&z=15&output=embed"
+        style="border:0;width:100%;height:420px;border-radius:12px;"
+        allowfullscreen=""
+        loading="lazy"
+        title="Eligald Warehouse Location — Imara Daima, Along Enterprise Road, Nairobi">
+      </iframe>
+      <div class="map-overlay-label">
+        <i class="fas fa-map-marker-alt me-2"></i>Imara Daima, Along Enterprise Road, Opp SMK Business Centre, Nairobi
+      </div>
+    </div>
+    <div class="mt-3 d-flex flex-wrap gap-3 align-items-center">
+      <p class="mb-0 text-muted small">
+        <i class="fas fa-truck-loading me-1 text-green"></i>
+        Warehouse &amp; dispatch point — visits by appointment only.
+      </p>
+      <a href="https://maps.app.goo.gl/tukK9LxoZd4BQR7t9" target="_blank" rel="noopener"
+         class="btn btn-outline-green btn-sm ms-auto">
+        <i class="fas fa-diamond-turn-right me-2"></i>Get Directions
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  if (!this.checkValidity()) {
+    this.classList.add('was-validated');
+    return;
+  }
+  const btn = document.getElementById('cf-submit');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending…';
+  setTimeout(function() {
+    document.getElementById('form-success').classList.remove('d-none');
+    document.getElementById('contact-form').reset();
+    document.getElementById('contact-form').classList.remove('was-validated');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Send Message';
+    document.getElementById('form-success').scrollIntoView({behavior:'smooth', block:'center'});
+  }, 1200);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit' if stat else 'New' }} Stat{% endblock %}
+{% block page_title %}{{ 'Edit' if stat else 'New' }} Company Stat{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-6">
+<div class="admin-card">
+  <div class="admin-card-header"><h6><i class="fas fa-chart-simple me-2"></i>{{ 'Edit' if stat else 'Add' }} Stat</h6></div>
+  <div class="admin-card-body">
+    <form method="POST" action="{{ url_for('admin_bp.stat_edit', sid=stat.id) if stat else url_for('admin_bp.stat_new') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <div class="row g-3">
+        <div class="col-sm-6">
+          <label class="form-label">Number / Value <span class="text-danger">*</span></label>
+          <input type="text" name="number" class="form-control" required
+                 value="{{ stat.number if stat else '' }}" placeholder="e.g. 500+, ISO, 24/7"/>
+        </div>
+        <div class="col-sm-6">
+          <label class="form-label">Sort Order</label>
+          <input type="number" name="sort_order" class="form-control" value="{{ stat.sort_order if stat else 0 }}"/>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Label <span class="text-danger">*</span></label>
+          <input type="text" name="label" class="form-control" required
+                 value="{{ stat.label if stat else '' }}" placeholder="e.g. Clients Worldwide"/>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Icon (Font Awesome class)</label>
+          <input type="text" name="icon" class="form-control"
+                 value="{{ stat.icon if stat else 'fa-star' }}" placeholder="fa-star"/>
+          <div class="form-text">e.g. fa-flask, fa-handshake, fa-certificate, fa-globe</div>
+        </div>
+        {% if stat %}
+        <div class="col-12">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="is_active" id="sActive" {{ 'checked' if stat.is_active }}>
+            <label class="form-check-label" for="sActive">Active</label>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <div class="d-flex gap-3 mt-4">
+        <button type="submit" class="btn btn-primary-green"><i class="fas fa-save me-1"></i>Save</button>
+        <a href="{{ url_for('admin_bp.company_stats') }}" class="btn btn-outline-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+</div></div>
+{% endblock %}

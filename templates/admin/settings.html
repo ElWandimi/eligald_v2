@@ -1,0 +1,305 @@
+{% extends "admin/base.html" %}
+{% block title %}Site Settings{% endblock %}
+{% block page_title %}Site Settings{% endblock %}
+
+{% block content %}
+<form method="POST" action="{{ url_for('admin_bp.settings') }}" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+  <!-- ── Company Info ─────────────────────────────────────────────── -->
+  <div class="admin-card mb-4">
+    <div class="admin-card-header"><h6><i class="fas fa-building me-2"></i>Company Information</h6></div>
+    <div class="admin-card-body">
+      <div class="row g-3">
+        <div class="col-md-8">
+          <label class="form-label">Company Name</label>
+          <input type="text" name="company_name" class="form-control" value="{{ s.get('company_name','') }}"/>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Phone</label>
+          <input type="text" name="phone" class="form-control" value="{{ s.get('phone','') }}"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">WhatsApp Number (digits only)</label>
+          <input type="text" name="whatsapp_number" class="form-control"
+                 value="{{ s.get('whatsapp_number','') }}" placeholder="254719655694"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" value="{{ s.get('email','') }}"/>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Address</label>
+          <input type="text" name="address" class="form-control" value="{{ s.get('address','') }}"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Logo ─────────────────────────────────────────────────────── -->
+  <div class="admin-card mb-4">
+    <div class="admin-card-header"><h6><i class="fas fa-image me-2"></i>Company Logo</h6></div>
+    <div class="admin-card-body">
+      <div class="row g-3 align-items-center">
+        {% if s.get('logo_url') %}
+        <div class="col-auto">
+          <img src="{{ s.get('logo_url') }}" alt="Logo" style="height:60px;object-fit:contain;background:#f5f5f5;padding:4px;border-radius:8px;border:1px solid var(--border)"/>
+        </div>
+        {% endif %}
+        <div class="col-md-6">
+          <label class="form-label">Upload New Logo</label>
+          <input type="file" name="logo_file" class="form-control" accept="image/*"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Or paste Logo URL</label>
+          <input type="url" name="logo_url" class="form-control" value="{{ s.get('logo_url','') }}" placeholder="https://…"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Hero / Tagline ────────────────────────────────────────────── -->
+  <div class="admin-card mb-4">
+    <div class="admin-card-header"><h6><i class="fas fa-star me-2"></i>Hero Section</h6></div>
+    <div class="admin-card-body">
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label">Tagline</label>
+          <input type="text" name="hero_tagline" class="form-control" value="{{ s.get('hero_tagline','') }}"/>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Subheading</label>
+          <input type="text" name="hero_subheading" class="form-control" value="{{ s.get('hero_subheading','') }}"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── About / Mission / Vision ─────────────────────────────────── -->
+  <div class="admin-card mb-4">
+    <div class="admin-card-header"><h6><i class="fas fa-info-circle me-2"></i>About / Mission / Vision</h6></div>
+    <div class="admin-card-body">
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label">About Us Text</label>
+          <textarea name="about_us_text" class="form-control" rows="4">{{ s.get('about_us_text','') }}</textarea>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Mission</label>
+          <textarea name="mission_text" class="form-control" rows="3">{{ s.get('mission_text','') }}</textarea>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Vision</label>
+          <textarea name="vision_text" class="form-control" rows="3">{{ s.get('vision_text','') }}</textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Social Media ──────────────────────────────────────────────── -->
+  <div class="admin-card mb-4">
+    <div class="admin-card-header"><h6><i class="fas fa-share-nodes me-2"></i>Social Media URLs</h6></div>
+    <div class="admin-card-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label"><i class="fab fa-facebook me-1"></i>Facebook</label>
+          <input type="url" name="facebook_url" class="form-control" value="{{ s.get('facebook_url','') }}" placeholder="https://facebook.com/…"/>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label"><i class="fab fa-linkedin me-1"></i>LinkedIn</label>
+          <input type="url" name="linkedin_url" class="form-control" value="{{ s.get('linkedin_url','') }}" placeholder="https://linkedin.com/…"/>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label"><i class="fab fa-twitter me-1"></i>Twitter / X</label>
+          <input type="url" name="twitter_url" class="form-control" value="{{ s.get('twitter_url','') }}" placeholder="https://x.com/…"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Gmail / SMTP ──────────────────────────────────────────────── -->
+  <div class="admin-card mb-4">
+    <div class="admin-card-header"><h6><i class="fas fa-envelope me-2"></i>Gmail & Email Configuration</h6></div>
+    <div class="admin-card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Gmail Address</label>
+          <input type="email" name="smtp_user" class="form-control"
+                 value="{{ s.get('smtp_user','') }}" placeholder="eligaldchemicalslimited@gmail.com"/>
+          <div class="form-text">Used for all outgoing system emails.</div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Gmail App Password</label>
+          <div class="input-group">
+            <input type="password" name="smtp_pass" class="form-control pw-field"
+                   value="{{ s.get('smtp_pass','') }}" placeholder="xxxx xxxx xxxx xxxx"/>
+            <button class="input-group-text pw-toggle" type="button"><i class="fas fa-eye"></i></button>
+          </div>
+          <div class="form-text">
+            <a href="https://myaccount.google.com/apppasswords" target="_blank" class="link-green">
+              <i class="fas fa-external-link-alt me-1"></i>Generate App Password
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">SMTP Host</label>
+          <input type="text" name="smtp_host" class="form-control" value="{{ s.get('smtp_host','smtp.gmail.com') }}"/>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">SMTP Port</label>
+          <input type="number" name="smtp_port" class="form-control" value="{{ s.get('smtp_port',587) }}"/>
+        </div>
+        <div class="col-md-3 d-flex align-items-end pb-1">
+          <button type="button" class="btn btn-outline-green w-100" id="testEmailBtn">
+            <i class="fas fa-paper-plane me-1"></i>Test Email
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Business Email Routing ────────────────────────────────────── -->
+  <div class="admin-card mb-4">
+    <div class="admin-card-header"><h6><i class="fas fa-at me-2"></i>Business Email Routing</h6></div>
+    <div class="admin-card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Sales Enquiry Email</label>
+          <input type="email" name="email_sales" class="form-control"
+                 value="{{ s.get('email_sales','') }}"
+                 placeholder="sales@eligaldindustrialchemicalslimited.com"/>
+          <div class="form-text">Sales-related enquiries are routed here.</div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">General Enquiry Email</label>
+          <input type="email" name="email_general" class="form-control"
+                 value="{{ s.get('email_general','') }}"
+                 placeholder="info@eligaldindustrialchemicalslimited.com"/>
+          <div class="form-text">General contact form submissions go here.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WhatsApp Business API ─────────────────────────────────────── -->
+  <div class="admin-card mb-4">
+    <div class="admin-card-header"><h6><i class="fab fa-whatsapp me-2"></i>WhatsApp Business API</h6></div>
+    <div class="admin-card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Phone Number ID</label>
+          <input type="text" name="wa_phone_id" class="form-control"
+                 value="{{ s.get('wa_phone_id','') }}" placeholder="From Meta Business Manager"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Access Token</label>
+          <div class="input-group">
+            <input type="password" name="wa_business_token" class="form-control pw-field"
+                   value="{{ s.get('wa_business_token','') }}" placeholder="EAAxxxxxxxx…"/>
+            <button class="input-group-text pw-toggle" type="button"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" name="wa_auto_response_enabled"
+                   id="waAutoEnabled" {{ 'checked' if s.get('wa_auto_response_enabled') }}>
+            <label class="form-check-label fw-600" for="waAutoEnabled">
+              Enable Automated WhatsApp Response on Enquiry
+            </label>
+          </div>
+          <div class="form-text mb-2">Use <code>{name}</code> to personalise the message.</div>
+          <textarea name="wa_auto_response_msg" class="form-control" rows="3">{{ s.get('wa_auto_response_msg','Hello {name}, thank you for contacting Eligald Industrial Chemicals. Our team will get back to you shortly.') }}</textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Team Visibility Toggle ────────────────────────────────────── -->
+  <div class="admin-card mb-4">
+    <div class="admin-card-header"><h6><i class="fas fa-user-friends me-2"></i>Homepage Team Section</h6></div>
+    <div class="admin-card-body d-flex align-items-center gap-4">
+      <div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" name="team_visible"
+                 id="teamVisible" {{ 'checked' if s.get('team_visible') }}>
+          <label class="form-check-label fw-600" for="teamVisible">
+            Show Team Section on Homepage
+          </label>
+        </div>
+        <div class="form-text">Team members are managed under Founders. Toggle this to show/hide the whole section on the homepage instantly.</div>
+      </div>
+      <a href="{{ url_for('admin_bp.founders') }}" class="btn btn-outline-green btn-sm ms-auto">
+        <i class="fas fa-user-tie me-1"></i>Manage Team Members
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Founders Page Toggle ──────────────────────────────────────── -->
+  <div class="admin-card mb-4">
+    <div class="admin-card-header"><h6><i class="fas fa-users me-2"></i>Founders Page</h6></div>
+    <div class="admin-card-body d-flex align-items-center gap-4">
+      <div>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" name="founders_enabled"
+                 id="foundersEnabled" {{ 'checked' if s.get('founders_enabled') }}>
+          <label class="form-check-label fw-600" for="foundersEnabled">
+            Enable Founders Page (visible at /founders)
+          </label>
+        </div>
+        <div class="form-text">When enabled, visitors can see the Founders page.</div>
+      </div>
+      <a href="{{ url_for('admin_bp.founders') }}" class="btn btn-outline-green btn-sm ms-auto">
+        <i class="fas fa-user-tie me-1"></i>Manage Founders
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Save ──────────────────────────────────────────────────────── -->
+  <div class="d-flex gap-3">
+    <button type="submit" class="btn btn-primary-green btn-lg">
+      <i class="fas fa-save me-2"></i>Save All Settings
+    </button>
+  </div>
+</form>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Test email button
+document.getElementById('testEmailBtn')?.addEventListener('click', function() {
+  const btn = this;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Sending…';
+  const csrf = document.querySelector('input[name="csrf_token"]')?.value || '';
+  fetch('{{ url_for("admin_bp.test_email") }}', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: 'csrf_token=' + encodeURIComponent(csrf)
+  })
+  .then(r => r.json())
+  .then(data => {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane me-1"></i>Test Email';
+    alert((data.success ? '✓ ' : '✗ Error: ') + data.message);
+  })
+  .catch(() => {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane me-1"></i>Test Email';
+    alert('Request failed.');
+  });
+});
+
+// Password visibility toggle
+document.querySelectorAll('.pw-toggle').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    const input = this.closest('.input-group').querySelector('.pw-field');
+    const icon  = this.querySelector('i');
+    if (input) {
+      input.type = input.type === 'password' ? 'text' : 'password';
+      icon?.classList.toggle('fa-eye');
+      icon?.classList.toggle('fa-eye-slash');
+    }
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Edit' if cat else 'New' }} Category{% endblock %}
+{% block page_title %}{{ 'Edit' if cat else 'New' }} Category{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-6">
+<div class="admin-card">
+  <div class="admin-card-header"><h6><i class="fas fa-tags me-2"></i>{{ 'Edit' if cat else 'Add' }} Category</h6></div>
+  <div class="admin-card-body">
+    <form method="POST"
+          action="{{ url_for('admin_bp.category_edit', cid=cat.id) if cat else url_for('admin_bp.category_new') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <div class="row g-3">
+        <div class="col-sm-8">
+          <label class="form-label">Category Name <span class="text-danger">*</span></label>
+          <input type="text" name="name" class="form-control" required
+                 value="{{ cat.name if cat else '' }}" placeholder="e.g. Industrial Solvents"/>
+        </div>
+        <div class="col-sm-4">
+          <label class="form-label">Sort Order</label>
+          <input type="number" name="sort_order" class="form-control" value="{{ cat.sort_order if cat else 0 }}"/>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Description</label>
+          <textarea name="description" class="form-control" rows="3"
+                    placeholder="Brief description of this category…">{{ cat.description if cat else '' }}</textarea>
+        </div>
+        {% if cat %}
+        <div class="col-12">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" name="is_active" id="isActive" {{ 'checked' if cat.is_active }}>
+            <label class="form-check-label" for="isActive">Active (visible on site)</label>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <div class="d-flex gap-3 mt-4">
+        <button type="submit" class="btn btn-primary-green">
+          <i class="fas fa-save me-1"></i>{{ 'Save Changes' if cat else 'Create Category' }}
+        </button>
+        <a href="{{ url_for('admin_bp.categories') }}" class="btn btn-outline-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+</div></div>
+{% endblock %}

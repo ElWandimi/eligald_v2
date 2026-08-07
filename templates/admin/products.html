@@ -1,0 +1,115 @@
+{% extends "admin/base.html" %}
+{% block title %}Products{% endblock %}
+{% block page_title %}Products{% endblock %}
+
+{% block content %}
+<div class="admin-toolbar mb-4">
+  <form class="d-flex gap-2 flex-wrap" method="GET">
+    <div class="search-wrap" style="min-width:220px">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" name="q" value="{{ q }}" class="form-control search-input" placeholder="Search products…"/>
+    </div>
+    <select name="category" class="form-select" style="max-width:200px">
+      <option value="All" {% if active_cat=='All' %}selected{% endif %}>All Categories</option>
+      {% for c in categories %}
+      <option value="{{ c }}" {% if active_cat==c %}selected{% endif %}>{{ c }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-outline-green"><i class="fas fa-filter me-1"></i>Filter</button>
+    <a href="{{ url_for('admin_bp.products') }}" class="btn btn-outline-secondary">Clear</a>
+  </form>
+  <a href="{{ url_for('admin_bp.product_new') }}" class="btn btn-primary-green ms-auto">
+    <i class="fas fa-plus me-1"></i>Add Product
+  </a>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead>
+          <tr>
+            <th style="width:60px">Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in products %}
+          <tr>
+            <td>
+              <img src="{{ p.image_url or '' }}" onerror="this.onerror=null;this.src='/static/images/product-fallback.svg'"
+                   alt="{{ p.name }}" class="product-thumb"/>
+            </td>
+            <td>
+              <div class="fw-600">{{ p.name }}</div>
+              <div class="text-muted small">{{ p.description|truncate(60) }}</div>
+            </td>
+            <td><span class="cat-badge">{{ p.category }}</span></td>
+            <td class="small">{{ ('KES %.2f'|format(p.price_per_unit)) if p.price_per_unit else 'On enquiry' }}</td>
+            <td>
+              <form method="POST" action="{{ url_for('admin_bp.product_toggle', pid=p.id) }}" class="d-inline">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <button type="submit" class="toggle-btn {% if p.is_active %}active{% endif %}">
+                  {{ 'Active' if p.is_active else 'Inactive' }}
+                </button>
+              </form>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <a href="{{ url_for('admin_bp.product_edit', pid=p.id) }}" class="btn btn-sm btn-outline-green">
+                  <i class="fas fa-pencil"></i>
+                </a>
+                <button class="btn btn-sm btn-outline-danger"
+                        onclick="confirmDelete('{{ url_for('admin_bp.product_delete', pid=p.id) }}','{{ p.name }}')">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-center text-muted py-5">
+            <i class="fas fa-flask fa-2x mb-2 d-block" style="color:var(--green-300)"></i>
+            No products found. <a href="{{ url_for('admin_bp.product_new') }}">Add one?</a>
+          </td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirm modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h6 class="modal-title text-danger"><i class="fas fa-trash me-2"></i>Delete Product</h6>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete <strong id="deleteItemName"></strong>? This cannot be undone.</p>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+        <form id="deleteForm" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function confirmDelete(url, name) {
+  document.getElementById('deleteForm').action = url;
+  document.getElementById('deleteItemName').textContent = name;
+  new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+</script>
+{% endblock %}

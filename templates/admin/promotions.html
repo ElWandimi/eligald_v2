@@ -1,0 +1,48 @@
+{% extends "admin/base.html" %}
+{% block title %}Promotions{% endblock %}
+{% block page_title %}Promotions & Bulk Messaging{% endblock %}
+{% block content %}
+<div class="admin-toolbar mb-4">
+  <a href="{{ url_for('admin_bp.promotion_new') }}" class="btn btn-primary-green ms-auto">
+    <i class="fas fa-plus me-1"></i>New Promotion
+  </a>
+</div>
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead><tr><th>Subject</th><th>Channel</th><th>Status</th><th>Sent To</th><th>Created</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for p in promotions %}
+          <tr>
+            <td class="fw-600">{{ p.subject or '(no subject)' }}</td>
+            <td>
+              {% if p.channel == 'email' %}<span class="cat-badge"><i class="fas fa-envelope me-1"></i>Email</span>
+              {% elif p.channel == 'whatsapp' %}<span class="cat-badge" style="background:var(--green-soft);color:var(--green)"><i class="fab fa-whatsapp me-1"></i>WhatsApp</span>
+              {% else %}<span class="cat-badge"><i class="fas fa-layer-group me-1"></i>Both</span>{% endif %}
+            </td>
+            <td><span class="status-badge status-{{ 'paid' if p.status=='sent' else 'draft' if p.status=='draft' else 'cancelled' }}">{{ p.status|title }}</span></td>
+            <td class="fw-600">{{ p.sent_count }}</td>
+            <td class="small text-muted">{{ p.created_at[:10] }}</td>
+            <td>
+              {% if p.status == 'draft' %}
+              <form method="POST" action="{{ url_for('admin_bp.promotion_send', pid=p.id) }}" class="d-inline"
+                    onsubmit="return confirm('Send to all opted-in customers?')">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <button type="submit" class="btn btn-sm btn-primary-green"><i class="fas fa-paper-plane me-1"></i>Send</button>
+              </form>
+              {% else %}<span class="text-muted small">Sent {{ p.sent_at[:10] if p.sent_at else '' }}</span>{% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-center text-muted py-5">
+            <i class="fas fa-bullhorn fa-2x mb-2 d-block" style="color:var(--green-300)"></i>
+            No promotions yet. <a href="{{ url_for('admin_bp.promotion_new') }}">Create your first one?</a>
+          </td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

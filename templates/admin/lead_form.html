@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+{% block title %}New Lead{% endblock %}
+{% block page_title %}Log New Lead{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+<div class="col-lg-7">
+<div class="admin-card">
+  <div class="admin-card-header"><h6><i class="fas fa-user-plus me-2"></i>New Lead / WhatsApp Enquiry</h6></div>
+  <div class="admin-card-body">
+    <form method="POST" action="{{ url_for('admin_bp.lead_new') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <div class="row g-3">
+        <div class="col-sm-6">
+          <label class="form-label">Customer Name <span class="text-danger">*</span></label>
+          <input type="text" name="customer_name" class="form-control" required placeholder="Full name"/>
+        </div>
+        <div class="col-sm-6">
+          <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+          <input type="tel" name="phone_number" class="form-control" required placeholder="+254…"/>
+        </div>
+        <div class="col-sm-6">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" placeholder="Optional"/>
+        </div>
+        <div class="col-sm-6">
+          <label class="form-label">Product of Interest</label>
+          <select name="product_id" class="form-select">
+            <option value="">— Not specified —</option>
+            {% for p in products %}
+            <option value="{{ p.id }}">{{ p.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Message / Enquiry Details</label>
+          <textarea name="message" class="form-control" rows="3"
+                    placeholder="What did the customer say via WhatsApp/phone?"></textarea>
+        </div>
+      </div>
+      <div class="d-flex gap-3 mt-4">
+        <button type="submit" class="btn btn-primary-green"><i class="fas fa-save me-1"></i>Save Lead</button>
+        <a href="{{ url_for('admin_bp.leads') }}" class="btn btn-outline-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}

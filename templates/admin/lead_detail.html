@@ -1,0 +1,71 @@
+{% extends "admin/base.html" %}
+{% block title %}Lead – {{ lead.customer_name }}{% endblock %}
+{% block page_title %}Lead Detail{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="admin-card mb-4">
+      <div class="admin-card-header"><h6><i class="fas fa-user me-2"></i>Customer Info</h6></div>
+      <div class="admin-card-body">
+        <dl class="info-dl">
+          <dt>Name</dt><dd>{{ lead.customer_name }}</dd>
+          <dt>Phone</dt><dd><a href="tel:{{ lead.phone_number }}" class="link-green">{{ lead.phone_number }}</a></dd>
+          <dt>Email</dt><dd>{{ lead.email or '—' }}</dd>
+          <dt>Product Interest</dt><dd>{{ lead.product_name or '—' }}</dd>
+          <dt>Message</dt><dd>{{ lead.message or '—' }}</dd>
+          <dt>Created</dt><dd>{{ lead.created_at[:16]|replace('T',' ') }}</dd>
+        </dl>
+
+        <div class="d-flex gap-2 flex-wrap mt-3">
+          <a href="https://wa.me/{{ lead.phone_number|replace('+','') }}?text=Hello+{{ lead.customer_name|urlencode }}%2C+this+is+Eligald."
+             target="_blank" class="btn btn-wa btn-sm">
+            <i class="fab fa-whatsapp me-1"></i>Open WhatsApp
+          </a>
+          {% if lead.status != 'converted' %}
+          <form method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input type="hidden" name="action" value="convert"/>
+            <button type="submit" class="btn btn-primary-green btn-sm">
+              <i class="fas fa-file-invoice me-1"></i>Create Order
+            </button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="admin-card">
+      <div class="admin-card-header"><h6><i class="fas fa-edit me-2"></i>Update Lead</h6></div>
+      <div class="admin-card-body">
+        <form method="POST">
+          <input type="hidden" name="action" value="update"/>
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select">
+              {% for s in ['new','contacted','converted'] %}
+              <option value="{{ s }}" {{ 'selected' if lead.status == s }}>{{ s|title }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Admin Notes</label>
+            <textarea name="admin_notes" class="form-control" rows="5"
+                      placeholder="Internal notes about this lead…">{{ lead.admin_notes or '' }}</textarea>
+          </div>
+          <button type="submit" class="btn btn-primary-green">
+            <i class="fas fa-save me-1"></i>Save Changes
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mt-3">
+  <a href="{{ url_for('admin_bp.leads') }}" class="btn btn-outline-secondary btn-sm">
+    <i class="fas fa-arrow-left me-1"></i>Back to Leads
+  </a>
+</div>
+{% endblock %}

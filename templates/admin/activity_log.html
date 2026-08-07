@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% block title %}Activity Log{% endblock %}
+{% block page_title %}Activity Log{% endblock %}
+
+{% block content %}
+<div class="admin-card">
+  <div class="admin-card-header d-flex justify-content-between">
+    <h6 class="mb-0"><i class="fas fa-list-check me-2"></i>Admin Activity Log (last 200 entries)</h6>
+  </div>
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead>
+          <tr><th>Time</th><th>User</th><th>Action</th><th>Details</th></tr>
+        </thead>
+        <tbody>
+          {% for l in logs %}
+          <tr class="activity-row">
+            <td class="text-muted" style="white-space:nowrap">{{ l.created_at[:16]|replace('T',' ') }}</td>
+            <td class="fw-600">{{ l.username }}</td>
+            <td><span class="activity-action">{{ l.action }}</span></td>
+            <td class="small text-muted">{{ l.details }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="4" class="text-center text-muted py-5">No activity logged yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

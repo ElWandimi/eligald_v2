@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Privacy Policy – {{ company }}{% endblock %}
+{% block content %}
+<section class="page-hero page-hero--short">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1400&q=80')"></div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light">Legal</span>
+    <h1>Privacy Policy</h1>
+    <p>Last updated: January 2025</p>
+  </div>
+</section>
+<nav class="breadcrumb-bar"><div class="container"><ol class="breadcrumb mb-0">
+  <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+  <li class="breadcrumb-item active">Privacy Policy</li>
+</ol></div></nav>
+<section class="section-pad bg-white">
+  <div class="container" style="max-width:820px">
+    <div class="legal-body">
+      <div class="alert alert-info mb-4"><i class="fas fa-info-circle me-2"></i>
+        This Privacy Policy explains how <strong>{{ company }}</strong> collects, uses, and protects your information.
+      </div>
+      <h4>1. Information We Collect</h4>
+      <p>We collect information you provide directly, including name, email address, phone number, and message content via our contact form and WhatsApp enquiries.</p>
+      <h4>2. How We Use Your Information</h4>
+      <ul>
+        <li>To respond to enquiries and provide customer support</li>
+        <li>To process orders and generate invoices</li>
+        <li>To send promotional updates (only with your consent)</li>
+        <li>To improve our website and services</li>
+      </ul>
+      <h4>3. Data Retention</h4>
+      <p>Contact form data is retained for 24 months. Order records are retained for 7 years for accounting compliance.</p>
+      <h4>4. Data Sharing</h4>
+      <p>We do not sell, trade, or rent your personal data to third parties. We may share data with logistics partners for order fulfilment and with authorities when required by law.</p>
+      <h4>5. Cookies</h4>
+      <p>Our website uses only essential session cookies. No tracking or advertising cookies are used.</p>
+      <h4>6. Your Rights</h4>
+      <p>You have the right to access, correct, or delete your personal data. Contact us at <a href="mailto:{{ email }}" class="link-green">{{ email }}</a>.</p>
+      <h4>7. Security</h4>
+      <p>We implement industry-standard security measures including HTTPS encryption and secure session management.</p>
+      <h4>8. Contact Us</h4>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:{{ email }}" class="link-green">{{ email }}</a></li>
+        <li><strong>Phone:</strong> {{ phone }}</li>
+        <li><strong>Address:</strong> {{ address }}</li>
+      </ul>
+    </div>
+    <div class="mt-5 pt-3 border-top d-flex gap-3">
+      <a href="{{ url_for('terms') }}" class="btn btn-outline-green">Terms of Service</a>
+      <a href="{{ url_for('index') }}" class="btn btn-primary-green">Back to Home</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

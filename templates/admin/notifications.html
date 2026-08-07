@@ -1,0 +1,39 @@
+{% extends "admin/base.html" %}
+{% block title %}Notifications{% endblock %}
+{% block page_title %}Notifications{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+<div class="col-lg-8">
+  <div class="admin-card">
+    <div class="admin-card-header d-flex justify-content-between align-items-center">
+      <h6 class="mb-0"><i class="fas fa-bell me-2"></i>All Notifications</h6>
+      <form method="POST" action="{{ url_for('admin_bp.notif_mark_all_read') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <button type="submit" class="btn btn-sm btn-outline-green">Mark all read</button>
+      </form>
+    </div>
+    <div class="admin-card-body p-0">
+      {% for n in notifications %}
+      <a href="{{ url_for('admin_bp.notif_read', nid=n.id) }}"
+         class="notif-item {{ '' if n.is_read else 'unread' }}" style="display:flex">
+        <div class="notif-dot-item" {{ 'style="opacity:0"' if n.is_read }}></div>
+        <div class="flex-1">
+          <div>{{ n.message }}</div>
+          <div class="notif-time">{{ n.created_at[:16]|replace('T',' ') }}</div>
+        </div>
+        {% if not n.is_read %}
+        <span class="badge bg-success ms-2 align-self-start" style="font-size:.65rem">NEW</span>
+        {% endif %}
+      </a>
+      {% else %}
+      <div class="notif-empty py-5">
+        <i class="fas fa-bell-slash fa-2x mb-2 d-block" style="color:var(--green-300)"></i>
+        No notifications yet.
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
