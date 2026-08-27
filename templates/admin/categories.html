@@ -1,0 +1,44 @@
+{% extends "admin/base.html" %}
+{% block title %}Categories{% endblock %}
+{% block page_title %}Product Categories{% endblock %}
+{% block content %}
+<div class="admin-toolbar mb-4">
+  <p class="text-muted small mb-0">Categories are used to organise products across the site and in the admin panel.</p>
+  <a href="{{ url_for('admin_bp.category_new') }}" class="btn btn-primary-green ms-auto">
+    <i class="fas fa-plus me-1"></i>Add Category
+  </a>
+</div>
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead><tr><th>Name</th><th>Description</th><th>Order</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for c in categories %}
+          <tr>
+            <td class="fw-600"><i class="fas fa-tags me-2 text-green"></i>{{ c.name }}</td>
+            <td class="small text-muted">{{ c.description or '—' }}</td>
+            <td class="small text-muted">{{ c.sort_order }}</td>
+            <td><span class="status-badge {{ 'status-paid' if c.is_active else 'status-cancelled' }}">{{ 'Active' if c.is_active else 'Hidden' }}</span></td>
+            <td>
+              <div class="d-flex gap-2">
+                <a href="{{ url_for('admin_bp.category_edit', cid=c.id) }}" class="btn btn-sm btn-outline-green"><i class="fas fa-pencil"></i></a>
+                <form method="POST" action="{{ url_for('admin_bp.category_delete', cid=c.id) }}"
+                      class="d-inline" onsubmit="return confirm('Delete {{ c.name }}? Products in this category will remain but be uncategorised.')">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="5" class="text-center text-muted py-4">
+            No categories yet. <a href="{{ url_for('admin_bp.category_new') }}">Add one?</a>
+          </td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

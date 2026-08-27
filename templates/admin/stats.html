@@ -1,0 +1,42 @@
+{% extends "admin/base.html" %}
+{% block title %}Company Stats{% endblock %}
+{% block page_title %}Company Statistics{% endblock %}
+{% block content %}
+<div class="admin-toolbar mb-4">
+  <p class="text-muted small mb-0">These numbers appear in the discreet footer strip on the homepage.</p>
+  <a href="{{ url_for('admin_bp.stat_new') }}" class="btn btn-primary-green ms-auto">
+    <i class="fas fa-plus me-1"></i>Add Stat
+  </a>
+</div>
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead><tr><th>Icon</th><th>Number</th><th>Label</th><th>Order</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for s in stats %}
+          <tr>
+            <td><i class="fas {{ s.icon }} text-green"></i></td>
+            <td class="fw-600">{{ s.number }}</td>
+            <td>{{ s.label }}</td>
+            <td class="small text-muted">{{ s.sort_order }}</td>
+            <td><span class="status-badge {{ 'status-paid' if s.is_active else 'status-cancelled' }}">{{ 'Active' if s.is_active else 'Hidden' }}</span></td>
+            <td>
+              <div class="d-flex gap-2">
+                <a href="{{ url_for('admin_bp.stat_edit', sid=s.id) }}" class="btn btn-sm btn-outline-green"><i class="fas fa-pencil"></i></a>
+                <form method="POST" action="{{ url_for('admin_bp.stat_delete', sid=s.id) }}" class="d-inline" onsubmit="return confirm('Delete?')">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-center text-muted py-4">No stats yet. <a href="{{ url_for('admin_bp.stat_new') }}">Add one?</a></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

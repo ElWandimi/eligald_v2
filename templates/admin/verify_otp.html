@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verify Code – Eligald Admin</title>
+  <meta name="robots" content="noindex,nofollow"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: #0A3D0F;
+      padding: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 36px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .icon-circle {
+      width: 56px; height: 56px;
+      background: #E8F5E9; color: #25D366;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 20px;
+    }
+    h1 { font-size: 1.3rem; color: #2D2D2D; margin-bottom: 8px; }
+    p.sub { font-size: 0.88rem; color: #6B7280; margin-bottom: 24px; line-height: 1.6; }
+    p.sub strong { color: #2D2D2D; }
+    .otp-input {
+      width: 100%; padding: 14px;
+      border: 1.5px solid #E0E0E0; border-radius: 10px;
+      font-size: 1.6rem; letter-spacing: 0.5em; text-align: center;
+      font-weight: 700; color: #1B5E20;
+      margin-bottom: 18px;
+    }
+    .otp-input:focus { outline: none; border-color: #4CAF50; }
+    button {
+      width: 100%; padding: 12px;
+      background: #2E7D32; color: #fff;
+      border: none; border-radius: 10px;
+      font-size: 0.92rem; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
+      margin-bottom: 12px;
+    }
+    button:hover { background: #1B5E20; }
+    .resend-form button {
+      background: transparent; color: #2E7D32;
+      border: 1.5px solid #2E7D32;
+    }
+    .resend-form button:hover { background: #F1F8E9; }
+    .error {
+      background: #FFEBEE; color: #C62828;
+      padding: 14px; border-radius: 10px;
+      font-size: 0.85rem; margin-bottom: 20px;
+    }
+    .flash-success {
+      background: #F1F8E9; color: #2E7D32;
+      padding: 12px; border-radius: 10px;
+      font-size: 0.83rem; margin-bottom: 16px;
+    }
+    .back-link {
+      display: block; text-align: center; margin-top: 8px;
+      font-size: 0.85rem; color: #6B7280; text-decoration: none;
+    }
+    .back-link:hover { color: #2E7D32; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon-circle"><i class="fab fa-whatsapp"></i></div>
+    <h1>Enter verification code</h1>
+    <p class="sub">
+      We sent a 6-digit code via WhatsApp to <strong>{{ masked_number }}</strong>.
+      It expires in {{ '10' if purpose == 'reset' else '5' }} minutes.
+    </p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for m in messages %}
+        <div class="flash-success">{{ m }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% if error %}
+    <div class="error"><i class="fas fa-exclamation-circle me-2"></i>{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('admin_bp.verify_otp') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <input type="text" name="code" class="otp-input" placeholder="000000"
+             maxlength="6" pattern="[0-9]{6}" inputmode="numeric" required autofocus/>
+      <button type="submit"><i class="fas fa-check me-2"></i>Verify</button>
+    </form>
+
+    <form method="POST" action="{{ url_for('admin_bp.resend_otp') }}" class="resend-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <button type="submit"><i class="fas fa-redo me-2"></i>Resend Code</button>
+    </form>
+
+    <a href="{{ url_for('admin_bp.login') }}" class="back-link">
+      <i class="fas fa-arrow-left me-1"></i>Back to Login
+    </a>
+  </div>
+</body>
+</html>

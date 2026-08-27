@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Thank You – Eligald Industrial Chemicals{% endblock %}
+{% block meta_robots %}noindex, follow{% endblock %}
+
+{% block content %}
+<section class="section-pad bg-white" style="min-height:60vh;display:flex;align-items:center">
+  <div class="container text-center">
+    <div style="max-width:520px;margin:0 auto">
+      <div style="width:88px;height:88px;background:var(--green-50,#E8F5E9);border-radius:50%;
+                  display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+        <i class="fas fa-check" style="font-size:2.2rem;color:var(--green-600,#2E7D32)"></i>
+      </div>
+      <h1 style="font-size:1.8rem;font-weight:800;color:var(--charcoal,#1a1a1a);margin-bottom:12px">
+        Thank You!
+      </h1>
+      <p style="color:var(--body-grey,#666);font-size:1rem;line-height:1.7;margin-bottom:8px">
+        We've received your enquiry. Our team typically responds within
+        <strong>24 hours</strong> — often much sooner via WhatsApp.
+      </p>
+      <p style="color:var(--body-grey,#888);font-size:0.9rem;margin-bottom:32px">
+        In the meantime, feel free to browse our full product catalogue or reach us directly.
+      </p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <a href="{{ url_for('products') }}" class="btn btn-primary-green btn-lg">
+          <i class="fas fa-flask me-2"></i>Browse Products
+        </a>
+        <a href="{{ wa_default }}" target="_blank" rel="noopener" class="btn btn-wa btn-lg">
+          <i class="fab fa-whatsapp me-2"></i>Chat on WhatsApp
+        </a>
+      </div>
+      <a href="{{ url_for('index') }}" class="d-inline-block mt-4" style="color:var(--body-grey,#888);font-size:0.85rem">
+        <i class="fas fa-arrow-left me-1"></i>Back to Home
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

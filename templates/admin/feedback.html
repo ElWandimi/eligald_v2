@@ -1,0 +1,94 @@
+{% extends "admin/base.html" %}
+{% block title %}Feedback{% endblock %}
+{% block page_title %}Customer Feedback{% endblock %}
+{% block content %}
+<div class="row g-3 mb-4">
+  <div class="col-sm-4">
+    <div class="stat-card stat-card--green">
+      <div class="stat-card-icon"><i class="fas fa-star"></i></div>
+      <div class="stat-card-body">
+        <div class="stat-card-num">{{ avg_rating }}<span style="font-size:1rem">/5</span></div>
+        <div class="stat-card-label">Average Rating</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="stat-card stat-card--blue">
+      <div class="stat-card-icon"><i class="fas fa-comments"></i></div>
+      <div class="stat-card-body">
+        <div class="stat-card-num">{{ total_count }}</div>
+        <div class="stat-card-label">Published Reviews</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="stat-card {{ 'stat-card--red' if pending_count > 0 else 'stat-card--green' }}">
+      <div class="stat-card-icon"><i class="fas fa-clock"></i></div>
+      <div class="stat-card-body">
+        <div class="stat-card-num">{{ pending_count }}</div>
+        <div class="stat-card-label">Pending Review</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="admin-toolbar mb-4">
+  <div class="d-flex gap-2">
+    <a href="{{ url_for('admin_bp.feedback', status='all') }}" class="btn btn-sm {{ 'btn-primary-green' if filt=='all' else 'btn-outline-green' }}">All</a>
+    <a href="{{ url_for('admin_bp.feedback', status='pending') }}" class="btn btn-sm {{ 'btn-primary-green' if filt=='pending' else 'btn-outline-green' }}">Pending</a>
+    <a href="{{ url_for('admin_bp.feedback', status='approved') }}" class="btn btn-sm {{ 'btn-primary-green' if filt=='approved' else 'btn-outline-green' }}">Published</a>
+  </div>
+</div>
+
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead><tr><th>Name</th><th>Rating</th><th>Comment</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for f in items %}
+          <tr>
+            <td class="fw-600">{{ f.name }}</td>
+            <td>
+              {% set emojis = {1:'😞',2:'🙁',3:'😐',4:'🙂',5:'😍'} %}
+              {{ emojis[f.rating] }} {{ f.rating }}/5
+            </td>
+            <td class="small">{{ f.comment or '—' }}</td>
+            <td>
+              <span class="status-badge {{ 'status-paid' if f.is_approved else 'status-draft' }}">
+                {{ 'Published' if f.is_approved else 'Pending' }}
+              </span>
+            </td>
+            <td class="small text-muted">{{ f.created_at[:10] }}</td>
+            <td>
+              <div class="d-flex gap-1">
+                {% if not f.is_approved %}
+                <form method="POST" action="{{ url_for('admin_bp.feedback_approve', fid=f.id) }}" class="d-inline">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <button type="submit" class="btn btn-sm btn-primary-green" title="Publish"><i class="fas fa-check"></i></button>
+                </form>
+                {% else %}
+                <form method="POST" action="{{ url_for('admin_bp.feedback_reject', fid=f.id) }}" class="d-inline">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <button type="submit" class="btn btn-sm btn-outline-secondary" title="Hide"><i class="fas fa-eye-slash"></i></button>
+                </form>
+                {% endif %}
+                <form method="POST" action="{{ url_for('admin_bp.feedback_delete', fid=f.id) }}" class="d-inline" onsubmit="return confirm('Delete this feedback?')">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"><i class="fas fa-trash"></i></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-center text-muted py-5">
+            <i class="fas fa-comments fa-2x mb-2 d-block" style="color:var(--green-300)"></i>
+            No feedback yet.
+          </td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

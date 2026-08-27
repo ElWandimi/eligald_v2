@@ -1,0 +1,40 @@
+{% extends "admin/base.html" %}
+{% block title %}Backups{% endblock %}
+{% block page_title %}Database Backups{% endblock %}
+{% block content %}
+<div class="admin-toolbar mb-4">
+  <p class="text-muted small mb-0">Automatic daily snapshots are kept for 14 days. You can also create one manually.</p>
+  <form method="POST" action="{{ url_for('admin_bp.backups_create') }}" class="ms-auto">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <button type="submit" class="btn btn-primary-green"><i class="fas fa-database me-1"></i>Create Backup Now</button>
+  </form>
+</div>
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead><tr><th>Filename</th><th>Size</th><th>Created</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for b in backups %}
+          <tr>
+            <td class="fw-600"><i class="fas fa-file-archive me-2 text-green"></i>{{ b.name }}</td>
+            <td class="small text-muted">{{ b.size_kb }} KB</td>
+            <td class="small text-muted">{{ b.created }}</td>
+            <td>
+              <a href="{{ url_for('admin_bp.backups_download', fname=b.name) }}" class="btn btn-sm btn-outline-green">
+                <i class="fas fa-download me-1"></i>Download
+              </a>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="4" class="text-center text-muted py-5">
+            <i class="fas fa-database fa-2x mb-2 d-block" style="color:var(--green-300)"></i>
+            No backups yet. The first automatic backup runs shortly after each deployment, or click "Create Backup Now".
+          </td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

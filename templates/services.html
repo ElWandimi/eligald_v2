@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Services – Eligald Industrial Chemicals Limited{% endblock %}
+
+{% block content %}
+
+<!-- Page Hero -->
+<section class="page-hero page-hero--short">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1614854262318-831574f15f1f?w=1400&q=80')"></div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light" data-aos="fade-down">What We Offer</span>
+    <h1 data-aos="fade-up" data-aos-delay="100">Services</h1>
+    <p data-aos="fade-up" data-aos-delay="200">From custom formulation to global delivery — full-spectrum chemical services.</p>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<nav class="breadcrumb-bar" aria-label="breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+      <li class="breadcrumb-item active">Services</li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ═══ SERVICE CARDS ═════════════════════════════════════════════════════ -->
+<section class="section-pad bg-white">
+  <div class="container">
+
+    {% for s in services %}
+    <div class="service-card-full {% if loop.index % 2 == 0 %}service-card-alt{% endif %} mb-5" id="{{ s.id }}" data-aos="fade-up">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-5 {% if loop.index % 2 == 0 %}order-lg-2{% endif %}">
+          <div class="service-big-icon">
+            <i class="fas {{ s.icon }}"></i>
+          </div>
+        </div>
+        <div class="col-lg-7 {% if loop.index % 2 == 0 %}order-lg-1{% endif %}">
+          <span class="section-eyebrow">Service 0{{ loop.index }}</span>
+          <h2 class="section-title">{{ s.title }}</h2>
+          <p class="lead-text">{{ s.tagline }}</p>
+          <p>{{ s.desc }}</p>
+          <ul class="service-bullets">
+            {% for b in s.bullets %}
+            <li><i class="fas fa-check-circle"></i> {{ b }}</li>
+            {% endfor %}
+          </ul>
+          <div class="mt-4">
+            <a href="https://wa.me/{{ wa_number }}?text={{ s.wa_msg|urlencode }}"
+               target="_blank" rel="noopener" class="btn btn-wa btn-lg me-3">
+              <i class="fab fa-whatsapp me-2"></i>Get a Quote
+            </a>
+            <a href="{{ url_for('contact') }}" class="btn btn-outline-green btn-lg">
+              <i class="fas fa-envelope me-2"></i>Email Us
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if not loop.last %}<hr class="service-divider">{% endif %}
+    {% endfor %}
+
+  </div>
+</section>
+
+<!-- Process Strip -->
+<section class="section-pad section-alt">
+  <div class="container">
+    <div class="section-header text-center mb-5" data-aos="fade-up">
+      <span class="section-eyebrow">Our Process</span>
+      <h2 class="section-title">How We Work With You</h2>
+    </div>
+    <div class="row g-4 text-center">
+      {% set steps = [
+        ("fa-comments","1. Enquire","Send us your requirements via WhatsApp or email — our team responds within 2 hours during business hours."),
+        ("fa-file-lines","2. Receive a Quote","We assess your needs and send a detailed quotation with product specs, pricing, and lead times."),
+        ("fa-flask","3. Prepare & QC","Your order is picked, blended if needed, and tested in our QC lab before despatch."),
+        ("fa-truck","4. Deliver","ADR-certified delivery to your facility with all required documentation and safety datasheets."),
+      ] %}
+      {% for icon, title, desc in steps %}
+      <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 80 }}">
+        <div class="process-step">
+          <div class="process-icon"><i class="fas {{ icon }}"></i></div>
+          <h6>{{ title }}</h6>
+          <p>{{ desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CTA Band -->
+<section class="cta-band" data-aos="fade-up">
+  <div class="container text-center">
+    <h2 class="cta-headline">Let's build a supply partnership.</h2>
+    <p class="cta-sub">Whether you're placing a one-off order or need a long-term supply contract, we're ready.</p>
+    <a href="{{ wa_default }}" target="_blank" rel="noopener" class="btn btn-wa btn-lg me-3">
+      <i class="fab fa-whatsapp me-2"></i>Chat Now
+    </a>
+    <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg">
+      <i class="fas fa-envelope me-2"></i>Contact Form
+    </a>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "admin/base.html" %}
+{% block title %}Customers{% endblock %}
+{% block page_title %}Customer Database{% endblock %}
+{% block content %}
+<div class="admin-toolbar mb-4">
+  <form class="d-flex gap-2" method="GET">
+    <div class="search-wrap" style="min-width:220px">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" name="q" value="{{ q }}" class="form-control search-input" placeholder="Search name, email or phone…"/>
+    </div>
+    <button type="submit" class="btn btn-outline-green"><i class="fas fa-filter me-1"></i>Search</button>
+    <a href="{{ url_for('admin_bp.customers') }}" class="btn btn-outline-secondary">Clear</a>
+  </form>
+  <div class="ms-auto d-flex gap-2">
+    <a href="{{ url_for('admin_bp.customers_csv') }}" class="btn btn-outline-green">
+      <i class="fas fa-file-csv me-1"></i>Export CSV
+    </a>
+    <a href="{{ url_for('admin_bp.promotion_new') }}" class="btn btn-primary-green">
+      <i class="fas fa-bullhorn me-1"></i>Send Promotion
+    </a>
+  </div>
+</div>
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Source</th><th>Marketing</th><th>Joined</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for c in customers %}
+          <tr>
+            <td class="fw-600">{{ c.name }}</td>
+            <td>{% if c.email %}<a href="mailto:{{ c.email }}" class="link-green small">{{ c.email }}</a>{% else %}—{% endif %}</td>
+            <td>{% if c.phone %}<a href="tel:{{ c.phone }}" class="link-green small">{{ c.phone }}</a>{% else %}—{% endif %}</td>
+            <td><span class="cat-badge">{{ c.source|replace('_',' ')|title }}</span></td>
+            <td>
+              {% if c.marketing_consent %}
+              <span class="status-badge status-paid"><i class="fas fa-check me-1"></i>Opted In</span>
+              {% else %}
+              <span class="status-badge status-cancelled">No</span>
+              {% endif %}
+            </td>
+            <td class="small text-muted">{{ c.created_at[:10] }}</td>
+            <td>
+              <div class="d-flex gap-1">
+                {% if c.email %}<a href="mailto:{{ c.email }}" class="btn btn-sm btn-outline-green" title="Email"><i class="fas fa-envelope"></i></a>{% endif %}
+                {% if c.phone %}<a href="https://wa.me/{{ c.phone|replace('+','')|replace(' ','') }}" target="_blank" class="btn btn-sm btn-wa" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>{% endif %}
+                <form method="POST" action="{{ url_for('admin_bp.customer_delete', cid=c.id) }}" class="d-inline" onsubmit="return confirm('Delete?')">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="7" class="text-center text-muted py-5">
+            <i class="fas fa-address-book fa-2x mb-2 d-block" style="color:var(--green-300)"></i>
+            No customers yet. They appear here when people submit the contact form.
+          </td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "admin/base.html" %}
+{% block title %}WhatsApp Contacts{% endblock %}
+{% block page_title %}WhatsApp Contacts (Marketing List){% endblock %}
+{% block content %}
+<div class="admin-toolbar mb-4">
+  <form class="d-flex gap-2" method="GET">
+    <div class="search-wrap" style="min-width:220px">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" name="q" value="{{ q }}" class="form-control search-input" placeholder="Search name, phone or company…"/>
+    </div>
+    <button type="submit" class="btn btn-outline-green"><i class="fas fa-filter me-1"></i>Search</button>
+  </form>
+  <a href="{{ url_for('admin_bp.whatsapp_contacts_csv') }}" class="btn btn-outline-green ms-auto">
+    <i class="fas fa-file-csv me-1"></i>Export CSV
+  </a>
+</div>
+<div class="admin-card">
+  <div class="admin-card-body p-0">
+    <div class="table-responsive">
+      <table class="table admin-table mb-0">
+        <thead><tr><th>Name</th><th>WhatsApp</th><th>Company</th><th>Source</th><th>Captured</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for c in contacts %}
+          <tr>
+            <td class="fw-600">{{ c.name }}</td>
+            <td>{{ c.phone }}</td>
+            <td class="small text-muted">{{ c.company or '—' }}</td>
+            <td><span class="cat-badge">{{ c.source|replace('_',' ')|title }}</span></td>
+            <td class="small text-muted">{{ c.created_at[:10] }}</td>
+            <td>
+              <a href="https://wa.me/{{ c.phone|replace('+','')|replace(' ','') }}" target="_blank" class="btn btn-sm btn-wa">
+                <i class="fab fa-whatsapp"></i>
+              </a>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-center text-muted py-5">
+            <i class="fab fa-whatsapp fa-2x mb-2 d-block" style="color:var(--green-300)"></i>
+            No WhatsApp contacts captured yet — these come from the homepage enquiry form.
+          </td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
