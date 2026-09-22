@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% block title %}FAQs – Ordering, Delivery, SDS & COA | {{ company }}{% endblock %}
+{% block meta_description %}Answers to common questions about ordering, delivery across the EAC, minimum order quantities, payment methods, and SDS/COA documentation for industrial chemicals from {{ company }}.{% endblock %}
+{% block meta_keywords %}industrial chemical FAQ Kenya, minimum order quantity chemical supplier, SDS safety data sheet chemical supplier Kenya, COA certificate of analysis industrial chemicals, chemical supplier delivery Uganda Tanzania Rwanda, payment methods industrial chemicals Kenya{% endblock %}
+{% block og_title %}Frequently Asked Questions – {{ company }}{% endblock %}
+{% block og_description %}Ordering, delivery, documentation and payment — answered for industrial chemical buyers across the East African Community.{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the minimum order quantity (MOQ)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Most products are available from 25 kg / 25 L jerry can quantities upward, with better pricing at drum (200 kg/L) and IBC/bulk tank volumes. Smaller trial quantities can be arranged for first-time buyers testing a new chemical." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you sell in small/retail quantities or only bulk?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We primarily serve businesses — manufacturers, processors, and distributors — so our standard packaging starts at 25 kg/L. We don't sell in consumer retail pack sizes." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I get a sample before ordering in bulk?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, for most products we can arrange a small sample quantity so you can verify quality and compatibility before committing to a larger order. Contact us via WhatsApp with the product and your application." }
+    },
+    {
+      "@type": "Question",
+      "name": "Which countries do you deliver to?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We supply across the East African Community: Kenya, Uganda, Tanzania, Rwanda, Burundi, South Sudan, DR Congo, and Somalia, dispatched from our Nairobi warehouse." }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does delivery take?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Nairobi and surrounding counties: typically 1-2 business days. Rest of Kenya: 2-4 business days. Regional (Uganda, Tanzania, Rwanda, etc.): typically 5-10 business days depending on border clearance and destination." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you handle cross-border/customs documentation?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes — for regional orders we provide the commercial invoice, packing list, and any chemical-specific export documentation needed for customs clearance in the destination country." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you provide Safety Data Sheets (SDS)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, an SDS is provided with every hazardous chemical order, and available on request before you order." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you provide a Certificate of Analysis (COA)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, a COA confirming batch purity/specification is available for products where applicable — request it when placing your order." }
+    },
+    {
+      "@type": "Question",
+      "name": "Are your products certified / what quality standard do you follow?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We source from established manufacturers and verify each batch against its specification sheet before dispatch, so what you receive matches what you ordered. SDS and COA documentation is available on request for every product." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I get pricing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Most industrial chemical pricing varies with quantity, grade, and market conditions, so we quote per enquiry rather than listing fixed prices — message us via WhatsApp or the enquiry form for a same-day quote." }
+    },
+    {
+      "@type": "Question",
+      "name": "What payment methods do you accept?",
+      "acceptedAnswer": { "@type": "Answer", "text": "We accept M-Pesa, Airtel Money, and direct bank transfer. Payment details are shared with your quote once the order is confirmed." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer credit terms for repeat/business customers?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Orders are paid in full before dispatch. This keeps pricing and lead times predictable for every customer, new or repeat." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you source a chemical that's not listed on your website?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes — we source specialty and less-common chemicals on request. Send us the chemical name/CAS number and quantity you need and we'll confirm availability and pricing." }
+    },
+    {
+      "@type": "Question",
+      "name": "What industries do you supply?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Agriculture, water treatment, construction, food and beverage processing, textiles, cosmetics, paints and coatings, plastics and packaging, and general industrial manufacturing." }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--short">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1400&q=80')"></div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light" data-aos="fade-down">Support</span>
+    <h1 data-aos="fade-up" data-aos-delay="100">Frequently Asked Questions</h1>
+    <p data-aos="fade-up" data-aos-delay="200">Ordering, delivery, documentation and payment — answered.</p>
+  </div>
+</section>
+
+<nav class="breadcrumb-bar" aria-label="breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+      <li class="breadcrumb-item active">FAQs</li>
+    </ol>
+  </div>
+</nav>
+
+<section class="section-pad bg-white">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+
+        <div class="section-header mb-4" data-aos="fade-up">
+          <span class="section-eyebrow">Ordering & Minimum Quantities</span>
+          <h2 class="section-title" style="font-size:1.5rem">Ordering &amp; Minimum Quantities</h2>
+        </div>
+        <div class="accordion mb-5" id="faqOrdering">
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqO1">What is the minimum order quantity (MOQ)?</button></h3>
+            <div id="faqO1" class="accordion-collapse collapse" data-bs-parent="#faqOrdering">
+              <div class="accordion-body">Most products are available from 25 kg / 25 L jerry can quantities upward, with better pricing at drum (200 kg/L) and IBC/bulk tank volumes. Smaller trial quantities can be arranged for first-time buyers testing a new chemical — message us with the product and quantity you need.</div>
+            </div>
+          </div>
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqO2">Do you sell in small/retail quantities or only bulk?</button></h3>
+            <div id="faqO2" class="accordion-collapse collapse" data-bs-parent="#faqOrdering">
+              <div class="accordion-body">We primarily serve businesses — manufacturers, processors, and distributors — so our standard packaging starts at 25 kg/L. We don't sell in consumer retail pack sizes.</div>
+            </div>
+          </div>
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqO3">Can I get a sample before ordering in bulk?</button></h3>
+            <div id="faqO3" class="accordion-collapse collapse" data-bs-parent="#faqOrdering">
+              <div class="accordion-body">Yes, for most products we can arrange a small sample quantity so you can verify quality and compatibility before committing to a larger order. Contact us via WhatsApp with the product and your application.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-header mb-4" data-aos="fade-up">
+          <span class="section-eyebrow">Delivery &amp; Coverage</span>
+          <h2 class="section-title" style="font-size:1.5rem">Delivery &amp; Coverage</h2>
+        </div>
+        <div class="accordion mb-5" id="faqDelivery">
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqD1">Which countries do you deliver to?</button></h3>
+            <div id="faqD1" class="accordion-collapse collapse" data-bs-parent="#faqDelivery">
+              <div class="accordion-body">We supply across the East African Community: Kenya, Uganda, Tanzania, Rwanda, Burundi, South Sudan, DR Congo, and Somalia, dispatched from our Nairobi warehouse.</div>
+            </div>
+          </div>
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqD2">How long does delivery take?</button></h3>
+            <div id="faqD2" class="accordion-collapse collapse" data-bs-parent="#faqDelivery">
+              <div class="accordion-body">Nairobi and surrounding counties: typically 1&ndash;2 business days. Rest of Kenya: 2&ndash;4 business days. Regional (Uganda, Tanzania, Rwanda, etc.): typically 5&ndash;10 business days depending on border clearance and destination. Exact timelines are confirmed when you place an order.</div>
+            </div>
+          </div>
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqD3">Do you handle cross-border/customs documentation?</button></h3>
+            <div id="faqD3" class="accordion-collapse collapse" data-bs-parent="#faqDelivery">
+              <div class="accordion-body">Yes — for regional orders we provide the commercial invoice, packing list, and any chemical-specific export documentation needed for customs clearance in the destination country.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-header mb-4" data-aos="fade-up">
+          <span class="section-eyebrow">Documentation &amp; Compliance</span>
+          <h2 class="section-title" style="font-size:1.5rem">Documentation &amp; Compliance</h2>
+        </div>
+        <div class="accordion mb-5" id="faqDocs">
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqC1">Do you provide Safety Data Sheets (SDS)?</button></h3>
+            <div id="faqC1" class="accordion-collapse collapse" data-bs-parent="#faqDocs">
+              <div class="accordion-body">Yes, an SDS is provided with every hazardous chemical order, and available on request before you order. Contact us for the SDS of any specific product.</div>
+            </div>
+          </div>
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqC2">Can you provide a Certificate of Analysis (COA)?</button></h3>
+            <div id="faqC2" class="accordion-collapse collapse" data-bs-parent="#faqDocs">
+              <div class="accordion-body">Yes, a COA confirming batch purity/specification is available for products where applicable — request it when placing your order.</div>
+            </div>
+          </div>
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqC3">Are your products certified / what quality standard do you follow?</button></h3>
+            <div id="faqC3" class="accordion-collapse collapse" data-bs-parent="#faqDocs">
+              <div class="accordion-body">We source from established manufacturers and verify each batch against its specification sheet before dispatch, so what you receive matches what you ordered. SDS and COA documentation is available on request for every product.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-header mb-4" data-aos="fade-up">
+          <span class="section-eyebrow">Payment &amp; Pricing</span>
+          <h2 class="section-title" style="font-size:1.5rem">Payment &amp; Pricing</h2>
+        </div>
+        <div class="accordion mb-5" id="faqPayment">
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqP1">How do I get pricing?</button></h3>
+            <div id="faqP1" class="accordion-collapse collapse" data-bs-parent="#faqPayment">
+              <div class="accordion-body">Most industrial chemical pricing varies with quantity, grade, and market conditions, so we quote per enquiry rather than listing fixed prices — message us via WhatsApp or the enquiry form with the product and quantity for a same-day quote.</div>
+            </div>
+          </div>
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqP2">What payment methods do you accept?</button></h3>
+            <div id="faqP2" class="accordion-collapse collapse" data-bs-parent="#faqPayment">
+              <div class="accordion-body">We accept M-Pesa, Airtel Money, and direct bank transfer. Payment details are shared with your quote once the order is confirmed.</div>
+            </div>
+          </div>
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqP3">Do you offer credit terms for repeat/business customers?</button></h3>
+            <div id="faqP3" class="accordion-collapse collapse" data-bs-parent="#faqPayment">
+              <div class="accordion-body">Orders are paid in full before dispatch. This keeps pricing and lead times predictable for every customer, new or repeat.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-header mb-4" data-aos="fade-up">
+          <span class="section-eyebrow">Product Range &amp; Sourcing</span>
+          <h2 class="section-title" style="font-size:1.5rem">Product Range &amp; Sourcing</h2>
+        </div>
+        <div class="accordion mb-4" id="faqRange">
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqR1">Can you source a chemical that's not listed on your website?</button></h3>
+            <div id="faqR1" class="accordion-collapse collapse" data-bs-parent="#faqRange">
+              <div class="accordion-body">Yes — we source specialty and less-common chemicals on request. Send us the chemical name/CAS number and quantity you need and we'll confirm availability and pricing.</div>
+            </div>
+          </div>
+          <div class="accordion-item faq-item">
+            <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqR2">What industries do you supply?</button></h3>
+            <div id="faqR2" class="accordion-collapse collapse" data-bs-parent="#faqRange">
+              <div class="accordion-body">Agriculture, water treatment, construction, food and beverage processing, textiles, cosmetics, paints and coatings, plastics and packaging, and general industrial manufacturing — see our <a href="{{ url_for('products') }}">product categories</a> for the full range.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-5" data-aos="fade-up">
+          <p class="mb-3" style="color:var(--muted)">Still have a question?</p>
+          <a href="{{ url_for('contact') }}" class="btn btn-primary-green btn-lg"><i class="fas fa-paper-plane me-2"></i>Contact Us</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

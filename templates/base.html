@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Dynamic meta description - override per-page via meta_description block -->
-  <meta name="description" content="{% block meta_description %}Eligald Industrial Chemicals Limited – East Africa's trusted supplier of solvents, acids, bases, and specialty chemicals across 16 categories. ISO-certified quality, Nairobi-based, delivering across Kenya, Uganda, Tanzania, Rwanda &amp; the wider East African region.{% endblock %}" />
+  <meta name="description" content="{% block meta_description %}Eligald Industrial Chemicals Limited – East Africa's trusted supplier of solvents, acids, bases, and specialty chemicals across 16 categories. Nairobi-based, batch-verified quality, delivering across Kenya, Uganda, Tanzania, Rwanda &amp; the wider East African region.{% endblock %}" />
   <meta name="keywords" content="{% block meta_keywords %}industrial chemicals East Africa, industrial chemicals Kenya, chemical supplier Uganda, chemical exporter Tanzania, solvents Nairobi, acids and bases supplier EAC, specialty chemicals East African Community, laboratory reagents Kenya, hydrochloric acid supplier, water treatment chemicals East Africa{% endblock %}" />
   <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}" />
   <meta name="author" content="Eligald Industrial Chemicals Limited" />
@@ -207,6 +207,17 @@
             </ul>
           </li>
 
+          <!-- Resources dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle {% if request.endpoint in ['resources','resource_choosing_supplier','resource_sds_coa','faq'] %}active{% endif %}"
+               href="{{ url_for('resources') }}" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('resources') }}">Buying Guides</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('faq') }}">FAQs</a></li>
+            </ul>
+          </li>
+
           <!-- Contact dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle {% if request.endpoint == 'contact' %}active{% endif %}"
@@ -285,6 +296,8 @@
           <li><a href="{{ url_for('about') }}">About Us</a></li>
           <li><a href="{{ url_for('products') }}">Products</a></li>
           <li><a href="{{ url_for('services') }}">Services</a></li>
+          <li><a href="{{ url_for('resources') }}">Resources</a></li>
+          <li><a href="{{ url_for('faq') }}">FAQs</a></li>
           <li><a href="{{ url_for('contact') }}">Contact</a></li>
         </ul>
       </div>

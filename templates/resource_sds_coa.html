@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}SDS vs COA: What Every Industrial Chemical Buyer Should Ask For | {{ company }}{% endblock %}
+{% block meta_description %}The difference between a Safety Data Sheet and a Certificate of Analysis, and why both matter when buying industrial chemicals in Kenya and East Africa.{% endblock %}
+{% block meta_keywords %}what is SDS chemical, SDS vs COA, safety data sheet certificate of analysis difference, do I need SDS for chemical purchase Kenya{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_title %}SDS vs COA: What Every Industrial Chemical Buyer Should Ask For{% endblock %}
+{% block og_description %}The difference between a Safety Data Sheet and a Certificate of Analysis, and why both matter.{% endblock %}
+{% block twitter_title %}SDS vs COA: What Every Industrial Chemical Buyer Should Ask For{% endblock %}
+{% block twitter_description %}The difference between a Safety Data Sheet and a Certificate of Analysis, and why both matter.{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "SDS vs COA: What Every Industrial Chemical Buyer Should Ask For",
+  "description": "The difference between a Safety Data Sheet and a Certificate of Analysis, and why both matter when buying industrial chemicals in Kenya and East Africa.",
+  "author": { "@type": "Organization", "name": "Eligald Industrial Chemicals Limited" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eligald Industrial Chemicals Limited",
+    "logo": { "@type": "ImageObject", "url": "{{ url_for('static', filename='images/logo.png', _external=True)|replace('http://','https://') }}" }
+  },
+  "mainEntityOfPage": "{{ request.url }}"
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--short">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1400&q=80')"></div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light" data-aos="fade-down">Compliance</span>
+    <h1 data-aos="fade-up" data-aos-delay="100">SDS vs COA: What Every Industrial Chemical Buyer Should Ask For</h1>
+  </div>
+</section>
+
+<nav class="breadcrumb-bar" aria-label="breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('resources') }}">Resources</a></li>
+      <li class="breadcrumb-item active">SDS vs COA</li>
+    </ol>
+  </div>
+</nav>
+
+<section class="section-pad bg-white">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="legal-body">
+
+          <p class="lead-text">If you're buying industrial chemicals for the first time, two documents come up constantly — the SDS and the COA. They serve completely different purposes, and knowing the difference helps you ask suppliers the right questions.</p>
+
+          <h4>What is a Safety Data Sheet (SDS)?</h4>
+          <p>An SDS is a standardized document covering how to handle, store, and respond to incidents involving a specific chemical — hazard classification, first-aid measures, fire-fighting guidance, spill response, storage requirements, and personal protective equipment (PPE) needed. It's a safety and compliance document, not a quality document.</p>
+          <p><strong>When you need it:</strong> Before you bring any hazardous chemical onto your premises — your staff handling it, your safety officer, and often your regulator will expect one on file.</p>
+
+          <h4>What is a Certificate of Analysis (COA)?</h4>
+          <p>A COA is a quality document specific to a particular batch — it states the actual test results (purity, concentration, specific parameters relevant to that chemical) confirming the batch meets the specification you ordered against. Two shipments of the "same" chemical from different batches can have slightly different COAs.</p>
+          <p><strong>When you need it:</strong> Whenever your process is sensitive to exact purity or concentration — pharmaceutical, food and beverage, laboratory, or any application where an out-of-spec batch could affect your output quality.</p>
+
+          <h4>Do you need both?</h4>
+          <p>For most industrial applications: yes.</p>
+          <ul>
+            <li>The SDS protects your people and keeps you compliant with handling and storage regulations.</li>
+            <li>The COA protects your process and product quality.</li>
+          </ul>
+          <p>A supplier who readily provides both, per order, is signaling that they take documentation seriously — which usually correlates with taking quality control seriously too.</p>
+
+          <h4>What to ask before you order</h4>
+          <ol>
+            <li>"Can you send the SDS for this product before I order?" — a legitimate supplier can send this immediately; it's a standard document, not something drafted per customer.</li>
+            <li>"Will a COA be included with this specific batch?" — if quality/purity matters to your application, confirm this before, not after, the order ships.</li>
+            <li>"Who do I contact if I need an updated SDS later?" — SDS documents get revised; you want a supplier who'll keep you current.</li>
+          </ol>
+
+        </div>
+
+        <div class="mt-5 p-4" style="background:#F1F8E9;border-radius:16px;border:1px solid #C8E6C9" data-aos="fade-up">
+          <h5 style="font-family:Poppins,sans-serif;color:#1B5E20">Need documentation before you order?</h5>
+          <p class="mb-3" style="color:#37474F">Every hazardous chemical order from Eligald Industrial Chemicals includes an SDS, and a COA is available on request for applicable products. Browse our catalogue or message us on WhatsApp to request documentation before you order.</p>
+          <a href="{{ url_for('products') }}" class="btn btn-primary-green me-2"><i class="fas fa-flask me-2"></i>Browse Products</a>
+          <a href="{{ url_for('contact') }}" class="btn btn-outline-success"><i class="fas fa-paper-plane me-2"></i>Contact Us</a>
+        </div>
+
+        <div class="mt-4">
+          <a href="{{ url_for('resources') }}"><i class="fas fa-arrow-left me-2"></i>Back to Resources</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

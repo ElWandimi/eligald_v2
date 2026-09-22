@@ -271,9 +271,9 @@
       <span class="stats-strip-sep">|</span>
       <span class="stats-strip-item"><strong>8</strong> East African Countries Served</span>
       <span class="stats-strip-sep">|</span>
-      <span class="stats-strip-item"><strong>500+</strong> Clients Across the Region</span>
+      <span class="stats-strip-item"><strong>SDS</strong> &amp; CoA on Request</span>
       <span class="stats-strip-sep">|</span>
-      <span class="stats-strip-item"><strong>ISO</strong> Certified</span>
+      <span class="stats-strip-item"><strong>100%</strong> Batch-Verified Quality</span>
       {% endfor %}
       {% if feedback_count > 0 %}
       <span class="stats-strip-sep">|</span>
@@ -366,7 +366,7 @@
             <i class="fas fa-certificate"></i>
           </div>
           <h4>Quality Assurance</h4>
-          <p>Every batch is tested to ACS, ISO, or customer-specified standards. Certificate of Analysis issued with every shipment. Zero compromises on purity.</p>
+          <p>Every batch is checked against its specification sheet — ACS grade or customer-specified — before it leaves our warehouse. Certificate of Analysis issued on request with every shipment.</p>
           <ul class="why-list">
             <li><i class="fas fa-check"></i> In-house QC laboratory</li>
             <li><i class="fas fa-check"></i> Third-party independent testing</li>
@@ -465,7 +465,7 @@
             </h2>
             <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
               <div class="accordion-body">
-                Yes. All products are supplied with full Safety Data Sheets (SDS) aligned to GHS classification, and our facility operates under ISO 9001-certified quality management. Products are classified and labelled per UN transport regulations where applicable.
+                Yes. All products are supplied with full Safety Data Sheets (SDS) aligned to GHS classification, and every batch is checked against its specification sheet before dispatch. Products are classified and labelled per UN transport regulations where applicable.
               </div>
             </div>
           </div>
@@ -561,6 +561,7 @@
         <i class="fas fa-flask me-2"></i><span id="waProductName2">Product</span>
       </div>
       <div style="padding:20px 24px 8px">
+        <div id="waError2" role="alert" style="display:none;background:#FDECEA;border:1px solid #F5C6CB;color:#B71C1C;border-radius:10px;padding:10px 14px;font-size:.8rem;font-weight:600;margin-bottom:14px"></div>
         <div style="margin-bottom:14px">
           <label style="display:block;font-size:.78rem;font-weight:600;color:#4A4A4A;margin-bottom:6px">Your Name <span style="color:#E53935">*</span></label>
           <input type="text" id="waName2" placeholder="e.g. John Kamau" style="width:100%;border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 14px;font-size:.88rem;outline:none;font-family:Inter,sans-serif;transition:border-color .2s"/>
@@ -633,24 +634,41 @@ document.querySelectorAll('.wa-enquiry-btn').forEach(btn => {
   btn.addEventListener('click', function() {
     _waProduct = this.dataset.name; _waNum = this.dataset.wa;
     document.getElementById('waProductName2').textContent = _waProduct;
-    ['waName2','waQty2','waNote2'].forEach(id => { const e=document.getElementById(id); if(e) e.value=''; });
+    ['waName2','waQty2','waNote2'].forEach(id => { const e=document.getElementById(id); if(e) { e.value=''; e.style.borderColor='#E8F5E9'; } });
+    const tos2 = document.getElementById('waTos2'); if (tos2) { tos2.checked = false; tos2.style.outline = 'none'; }
+    const err2 = document.getElementById('waError2'); if (err2) err2.style.display = 'none';
     new bootstrap.Modal(document.getElementById('waEnquiryModal')).show();
   });
+});
+['waName2','waQty2'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', function() { this.style.borderColor = '#E8F5E9'; });
+});
+document.getElementById('waTos2')?.addEventListener('change', function() {
+  this.style.outline = 'none';
 });
 document.getElementById('waSendBtn2')?.addEventListener('click', function() {
   const name = document.getElementById('waName2').value.trim();
   const qty  = document.getElementById('waQty2').value.trim();
   const tos  = document.getElementById('waTos2').checked;
+  const errBox2 = document.getElementById('waError2');
   if (!name || !qty || !tos) {
-    if (!name) document.getElementById('waName2').style.borderColor='#E53935';
-    if (!qty)  document.getElementById('waQty2').style.borderColor='#E53935';
+    const missing = [];
+    let firstInvalid = null;
+    if (!name) { document.getElementById('waName2').style.borderColor='#E53935'; missing.push('your name'); firstInvalid = firstInvalid || document.getElementById('waName2'); }
+    if (!qty)  { document.getElementById('waQty2').style.borderColor='#E53935'; missing.push('quantity required'); firstInvalid = firstInvalid || document.getElementById('waQty2'); }
     if (!tos) {
       const tosLabel = document.getElementById('waTos2');
       tosLabel.style.outline = '2px solid #E53935';
       tosLabel.style.outlineOffset = '2px';
+      missing.push('accepting the Terms of Service');
+      firstInvalid = firstInvalid || tosLabel;
     }
+    errBox2.textContent = 'Please fill in ' + missing.join(' and ') + ' before sending.';
+    errBox2.style.display = 'block';
+    if (firstInvalid) { firstInvalid.focus(); firstInvalid.scrollIntoView({behavior:'smooth', block:'center'}); }
     return;
   }
+  errBox2.style.display = 'none';
   const unit  = document.getElementById('waUnit2').value;
   const note  = document.getElementById('waNote2').value.trim();
   const email = document.getElementById('waEmail2').value.trim();

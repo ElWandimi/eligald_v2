@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}How to Choose an Industrial Chemical Supplier in East Africa | {{ company }}{% endblock %}
+{% block meta_description %}A practical checklist for sourcing industrial chemicals in Kenya, Uganda, Tanzania and the wider EAC — documentation, delivery, and quality checks to look for.{% endblock %}
+{% block meta_keywords %}industrial chemical supplier Kenya, how to choose a chemical supplier East Africa, reliable chemical supplier Nairobi{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_title %}How to Choose an Industrial Chemical Supplier in East Africa{% endblock %}
+{% block og_description %}A practical checklist for sourcing industrial chemicals in Kenya, Uganda, Tanzania and the wider EAC.{% endblock %}
+{% block twitter_title %}How to Choose an Industrial Chemical Supplier in East Africa{% endblock %}
+{% block twitter_description %}A practical checklist for sourcing industrial chemicals in Kenya, Uganda, Tanzania and the wider EAC.{% endblock %}
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Choose an Industrial Chemical Supplier in East Africa",
+  "description": "A practical checklist for sourcing industrial chemicals in Kenya, Uganda, Tanzania and the wider EAC — documentation, delivery, and quality checks to look for.",
+  "author": { "@type": "Organization", "name": "Eligald Industrial Chemicals Limited" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Eligald Industrial Chemicals Limited",
+    "logo": { "@type": "ImageObject", "url": "{{ url_for('static', filename='images/logo.png', _external=True)|replace('http://','https://') }}" }
+  },
+  "mainEntityOfPage": "{{ request.url }}"
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--short">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1400&q=80')"></div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light" data-aos="fade-down">Buying Guide</span>
+    <h1 data-aos="fade-up" data-aos-delay="100">How to Choose an Industrial Chemical Supplier in East Africa</h1>
+  </div>
+</section>
+
+<nav class="breadcrumb-bar" aria-label="breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('resources') }}">Resources</a></li>
+      <li class="breadcrumb-item active">Choosing a Supplier</li>
+    </ol>
+  </div>
+</nav>
+
+<section class="section-pad bg-white">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="legal-body">
+
+          <p class="lead-text">Sourcing industrial chemicals for a manufacturing line, water treatment plant, or processing facility is different from ordering any other raw material — get the supplier wrong and you risk production downtime, compliance problems, or unsafe handling. Here's what to actually check before you commit to a supplier in Kenya or the wider East African Community.</p>
+
+          <h4>1. Can they provide proper documentation?</h4>
+          <p>Every legitimate industrial chemical order should come with a Safety Data Sheet (SDS), and where relevant, a Certificate of Analysis (COA) confirming the batch meets your required specification. If a supplier can't produce these on request, that's a warning sign — not a minor omission.</p>
+
+          <h4>2. Do they understand your application?</h4>
+          <p>A supplier who asks about your intended use — concentration required, application method, compatibility with your existing process — is more likely to supply the right grade the first time. A supplier who just takes your order without any technical questions often isn't equipped to catch a mismatch before it costs you a batch.</p>
+
+          <h4>3. What's their actual delivery coverage?</h4>
+          <p>"We deliver everywhere" means little without specifics. Ask directly: How do they handle deliveries outside the capital? Do they have experience with cross-border shipments if you're in Uganda, Tanzania, Rwanda, or elsewhere in the region? What's the realistic lead time, not the best-case one?</p>
+
+          <h4>4. Packaging and quantity flexibility</h4>
+          <p>Can they supply in the quantities you actually need — whether that's a 25 kg trial quantity to test a new chemical, or bulk drum/IBC volumes for ongoing production? Suppliers locked into one packaging size often aren't set up for growing businesses.</p>
+
+          <h4>5. Response time and communication</h4>
+          <p>In industrial procurement, a slow-to-respond supplier becomes a production risk the moment you have an urgent reorder. Test this before you have an emergency: send a real enquiry and see how long a substantive, useful reply takes.</p>
+
+          <h4>6. Regional experience</h4>
+          <p>A supplier based in Nairobi who genuinely understands East African Community logistics — border documentation, regional delivery realities, multi-country compliance — is a different proposition from one only set up for local Kenyan sales. If you operate across Kenya, Uganda, Tanzania, Rwanda, or neighbouring countries, ask directly about their track record shipping into your specific market.</p>
+
+          <h4>A quick checklist</h4>
+          <ul>
+            <li>SDS and COA available on request</li>
+            <li>Asks about your application before quoting</li>
+            <li>Specific (not vague) delivery timelines for your location</li>
+            <li>Flexible packaging from trial to bulk quantities</li>
+            <li>Responds to enquiries same-day</li>
+            <li>Actual experience delivering to your country, not just Kenya</li>
+          </ul>
+
+        </div>
+
+        <div class="mt-5 p-4" style="background:#F1F8E9;border-radius:16px;border:1px solid #C8E6C9" data-aos="fade-up">
+          <h5 style="font-family:Poppins,sans-serif;color:#1B5E20">Sourcing chemicals across the EAC?</h5>
+          <p class="mb-3" style="color:#37474F">Eligald Industrial Chemicals supplies solvents, acids, bases and specialty chemicals across Kenya, Uganda, Tanzania, Rwanda and the wider East African Community, with SDS provided on every hazardous order and COA available on request. Browse our product categories or message us on WhatsApp for a same-day quote.</p>
+          <a href="{{ url_for('products') }}" class="btn btn-primary-green me-2"><i class="fas fa-flask me-2"></i>Browse Products</a>
+          <a href="{{ url_for('contact') }}" class="btn btn-outline-success"><i class="fas fa-paper-plane me-2"></i>Get a Quote</a>
+        </div>
+
+        <div class="mt-4">
+          <a href="{{ url_for('resources') }}"><i class="fas fa-arrow-left me-2"></i>Back to Resources</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

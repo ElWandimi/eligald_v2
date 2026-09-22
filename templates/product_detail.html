@@ -185,6 +185,7 @@
         <i class="fas fa-flask me-2"></i><span id="waDetailProductName">{{ product.name }}</span>
       </div>
       <div style="padding:20px 24px 8px">
+        <div id="waDetailError" role="alert" style="display:none;background:#FDECEA;border:1px solid #F5C6CB;color:#B71C1C;border-radius:10px;padding:10px 14px;font-size:.8rem;font-weight:600;margin-bottom:14px"></div>
         <div style="margin-bottom:14px">
           <label style="display:block;font-size:.78rem;font-weight:600;color:#4A4A4A;margin-bottom:6px">Your Name <span style="color:#E53935">*</span></label>
           <input type="text" id="waDetailName" placeholder="e.g. Jane Wanjiku" style="width:100%;border:1.5px solid #E8F5E9;border-radius:10px;padding:10px 14px;font-size:.88rem;outline:none;font-family:Inter,sans-serif;transition:border-color .2s"/>
@@ -236,21 +237,36 @@ document.querySelector('.wa-detail-enquire')?.addEventListener('click', function
   this._waNum = this.dataset.wa;
   new bootstrap.Modal(document.getElementById('waDetailModal')).show();
 });
+['waDetailName','waDetailQty'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', function() { this.style.borderColor = '#E8F5E9'; });
+});
+document.getElementById('waDetailTos')?.addEventListener('change', function() {
+  this.style.outline = 'none';
+});
 document.getElementById('waDetailSendBtn')?.addEventListener('click', function() {
   const name = document.getElementById('waDetailName').value.trim();
   const qty  = document.getElementById('waDetailQty').value.trim();
   const tos  = document.getElementById('waDetailTos').checked;
   const waNum = document.querySelector('.wa-detail-enquire')?.dataset.wa || '';
+  const errBox = document.getElementById('waDetailError');
   if (!name || !qty || !tos) {
-    if (!name) document.getElementById('waDetailName').style.borderColor='#E53935';
-    if (!qty)  document.getElementById('waDetailQty').style.borderColor='#E53935';
+    const missing = [];
+    let firstInvalid = null;
+    if (!name) { document.getElementById('waDetailName').style.borderColor='#E53935'; missing.push('your name'); firstInvalid = firstInvalid || document.getElementById('waDetailName'); }
+    if (!qty)  { document.getElementById('waDetailQty').style.borderColor='#E53935'; missing.push('quantity required'); firstInvalid = firstInvalid || document.getElementById('waDetailQty'); }
     if (!tos) {
       const tosLabel = document.getElementById('waDetailTos');
       tosLabel.style.outline = '2px solid #E53935';
       tosLabel.style.outlineOffset = '2px';
+      missing.push('accepting the Terms of Service');
+      firstInvalid = firstInvalid || tosLabel;
     }
+    errBox.textContent = 'Please fill in ' + missing.join(' and ') + ' before sending.';
+    errBox.style.display = 'block';
+    if (firstInvalid) { firstInvalid.focus(); firstInvalid.scrollIntoView({behavior:'smooth', block:'center'}); }
     return;
   }
+  errBox.style.display = 'none';
   const pname   = document.getElementById('waDetailProductName').textContent;
   const company = document.getElementById('waDetailCompany').value.trim();
   const unit    = document.getElementById('waDetailUnit').value;

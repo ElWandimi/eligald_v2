@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Resources – Buying Guides for Industrial Chemicals | {{ company }}{% endblock %}
+{% block meta_description %}Practical guides for industrial chemical buyers in East Africa — choosing a supplier, understanding SDS and COA documentation, and more.{% endblock %}
+{% block meta_keywords %}industrial chemical buying guide, chemical supplier Kenya resources, SDS COA explained, how to choose a chemical supplier East Africa{% endblock %}
+{% block og_title %}Resources – {{ company }}{% endblock %}
+{% block og_description %}Practical guides for industrial chemical buyers across the East African Community.{% endblock %}
+
+{% block content %}
+
+<section class="page-hero page-hero--short">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1400&q=80')"></div>
+  <div class="container page-hero-content">
+    <span class="section-eyebrow light" data-aos="fade-down">Learn</span>
+    <h1 data-aos="fade-up" data-aos-delay="100">Resources</h1>
+    <p data-aos="fade-up" data-aos-delay="200">Practical guides for industrial chemical buyers in East Africa.</p>
+  </div>
+</section>
+
+<nav class="breadcrumb-bar" aria-label="breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+      <li class="breadcrumb-item active">Resources</li>
+    </ol>
+  </div>
+</nav>
+
+<section class="section-pad bg-white">
+  <div class="container">
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-md-6 col-lg-5" data-aos="fade-up">
+        <a href="{{ url_for('resource_choosing_supplier') }}" class="text-decoration-none">
+          <div class="card h-100 border-0 shadow-sm" style="border-radius:16px;overflow:hidden">
+            <div style="height:170px;background:url('https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=70') center/cover"></div>
+            <div class="card-body p-4">
+              <span class="badge rounded-pill" style="background:#E8F5E9;color:#1B5E20;font-size:.7rem;padding:5px 12px">Buying Guide</span>
+              <h5 class="mt-3 mb-2" style="font-family:Poppins,sans-serif;color:#1B1B1B">How to Choose an Industrial Chemical Supplier in East Africa</h5>
+              <p class="mb-0" style="color:var(--muted);font-size:.9rem">A practical checklist covering documentation, delivery coverage, packaging flexibility and response time — what to check before you commit to a supplier.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-6 col-lg-5" data-aos="fade-up" data-aos-delay="100">
+        <a href="{{ url_for('resource_sds_coa') }}" class="text-decoration-none">
+          <div class="card h-100 border-0 shadow-sm" style="border-radius:16px;overflow:hidden">
+            <div style="height:170px;background:url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=70') center/cover"></div>
+            <div class="card-body p-4">
+              <span class="badge rounded-pill" style="background:#E8F5E9;color:#1B5E20;font-size:.7rem;padding:5px 12px">Compliance</span>
+              <h5 class="mt-3 mb-2" style="font-family:Poppins,sans-serif;color:#1B1B1B">SDS vs COA: What Every Industrial Chemical Buyer Should Ask For</h5>
+              <p class="mb-0" style="color:var(--muted);font-size:.9rem">The difference between a Safety Data Sheet and a Certificate of Analysis, and the three questions to ask a supplier before you order.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

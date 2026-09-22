@@ -466,6 +466,22 @@ def founders():
     db.close()
     return render_template("founders.html", founders=data)
 
+@app.route("/faq")
+def faq():
+    return render_template("faq.html")
+
+@app.route("/resources")
+def resources():
+    return render_template("resources.html")
+
+@app.route("/resources/choosing-an-industrial-chemical-supplier")
+def resource_choosing_supplier():
+    return render_template("resource_choosing_supplier.html")
+
+@app.route("/resources/sds-coa-explained")
+def resource_sds_coa():
+    return render_template("resource_sds_coa.html")
+
 @app.route("/privacy")
 def privacy():
     return render_template("privacy.html")
@@ -486,6 +502,10 @@ def sitemap():
         {"loc": base+"/about",    "priority":"0.7","changefreq":"monthly"},
         {"loc": base+"/products", "priority":"0.9","changefreq":"weekly"},
         {"loc": base+"/services", "priority":"0.8","changefreq":"monthly"},
+        {"loc": base+"/faq",      "priority":"0.7","changefreq":"monthly"},
+        {"loc": base+"/resources","priority":"0.7","changefreq":"monthly"},
+        {"loc": base+"/resources/choosing-an-industrial-chemical-supplier","priority":"0.6","changefreq":"monthly"},
+        {"loc": base+"/resources/sds-coa-explained","priority":"0.6","changefreq":"monthly"},
         {"loc": base+"/contact",  "priority":"0.6","changefreq":"yearly"},
         {"loc": base+"/privacy",  "priority":"0.3","changefreq":"yearly"},
         {"loc": base+"/terms",    "priority":"0.3","changefreq":"yearly"},
@@ -687,7 +707,7 @@ def _product_image_for(name, category):
 SERVICES = [
     {"id":"custom-blending","title":"Custom Blending","icon":"fa-flask","tagline":"Formulated to your exact specification.",
      "desc":"Our chemists develop custom blends, dilutions, and proprietary formulations with full batch traceability.",
-     "bullets":["ISO 9001-certified blending facility","Lab-scale to full production runs","Full CoA and batch traceability","NDA protected formulations","Regulatory support (SDS, UN classification)"],
+     "bullets":["Batch-verified blending facility","Lab-scale to full production runs","Full CoA and batch traceability","NDA protected formulations","Regulatory support (SDS, UN classification)"],
      "wa_msg":"Hi Eligald team,\n\nI'd like to discuss a Custom Blending project.\n\n• Chemical/product:\n• Required specification:\n• Volume needed:\n• Delivery location:\n\nCould you let me know if this is something you can help with, along with rough pricing and lead time? Thanks!"},
     {"id":"logistics-supply","title":"Logistics & Supply","icon":"fa-truck","tagline":"Cold-chain, hazmat, and bulk-liquid expertise.",
      "desc":"ADR-certified tankers and approved carriers for regional and international delivery of hazardous goods.",
@@ -831,8 +851,8 @@ with app.app_context():
             _stats = [
                 ("16", "Product Categories", "fa-flask", 1),
                 ("8", "East African Countries Served", "fa-globe-africa", 2),
-                ("500+", "Clients Across the Region", "fa-handshake", 3),
-                ("ISO", "Certified Quality", "fa-certificate", 4),
+                ("SDS", "& CoA on Request", "fa-file-shield", 3),
+                ("100%", "Batch-Verified Quality", "fa-certificate", 4),
             ]
             for _num, _label, _icon, _sort in _stats:
                 try:
