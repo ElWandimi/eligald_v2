@@ -41,8 +41,8 @@
     "name": "Eligald Industrial Chemicals Limited",
     "alternateName": "Eligald",
     "url": "{{ request.url_root.rstrip('/')|replace('http://','https://') }}",
-    "logo": "{{ url_for('static', filename='images/logo.png', _external=True)|replace('http://','https://') }}",
-    "image": "{{ url_for('static', filename='images/logo.png', _external=True)|replace('http://','https://') }}",
+    "logo": "{{ ((request.url_root.rstrip('/') + settings.logo_url) if settings.logo_url else url_for('static', filename='images/logo.png', _external=True))|replace('http://','https://') }}",
+    "image": "{{ ((request.url_root.rstrip('/') + settings.logo_url) if settings.logo_url else url_for('static', filename='images/logo.png', _external=True))|replace('http://','https://') }}",
     "description": "East Africa's trusted supplier of industrial solvents, acids, bases, and specialty chemicals across 16 product categories — serving Kenya, Uganda, Tanzania, Rwanda, Burundi, South Sudan, DR Congo, and Somalia from our Nairobi warehouse.",
     "priceRange": "$$",
     "address": {
@@ -139,7 +139,11 @@
 
       <!-- Brand -->
       <a class="navbar-brand" href="{{ url_for('index') }}">
+        {% if settings.logo_url %}
+        <img src="{{ settings.logo_url }}" alt="{{ company }}" class="navbar-logo-img" style="height:44px;width:auto;object-fit:contain;margin-right:10px" />
+        {% else %}
         <span class="brand-icon">⚗</span>
+        {% endif %}
         <span class="brand-text">
           <span class="brand-primary">Eligald</span>
           <span class="brand-sub">Industrial Chemicals</span>
@@ -276,8 +280,12 @@
       <!-- Brand column -->
       <div class="col-lg-4">
         <div class="footer-brand mb-3">
+          {% if settings.logo_url %}
+          <img src="{{ settings.logo_url }}" alt="{{ company }}" style="height:40px;width:auto;object-fit:contain" />
+          {% else %}
           <span class="brand-icon">⚗</span>
           <span class="fw-bold fs-5 ms-2">Eligald</span>
+          {% endif %}
         </div>
         <p class="footer-tagline">Premium industrial chemicals, delivered with precision. Trusted by manufacturers, laboratories, and processors worldwide.</p>
         <div class="social-icons mt-4">
