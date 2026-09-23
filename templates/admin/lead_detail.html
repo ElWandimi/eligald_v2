@@ -41,6 +41,7 @@
       <div class="admin-card-header"><h6><i class="fas fa-edit me-2"></i>Update Lead</h6></div>
       <div class="admin-card-body">
         <form method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <input type="hidden" name="action" value="update"/>
           <div class="mb-3">
             <label class="form-label">Status</label>

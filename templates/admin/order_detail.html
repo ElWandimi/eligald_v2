@@ -78,6 +78,7 @@
         {% endif %}
         {% if order.status not in ('cancelled','paid') %}
         <form method="POST" action="{{ url_for('admin_bp.order_status', oid=order.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <input type="hidden" name="status" value="cancelled"/>
           <button type="submit" class="btn btn-outline-danger w-100">
             <i class="fas fa-times me-2"></i>Cancel Order

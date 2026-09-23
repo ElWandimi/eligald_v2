@@ -162,6 +162,7 @@
           <div class="notif-panel-header">
             <span>Notifications</span>
             <form method="POST" action="{{ url_for('admin_bp.notif_mark_all_read') }}" class="d-inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <button type="submit" class="btn-link-green">Mark all read</button>
             </form>
           </div>

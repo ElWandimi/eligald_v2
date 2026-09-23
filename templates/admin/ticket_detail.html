@@ -64,6 +64,7 @@
       <div class="admin-card-header"><h6><i class="fas fa-reply me-2"></i>Add Reply</h6></div>
       <div class="admin-card-body">
         <form method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
           <input type="hidden" name="action" value="reply"/>
           <textarea name="message" class="form-control mb-3" rows="4"
                     placeholder="Type your reply…" required></textarea>
