@@ -11,6 +11,7 @@ from flask import (
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from database   import get_db, init_db, notify_all_admins, log_action, db_conn, DB_DIR as PERSISTENT_DATA_DIR
 from auth       import load_current_user
@@ -19,6 +20,10 @@ from rate_limit import check_rate_limit, rate_limit_response
 
 # ─── App ─────────────────────────────────────────────────────────────────────
 app = Flask(__name__)
+# Trust exactly one hop of X-Forwarded-* from Railway's edge proxy, so
+# request.remote_addr (used for rate limiting) reflects the real visitor IP
+# instead of the proxy's — otherwise every visitor shares one rate-limit bucket.
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 _secret = os.environ.get("SECRET_KEY")
 if not _secret:
     if os.environ.get("FLASK_ENV") == "production" or os.environ.get("RAILWAY_ENVIRONMENT"):
@@ -33,7 +38,9 @@ app.config["UPLOAD_FOLDER"]       = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"]  = 8 * 1024 * 1024
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
-app.config["SESSION_COOKIE_SECURE"]   = os.environ.get("FLASK_ENV") == "production"
+app.config["SESSION_COOKIE_SECURE"]   = bool(
+    os.environ.get("FLASK_ENV") == "production" or os.environ.get("RAILWAY_ENVIRONMENT")
+)
 
 os.makedirs(os.path.join(UPLOAD_FOLDER, "products"), exist_ok=True)
 os.makedirs(os.path.join(UPLOAD_FOLDER, "logos"),    exist_ok=True)
