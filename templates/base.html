@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Dynamic meta description - override per-page via meta_description block -->
-  <meta name="description" content="{% block meta_description %}Eligald Industrial Chemicals Limited – East Africa's trusted supplier of solvents, acids, bases, and specialty chemicals across 16 categories. Nairobi-based, batch-verified quality, delivering across Kenya, Uganda, Tanzania, Rwanda &amp; the wider East African region.{% endblock %}" />
+  <meta name="description" content="{% block meta_description %}Nairobi-based supplier of industrial solvents, acids, bases and specialty chemicals across 16 categories, delivering across Kenya and East Africa.{% endblock %}" />
   <meta name="keywords" content="{% block meta_keywords %}industrial chemicals East Africa, industrial chemicals Kenya, chemical supplier Uganda, chemical exporter Tanzania, solvents Nairobi, acids and bases supplier EAC, specialty chemicals East African Community, laboratory reagents Kenya, hydrochloric acid supplier, water treatment chemicals East Africa{% endblock %}" />
   <meta name="robots" content="{% block meta_robots %}index, follow{% endblock %}" />
   <meta name="author" content="Eligald Industrial Chemicals Limited" />
 
   <!-- ═══ Canonical URL (always HTTPS, always the current path) ═══ -->
-  <link rel="canonical" href="{{ request.url_root.rstrip('/')|replace('http://','https://') }}{{ request.path }}" />
+  <link rel="canonical" href="{% block canonical %}{{ request.url_root.rstrip('/')|replace('http://','https://') }}{{ request.path }}{% endblock %}" />
 
   <title>{% block title %}Eligald Industrial Chemicals Limited – Premium Solvents, Acids &amp; Specialty Chemicals{% endblock %}</title>
 
@@ -20,7 +20,7 @@
   <meta property="og:site_name" content="Eligald Industrial Chemicals Limited" />
   <meta property="og:title" content="{% block og_title %}{{ self.title() }}{% endblock %}" />
   <meta property="og:description" content="{% block og_description %}{{ self.meta_description() }}{% endblock %}" />
-  <meta property="og:url" content="{{ request.url_root.rstrip('/')|replace('http://','https://') }}{{ request.path }}" />
+  <meta property="og:url" content="{{ self.canonical() }}" />
   <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='images/social-share.jpg', _external=True)|replace('http://','https://') }}{% endblock %}" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -36,7 +36,7 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": ["LocalBusiness", "ChemicalManufacturer"],
+    "@type": "LocalBusiness",
     "@id": "{{ request.url_root.rstrip('/') }}/#organization",
     "name": "Eligald Industrial Chemicals Limited",
     "alternateName": "Eligald",
@@ -75,11 +75,7 @@
       {"@type": "Country", "name": "DR Congo"},
       {"@type": "Country", "name": "Somalia"}
     ],
-    "sameAs": [
-      "{{ settings.facebook_url if settings.facebook_url else '' }}",
-      "{{ settings.linkedin_url if settings.linkedin_url else '' }}",
-      "{{ settings.twitter_url if settings.twitter_url else '' }}"
-    ]
+    "sameAs": {{ ([settings.facebook_url, settings.linkedin_url, settings.twitter_url]|select|list)|tojson }}
   }
   </script>
   <script type="application/ld+json">
@@ -107,7 +103,9 @@
   {% endif %}
 
   <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚗️</text></svg>" />
+  <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='images/favicon-192.png') }}" />
+  <link rel="icon" type="image/png" sizes="48x48" href="{{ url_for('static', filename='images/favicon-48.png') }}" />
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}" />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />

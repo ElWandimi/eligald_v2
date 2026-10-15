@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% block title %}{% if active_cat and active_cat != 'All' %}{{ active_cat }} Chemicals Kenya – Buy Online | Eligald{% else %}Industrial Chemicals Catalogue – 16 Categories | Eligald{% endif %}{% endblock %}
-{% block meta_description %}{% if active_cat and active_cat != 'All' %}Browse our {{ active_cat }} range — quality-assured chemicals with full specifications, safety data, and fast delivery across Kenya.{% else %}Browse Eligald's full industrial chemical catalogue — solvents, acids, bases, and specialty chemicals across 16 categories, with full CAS numbers, grades, and safety information.{% endif %}{% endblock %}
+{% block title %}{% if active_cat and active_cat != 'All' %}{{ active_cat }} Chemicals in Kenya | Eligald{% else %}Industrial Chemicals Catalogue – 16 Categories | Eligald{% endif %}{% endblock %}
+{% block meta_description %}{% if active_cat and active_cat != 'All' %}Browse our {{ active_cat }} range — quality-assured chemicals with full specifications, safety data, and fast delivery across Kenya.{% else %}Browse Eligald's industrial chemical catalogue: solvents, acids, bases and specialty chemicals across 16 categories, with CAS numbers and grades.{% endif %}{% endblock %}
 
+{% block canonical %}{{ request.url_root.rstrip('/')|replace('http://','https://') }}{{ request.path }}{% if active_cat and active_cat != 'All' %}?category={{ active_cat|urlencode }}{% endif %}{% endblock %}
 {% block schema %}
 <script type="application/ld+json">
 {
@@ -24,7 +25,7 @@
   <div class="page-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1559757175-5700dde675bc?w=1400&q=80')"></div>
   <div class="container page-hero-content">
     <span class="section-eyebrow light" data-aos="fade-down">Our Catalogue</span>
-    <h1 data-aos="fade-up" data-aos-delay="100">Products</h1>
+    <h1 data-aos="fade-up" data-aos-delay="100">{% if active_cat and active_cat != 'All' %}{{ active_cat }} Chemicals{% else %}Industrial Chemicals Catalogue{% endif %}</h1>
     <p data-aos="fade-up" data-aos-delay="200">ACS-grade chemicals, sourced and batch-verified for demanding applications.</p>
   </div>
 </section>
