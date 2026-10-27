@@ -518,7 +518,7 @@ def sitemap():
         {"loc": base+"/terms",    "priority":"0.3","changefreq":"yearly"},
     ]
     for c in cats:
-        pages.append({"loc": f"{base}/products?category={c['name'].replace(' ','+')}",
+        pages.append({"loc": f"{base}/products?category={quote(c['name'], safe='/')}",
                       "priority":"0.75", "changefreq":"weekly"})
     for p in prods:
         pages.append({"loc":f"{base}/products/{p['id']}","priority":"0.8",
