@@ -553,6 +553,12 @@ def robots():
              f"Sitemap: {base}/sitemap.xml"]
     return Response("\n".join(lines), mimetype="text/plain")
 
+@app.route("/ads.txt")
+def ads_txt():
+    """Google AdSense authorised-seller declaration (publisher ID pub-6269482586455409)."""
+    return Response("google.com, pub-6269482586455409, DIRECT, f08c47fec0942fa0\n",
+                    mimetype="text/plain")
+
 @app.route("/.well-known/security.txt")
 def security_txt():
     s     = g.get("settings", {})
